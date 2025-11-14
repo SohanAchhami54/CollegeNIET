@@ -13,7 +13,7 @@ const Header = () => {
              <div className='flex'>
                 <Link href="/" className='flex  justify-center items-center'> 
                 <div>
-                  <Image src="/logo.png" width={44} height={44}></Image>
+                  <Image src="/logo.png" alt="Logo" width={44} height={44}></Image>
                 </div>
                 
                 <div>
