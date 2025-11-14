@@ -282,7 +282,7 @@ const Header = () => {
   ];
 
   return (
-   <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scroll ? 'bg-white/80 backdrop-blur-xl shadow-lg  border-cyan-100/30' : 'bg-transparent'}`}>
+   <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent ${scroll?  ' backdrop-blur-xl shadow-lg  border-cyan-100/30':''}`}>
       <nav className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
@@ -294,16 +294,16 @@ const Header = () => {
               alt="NIET_LOGO"
               className="rounded-full hover:shadow-[0_2px_10px_rgba(11,76,120,1)] transition-all duration-300 "
             />
-            <span className="font-normal text-xl text-gray-900">NIET</span>
+            <span className={`font-normal text-xl text-gray-900 ${scroll?'text-gray-900':'text-white'}`}>NIET</span>
           </Link>
 
           {/* Desktop Menu */}
           <ul className="hidden lg:flex justify-center items-center gap-9 font-normal text-gray-700">
-            <li className="hover:text-cyan-500 transition-colors cursor-pointer">
+            <li className={`hover:bg-gray-400/50 rounded-xl px-3 py-1  transition-colors cursor-pointer ${scroll?'text-gray-900':'text-white'}`}>
               <Link href="/about">About</Link>
             </li>
             <li
-              className={`relative  transition-colors cursor-pointer `}
+              className={`relative  transition-colors cursor-pointer ${scroll?'text-gray-900':'text-white'} `}
               ref={dropdownRef}
             >
               <button
@@ -322,15 +322,15 @@ const Header = () => {
                     <Link
                       key={index}
                       href={program.href}
-                      className="flex items-start text-lg gap-3 px-4 py-3  transition"
+                      className="flex items-start text-lg gap-3 px-4 py-3  group"
                       onClick={() => setAcademicsDropdownOpen(false)}
                     >
-                      <div className="hover:scale-133 transition-all duration-150 ease-in">{program.icon}</div>
+                      <div className="group-hover:scale-133 transition-all duration-150 ease-in">{program.icon}</div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between ">
                           <span className="text-gray-800">{program.name}</span>
                           {program.degree && (
-                            <span className="text-xs font-semibold  text-cyan-700 px-2 py-1 rounded-full border-1">
+                            <span className="text-xs font-semibold  text-gray-700/50 px-2 py-1 rounded-full border-1">
                               {program.degree}
                             </span>
                           )}
@@ -343,14 +343,14 @@ const Header = () => {
                 </div>
               )}
             </li>
-            <li className="hover:text-cyan-500 transition-colors cursor-pointer">
+            <li className={`hover:text-cyan-500 transition-colors cursor-pointer ${scroll?'text-gray-900':'text-white'}`}>
               <Link href="/notice">Notice</Link>
             </li>
           </ul>
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex gap-5 items-center">
-            <span className="cursor-pointer hover:text-cyan-500 transition-colors text-gray-700">
+            <span className={`cursor-pointer hover:text-cyan-500 transition-colors text-gray-700 ${scroll?'text-gray-900':'text-white'}`}>
               Brochure
             </span>
             <Button
@@ -403,10 +403,12 @@ const Header = () => {
                   <Link
                     key={index}
                     href={program.href}
-                    className="flex items-start gap-3"
+                    className="flex items-start gap-3 group"
                     onClick={handleLinkClick}
                   >
+                    <div className="group-hover:scale-122 transtion-all duration-200 ease-in">
                     {program.icon}
+                    </div>
                     <div className="flex-1">
                       <div className="flex justify-between">
                         <span className="text-gray-800">{program.name}</span>
