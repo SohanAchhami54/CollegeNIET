@@ -1,6 +1,15 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@fontsource/arimo/400.css";
+import "@fontsource/arimo/700.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/700.css";
 import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import { ThemeProvider } from "@mui/material/styles";
+
+import theme from "../theme";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +32,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         
+         <ThemeProvider theme={theme}>
         <Header/>
-        {children}
+        <div className="min-h-screen">
+           {children}
+        </div>
+        <Footer/>
+        </ThemeProvider>
+      
       </body>
     </html>
   );
