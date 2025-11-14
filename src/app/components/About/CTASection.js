@@ -12,7 +12,8 @@ export default function CTASection() {
         Ready to lead in AI, Healthcare, and Technology? Join NIET today.
       </p>
       <div className="flex justify-center gap-4 flex-wrap">
-        <Button variant="contained" color="info" size="large">
+        <Button variant="contained" color="info" size="large"
+        sx={{BorderRadius :"24px"}}>
           Apply Now
         </Button>
         <Button variant="outlined" color="inherit" size="large">

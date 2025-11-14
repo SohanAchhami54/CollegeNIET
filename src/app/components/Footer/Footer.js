@@ -10,7 +10,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 
 const Footer = () => {
   return (
-    <footer className="w-[1100px] h-[498.8px] opacity-100 bg-[#030712] p-8">
+    <footer className="w-full h-[498.8px] opacity-100 bg-[#030712] p-8">
       {/* Top Section */}
       <div className="w-full h-[218px] grid grid-cols-4 gap-[48px]">
 
