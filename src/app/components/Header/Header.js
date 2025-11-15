@@ -244,7 +244,7 @@ const Header = () => {
 
   // Scroll effect
   useEffect(()=>{
-    const handleScroll=()=> setScroll(window.scrollY>20)
+    const handleScroll=()=> setScroll(window.scrollY>50)
     
     handleScroll()
     window.addEventListener("scroll",handleScroll);
@@ -304,7 +304,7 @@ useEffect(()=>{
             
             <div className="flex flex-col ">
             <span className={`font-normal text-xl text-gray-900 ${scroll?'text-gray-900':'text-white'}`}>NIET</span>
-            <span className={`text-xs  opacity-55 ${scroll?'text-black':'text-white'}`}>Engineering Excellence</span>
+            <span className={`text-xs  opacity-55 ${scroll?'text-black':'text-white'}`}>(FORMER COLLEGE OF BIOMEDICAL ENGINEERING AND APPLIED SCIENCES)</span>
             </div>
             
           </Link>
