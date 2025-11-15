@@ -88,10 +88,10 @@ const FAQSection = () => {
             className="rounded-xl overflow-hidden shadow-sm mb-4 p-3 border border-gray-200
              hover:border-[#0b4c78]/30 hover:shadow-lg transition-colors"
             sx={{
-              borderRadius: "16px", // round edges normally
+              borderRadius: "16px", 
               overflow: "hidden",
-              "&:before": { display: "none" }, // remove top divider
-              "&.Mui-expanded": { borderRadius: "16px" }, // keep rounded when expanded
+              "&:before": { display: "none" }, 
+              "&.Mui-expanded": { borderRadius: "16px" }, 
             }}
           >
             <AccordionSummary
