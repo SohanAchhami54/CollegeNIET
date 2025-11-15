@@ -48,7 +48,8 @@ const AdmissionSection = () => {
         {stat.map((stats, index) => {
           const Icon = stats.icon;
           return (
-            <div className="border border-gray-200 flex flex-col border relative rounded-3xl  p-3 m-3 sm:m-2 lg:p-3 lg:m-3 lg:mt-7  overflow-visible">
+            <div key={index}
+             className="border border-gray-200 flex flex-col border relative rounded-3xl  p-3 m-3 sm:m-2 lg:p-3 lg:m-3 lg:mt-7  overflow-visible">
               <div className="absolute -top-4 -left-4  w-12 h-12 rounded-2xl  backdrop-blur-sm border border-white/20 flex items-center justify-center ">
                 <span className="text-2xl text-white/60">0{index + 1}</span>
               </div>

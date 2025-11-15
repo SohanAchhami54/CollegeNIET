@@ -6,7 +6,7 @@ export const programs = [
     {
         id: "btech-ai",
         slug: "btech-artificial-intelligence",
-        icon: <PsychologyIcon/>,
+        icon: <PsychologyIcon className='text-black'/>,
         title: "BTech in Artificial Intelligence (AI)",
         degree: "BTech",
         duration: "4 Years",
@@ -241,7 +241,7 @@ export const programs = [
     {
         id: "be-bme",
         slug: "be-biomedical-engineering",
-        icon: <FavoriteIcon/>,
+        icon: <FavoriteIcon className='text-black'/>,
         title: "BE in Biomedical Engineering",
         degree: "BE",
         duration: "4 Years",
@@ -476,7 +476,7 @@ export const programs = [
     {
         id: "be-computer",
         slug: "be-computer-engineering",
-        icon: <MemoryIcon/>,
+        icon: <MemoryIcon className='text-black'/>,
         title: "BE in Computer Engineering",
         degree: "BE",
         duration: "4 Years",
