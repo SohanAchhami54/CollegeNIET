@@ -31,7 +31,7 @@ const Hero = () => {
 
 const reusecom={
   badgeText:"Admissions Open for 2026",
-  headingpart1:"Engineering Tommorrow's",
+  headingpart1:"Engineering Tomorrow's",
   headingpart2:'Innovators',
   paragraph:"Nepal's first UGC-QAA certified engineering college. Master AI, Biomedical & Computer Engineering with industry-aligned curriculum, expert faculty, and proven track record of global placements.",
     badgeIcon : <AutoAwesomeIcon className="text-blue-400" />
@@ -43,8 +43,8 @@ const reusecom={
         {/* Building Image */}
         <Reusablebuilding/>
     
-      <div className='relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40 '>
-        <div className='max-w-5xl mx-auto'>
+      <div className='relative z-10 ml-10 flex  justify-center items-center px-6 lg:px-12 py-32 lg:py-40 '>
+        <div className=''>
           <Reusablecomhero
           badgeText={reusecom.badgeText} 
           headingpart1={reusecom.headingpart1}
