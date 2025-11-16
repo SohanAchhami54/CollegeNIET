@@ -127,10 +127,9 @@ const FACULTY = [
     ],
     img: "/girl.jpg",
   },
-  // more...
+
 ];
 
-// --------------------------------------------------
 
 export default function FacultyPage() {
   const [query, setQuery] = useState("");
@@ -181,7 +180,7 @@ export default function FacultyPage() {
 
       return matchQuery && matchCourse && matchType && matchDept;
     });
-  }, [query, course, type, dept]); // Added 'dept' to dependency array
+  }, [query, course, type, dept]); 
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -196,17 +195,15 @@ export default function FacultyPage() {
             <h1 className="text-4xl font-bold text-gray-900">Our Faculty</h1>
             <p className="text-gray-600">Highly qualified educators and researchers</p>
           </div>
-
-          {/* SEARCH + FILTERS - Props Updated */}
+- Props Updated
+          {/* SEARCH + FILTERS */}
           <FacultySearch
             query={query}
             setQuery={setQuery}
             
-            // Renamed prop to 'selectedCourse' to match child component
             selectedCourse={course} 
             setSelectedCourse={setCourse}
             
-            // Renamed prop to 'types' to match child component
             types={type} 
             setType={setType}
             
