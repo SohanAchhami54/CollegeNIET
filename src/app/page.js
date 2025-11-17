@@ -16,11 +16,11 @@ export default function Home() {
       <>
         <Hero/>
           <Programsection/> 
-        <CampusLifeSection />            
-         <AdmissionSection/>
+          <CampusLifeSection />            
+          <AdmissionSection/>
            <RecognitionSection/>
-         <FAQSection/>
-         <CTASection/>
+          <FAQSection/>
+          <CTASection/>
          
        
 
