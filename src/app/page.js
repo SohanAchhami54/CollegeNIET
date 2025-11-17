@@ -16,16 +16,12 @@ export default function Home() {
       <>
         <Hero/>
           <Programsection/> 
-        <CampusLifeSection />       
-        <AdmissionSection/>
-         <RecognitionSection/>
+        <CampusLifeSection />            
+         <AdmissionSection/>
+           <RecognitionSection/>
          <FAQSection/>
          <CTASection/>
-
-       
-        <AdmissionSection/>
-         <RecognitionSection/>
-         <FAQSection/>
+         
        
 
       </>
