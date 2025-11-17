@@ -126,8 +126,8 @@ const CampusLifeSection = () => {
           className="relative w-full h-80 sm:h-96 lg:h-[500px] p-6 "
         >
           <CampusLife
-            src="/pexels.jpeg"
-            alt="CmapusSection"
+            src="/blue.jpg"
+            alt="CampusSection"
             fill
             className=" object-cover rounded-4xl"
           />
