@@ -289,25 +289,25 @@ useEffect(()=>{
       <nav className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-          
+          <Link href="/" className="flex items-center gap-2 group">
+          <div className="flex items-center gap-3">
             <Image
               src="/logo.png"
               width={64}
               height={64}
               alt="NIET_LOGO"
-             className={` rounded-full transition-all duration-200 hover:scale-105`}
-
+             className={`rounded-full transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_10px_40px_rgba(29,78,216,0.8)] `}
             />
+             
             <div className="flex flex-col gap-0 ">
             <span className={`font-normal text-2xl text-gray-900 ${scroll?'text-gray-900':'text-white'} ${graduateFont.className}`}>NIET</span>
             <span className={`text-xs  opacity-55 ${scroll?'text-black':'text-white'}`}>(FORMER COLLEGE OF BIOMEDICAL ENGINEERING AND APPLIED SCIENCES)</span>
             </div>
-            
+            </div>
           </Link>
 
           {/* Desktop Menu */}
-          <ul className="hidden lg:flex justify-center items-center gap-9 font-normal text-gray-700">
+          <ul className="hidden lg:flex justify-between items-center gap-2 font-normal text-gray-700">
             <li className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2  transition-colors cursor-pointer ${scroll?'text-gray-900':'text-white'}`}>
               <Link href="/about">About</Link>
             </li>
@@ -353,12 +353,12 @@ useEffect(()=>{
               )}
             </li>
             <li className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2  transition-colors cursor-pointer ${scroll?'text-gray-900':'text-white'}`}>
-              <Link href="/notice">Notice</Link>
+              <Link href="/faculty">Faculty and Staff</Link>
             </li>
           </ul>
 
           {/* Desktop Buttons */}
-          <div className="hidden lg:flex gap-5 items-center">
+          {/* <div className="hidden lg:flex gap-5 items-center">
             <span className={`cursor-pointer hover:text-black hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors text-gray-700 ${scroll?'text-gray-900':'text-white'}`}>
               Brochure
             </span>
@@ -377,7 +377,7 @@ useEffect(()=>{
             >
               Apply Now
             </Button>
-          </div>
+          </div> */}
 
           {/* Mobile Menu Button */}
           <button
