@@ -29,7 +29,7 @@ const Footer = () => {
           </div>
 
           <p className="max-w-[250px] text-sm leading-6 font-sans text-gray-400">
-            Nepal&apos;s premier institute for AI, Biomedical, and Computer
+            Nepal&lsquo;s premier institute for AI, Biomedical, and Computer
             Engineering education.
           </p>
 
