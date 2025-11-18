@@ -290,17 +290,18 @@ useEffect(()=>{
         <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-center gap-3">
-            <Image
+          <div className="flex items-center  gap-3">
+            <div className="w-16 h-16 flex  items-center justify-center">
+               <img
               src="/logo.png"
-              width={64}
-              height={64}
               alt="NIET_LOGO"
-             className={`rounded-full transition-all duration-200 group-hover:scale-105 group-hover:shadow-[0_10px_40px_rgba(29,78,216,0.8)] `}
+             className={`rounded-full transition-all  md: duration-200 group-hover:scale-105 group-hover:shadow-[0_10px_40px_rgba(29,78,216,0.8)] `}
             />
+            </div>
+           
              
             <div className="flex flex-col gap-0 ">
-            <span className={`font-normal text-2xl text-gray-900 ${scroll?'text-gray-900':'text-white'} ${graduateFont.className}`}>NIET</span>
+            <span className={`font-normal text- xl:text-2xl text-gray-900 ${scroll?'text-gray-900':'text-white'} ${graduateFont.className}`}>NIET</span>
             <span className={`text-xs  opacity-55 ${scroll?'text-black':'text-white'}`}>(FORMER COLLEGE OF BIOMEDICAL ENGINEERING AND APPLIED SCIENCES)</span>
             </div>
             </div>
