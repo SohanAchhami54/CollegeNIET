@@ -39,7 +39,7 @@ const reusecom={
   return (
     <>
       {/* <h1>This is Hero section</h1> */}
-      <section className='relative min-h-screen  overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to slate-900'>
+      <section className='relative min-h-screen  overflow-hidden bg-gradient-to-r from-blue-950 via-blue-900 to-slate-900'>
         {/* Building Image */}
         <Reusablebuilding/>
     

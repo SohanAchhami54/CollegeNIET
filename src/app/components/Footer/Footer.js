@@ -7,6 +7,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -19,7 +20,7 @@ const Footer = () => {
         <div className="flex flex-col gap-6">
           <div className="flex items-start gap-3">
             <div className="w-12 h-12 rounded-xl bg-[linear-gradient(135deg,#0B4C78,#00D3F2)] flex items-center justify-center">
-              <Image src="/logo.png" fill/>
+              {/* <Image src="/logo.png" fill/> */}
             </div>
             <div>
               <span className="block text-xl font-sans text-white">NIET</span>
