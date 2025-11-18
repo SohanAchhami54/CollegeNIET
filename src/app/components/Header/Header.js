@@ -292,9 +292,11 @@ useEffect(()=>{
           <Link href="/" className="flex items-center gap-2 group">
           <div className="flex items-center  gap-3">
             <div className="w-16 h-16 flex  items-center justify-center">
-               <img
+               <Image
               src="/logo.png"
               alt="NIET_LOGO"
+              width={90}
+              height={90}
              className={`rounded-full transition-all  md: duration-200 group-hover:scale-105 group-hover:shadow-[0_10px_40px_rgba(29,78,216,0.8)] `}
             />
             </div>
