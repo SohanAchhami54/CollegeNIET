@@ -51,7 +51,7 @@ const programs=getAllPrograms().slice(0,3);
               <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1 }}
           className="mb-16 lg:mb-20"
           key={program.slug}
         >

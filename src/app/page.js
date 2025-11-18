@@ -10,12 +10,14 @@ import CTASection from "./components/LandingPage/CTASection";
 
 import Programsection from "./components/LandingPage/Programsection";
 import CampusLifeSection from "./components/LandingPage/CampusLifeSection";
+import Graduate from "./components/LandingPage/Graduate";
 //>>>>>>> 07b9722 (program section added)
 export default function Home() {
   return (
       <>
         <Hero/>
-          <Programsection/> 
+          <Programsection/>
+          <Graduate/>
           <CampusLifeSection />            
           <AdmissionSection/>
            <RecognitionSection/>
