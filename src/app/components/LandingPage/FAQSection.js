@@ -66,7 +66,7 @@ const FAQSection = () => {
             Got Questions?
             <br />
             <span className="bg-gradient-to-r from-[#0b4c78] to-pink-500 bg-clip-text text-transparent">
-              We've Got Answers
+              We&apos;ve Got Answers
             </span>
           </h1>
           <p className="text-xl text-gray-600">

@@ -62,7 +62,7 @@ const Graduate = () => {
             <br />
             Trust niet
            </h2>
-             <p className='max-w-3xl mx-auto text-xl  text-gray-600'>Nepal's Best Private College Award winner. First UGC-QAA certified engineering college in kathmandu valley. Proven track record of global success.</p>
+             <p className='max-w-3xl mx-auto text-xl  text-gray-600'>Nepal&apos;s Best Private College Award winner. First UGC-QAA certified engineering college in kathmandu valley. Proven track record of global success.</p>
           </motion.div>
 
           {/* image section  */}
