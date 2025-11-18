@@ -17,7 +17,7 @@
     "@mui/material": "^7.3.5",
     "@mui/styled-engine-sc": "^7.3.5",
     "@mui/x-date-pickers": "^8.11.0",
-    "axios": "^1.11.0",
+    "axios": "^1.13.2",
     "dayjs": "^1.11.18",
     "framer-motion": "^12.23.24",
     "jwt-decode": "^4.0.0",

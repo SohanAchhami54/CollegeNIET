@@ -2,11 +2,14 @@
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MemoryIcon from '@mui/icons-material/Memory';
+import { LuBrain } from "react-icons/lu";
+import { LuHeartPulse } from "react-icons/lu";
+import { LuCpu } from "react-icons/lu";
 export const programs = [
     {
         id: "btech-ai",
         slug: "btech-artificial-intelligence",
-        icon: <PsychologyIcon className='text-black'/>,
+        icon: <LuBrain className='text-black'/>,
         title: "BTech in Artificial Intelligence (AI)",
         degree: "BTech",
         duration: "4 Years",
@@ -241,7 +244,7 @@ export const programs = [
     {
         id: "be-bme",
         slug: "be-biomedical-engineering",
-        icon: <FavoriteIcon className='text-black'/>,
+        icon: <LuHeartPulse className='text-black'/>,
         title: "BE in Biomedical Engineering",
         degree: "BE",
         duration: "4 Years",
@@ -476,7 +479,7 @@ export const programs = [
     {
         id: "be-computer",
         slug: "be-computer-engineering",
-        icon: <MemoryIcon className='text-black'/>,
+        icon: < LuCpu className='text-black'/>,
         title: "BE in Computer Engineering",
         degree: "BE",
         duration: "4 Years",
