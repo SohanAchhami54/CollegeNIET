@@ -28,7 +28,7 @@ const page = () => {
             initial="hidden"
            animate={isInView ? "visible" : "hidden"}
            variants={variants}
-           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+           transition={{ duration: 0.7, ease: [0.16, 1, 0.4, 1] }}
            className=''
          >
             {/* for academics programs */}
@@ -89,14 +89,14 @@ const page = () => {
                                   {program.title}
                                     </span>
 
-                                    <span className='text-white/50 transition-all duration-500  ease-out group-hover:text-sm'>{program.degree} {program.duration} </span>
+                                    <span className='text-white/50 transition-all duration-4400  ease-out group-hover:text-sm'>{program.degree} {program.duration} </span>
                                 </div>
                              
                             
                           
 
                         </motion.li>
-                    )
+                    );
                 })
             }
         </ul>
