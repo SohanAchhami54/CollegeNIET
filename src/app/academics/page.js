@@ -15,7 +15,7 @@ const Page = () => {
   };
      return (
     <>
-   <section ref={ref} className='relative h-screen overflow-hidden bg-gradient-to-r  from-blue-950  via-blue-900 to-slate-900 pt-16 lg:pt-26'>
+   <section ref={ref} className='relative h-screen overflow-hidden bg-gradient-to-r  from-blue-950  via-blue-900 to-slate-900 pt-16 lg:pt-20'>
        
 
        {/* for building image  */}
@@ -76,7 +76,7 @@ const Page = () => {
                         animate={isInView?"visible":"hidden"}
                         variants={variants}
                         transition={{duration:0.7,ease:[0.16,1,0.3,1]}}
-                        key={program.id} className='h-full px-3 py-8 overflow-hidden rounded-2xl backdrop-blur-md bg-white/10   border border-white/10 transition-all duration-500 ease-out hover:backdrop-blur-sm  hover:bg-white/20 group'>
+                        key={program.id} className='h-full px-3 py-6 overflow-hidden rounded-2xl backdrop-blur-md bg-white/10   border border-white/10 transition-all duration-500 ease-out hover:backdrop-blur-sm  hover:bg-white/20 group'>
                             <div className=' flex flex-col justify-center items-center '>
                                      <div className='bg-white/20 relative rounded-2xl w-14 h-14 mb-3 flex items-center justify-center transition-all duration-200 ease-in-out group-hover:scale-110'>
                                       {React.cloneElement (program.icon,{className:' text-blue-800 w-8 text-white  h-8 transition-all duration-200 ease-out group-hover:scale-110'})}
