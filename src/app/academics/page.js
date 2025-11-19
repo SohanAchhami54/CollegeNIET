@@ -5,7 +5,7 @@ import { LuGraduationCap } from "react-icons/lu";
 import { motion, useInView } from "motion/react";//hook that tell u element is visible or not in screen
 import { robotoFont } from '@/font';
 import { getAllPrograms } from '@/data/programs';
-const page = () => {
+const Page = () => {
     const programs=getAllPrograms();
     const ref=useRef(null);
     const isInView=useInView(ref,{once:true,margin:'-100px 0px -100px 0px'});
@@ -109,4 +109,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
