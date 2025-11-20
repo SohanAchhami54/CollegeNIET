@@ -88,9 +88,6 @@ const Graduate = () => {
                          }
                          : {}
                             }
-                        
-                        
-                        
                         className=' relative h-full overflow-hidden rounded-4xl border border-black/15 transition-all duration-100 ease-in hover:shadow-2xl group' >
                             <div className='relative h-55 overflow-hidden '>
                                 {/* <img src={g.image} alt={g.alt}  className='object-cover  w-full h-auto'/> */}
