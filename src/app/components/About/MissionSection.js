@@ -16,9 +16,6 @@ export const metadata={
     title: "Our Mission - NIET",
     description: "Learn about NIET's mission to empower the next generation of engineers in biomedical, AI, and computer technology through innovative education and research."
 };
-
-
-
 export default function MissionSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50 px-6 text-center">
