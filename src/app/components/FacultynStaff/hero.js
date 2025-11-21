@@ -5,7 +5,8 @@ import LanguageIcon from '@mui/icons-material/Language';
 import ScienceIcon from '@mui/icons-material/Science';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import Reusablebuilding from "../ReusableComHero/Reusablebuilding";
-import Reusablecomhero from "../ReusableComHero/Reusablecomhero";    
+import Reusablecomhero from "../ReusableComHero/Reusablecomhero"; 
+import { graduateFont, robotoFont } from "@/font";   
 
 export default function FacultyHeroSection() {
 
@@ -47,11 +48,11 @@ export default function FacultyHeroSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center mt-12">
             {stats.map((stat, index) => (
               <div className="flex flex-col items-center transition-all duration-300 ease-in-out hover:scale-105 hover:z-10" key={index}>
-                <div className="bg-transparent backdrop-blur-lg border border-white/20 p-6 rounded-lg shadow-lg mb-4 w-full text-white">
+                <div className={`bg-transparent backdrop-blur-lg border border-white/20 p-6 rounded-lg shadow-lg mb-4 w-full text-white ${robotoFont.className}`}>
                   <h2 className="text-5xl font-semibold">{stat.number}</h2>
                   <p className="whitespace-nowrap">{stat.title}</p>
                 </div>
-                <div className="inline-flex gap-2 px-4 py-2 rounded-full bg-transparent border border-blue-100 backdrop-blur-lg bg-black/30 whitespace-nowrap">
+                <div className={`inline-flex gap-2 px-4 py-2 rounded-full bg-transparent border border-blue-100 backdrop-blur-lg bg-black/30 whitespace-nowrap ${robotoFont.className}`}>
                   {stat.icon}
                   <span className="text-white text-sm">{stat.description}</span>
                 </div>

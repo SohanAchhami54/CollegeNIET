@@ -1,241 +1,127 @@
 "use client";
-
-import React, { useMemo, useState } from "react";
+import React, { useState, useMemo } from "react";
+import { FiUsers, FiBookOpen, FiBriefcase } from 'react-icons/fi';
 import Header from "../components/Header/Header";
 import Hero from "../components/FacultynStaff/hero";
-import FacultySearch from "../components/FacultynStaff/FacultySearch";
 import FacultyCard from "../components/FacultynStaff/FacultyCard";
-import { Container } from "@mui/material";
-
-const FACULTY = [
-  {
-    id: 1,
-    name: "Dr. Rajesh Sharma",
-    title: "Professor",
-    dept: "Computer Engineering",
-    tags: ["Artificial Intelligence", "Machine Learning", "Computer Vision"],
-    email: "rajesh.sharma@niet.edu.np",
-    type: "Full-Time",
-    courses: ["Artificial Intelligence", "Deep Learning", "Pattern Recognition"],
-    img: "/guy.jpg",
-  },
-  {
-    id: 2,
-    name: "Dr. Priya Patel",
-    title: "Associate Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Biomedical Instrumentation", "Prosthetics"],
-    email: "priya.patel@niet.edu.np",
-    type: "Full-Time",
-    courses: ["Artificial Intelligence", "Deep Learning", "Pattern Recognition"],
-    img: "/girl.jpg",
-  },
-  {
-    id: 3,
-    name: "Mr. Amit Kumar",
-    title: "Assistant Professor",
-    dept: "Computer Engineering",
-    tags: ["Embedded Systems", "IoT", "Network Security"],
-    email: "amit.kumar@niet.edu.np",
-    type: "Full-Time",
-    courses: ["AI", "Deep Learning", "Pattern Recognition"],
-    img: "/guy.jpg",
-  },
-  {
-    id: 4,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-    courses: ["Biomedical Sensors", "Prosthetic Systems", "Medical Device Design"],
-    img: "/girl.jpg",
-  },
-  {
-    id: 5,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-    courses: [
-      "Artificial Intelligence",
-      "Deep Learning",
-      "Pattern Recognition"
-    ],
-    img: "/girl.jpg",
-  },
-  {
-    id: 6,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-    courses: [
-      "Artificial Intelligence",
-      "Deep Learning",
-      "Pattern Recognition"
-    ],
-    img: "/guy.jpg",
-  },
-  {
-    id: 7,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-    courses: [
-      "Artificial Intelligence",
-      "Deep Learning",
-      "Pattern Recognition"
-    ],
-    img: "/girl.jpg",
-  },
-  {
-    id: 8,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-     courses: [
-      "Biomedical Sensors",
-      "Prosthetic Systems",
-      "Medical Device Design"
-    ],
-    img: "/guy.jpg",
-  },
-  {
-    id: 9,
-    name: "Dr. Sanjay Thapa",
-    title: "Visiting Professor",
-    dept: "Biomedical Engineering",
-    tags: ["Clinical Engineering", "Medical Imaging"],
-    email: "sanjay.thapa@niet.edu.np",
-    type: "Part-Time",
-     courses: [
-      "Biomedical Sensors",
-      "Prosthetic Systems",
-      "Medical Device Design"
-    ],
-    img: "/girl.jpg",
-  },
-
-];
-
+import FacultyFilters from "../components/FacultynStaff/FacultySearch";
+import { facultyData } from "../../data/faculty";
 
 export default function FacultyPage() {
-  const [query, setQuery] = useState("");
-  const [course, setCourse] = useState("All Courses"); // Initialize to default filter value
-  const [type, setType] = useState("All Types");     // Initialize to default filter value
-  const [dept, setDept] = useState("All Departments"); // New: State for department filter
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState("all");
+  const [selectedCourse, setSelectedCourse] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
+  const handleClear = () => {
+    setSearchQuery("");
+    setSelectedProgram("all");
+    setSelectedCourse("all");
+    setSelectedType("all");
+    setSelectedCategory("all");
+  };
 
-  // GET UNIQUE COURSE LIST
-  const allCourses = useMemo(() => {
-    const unique = new Set();
-    FACULTY.forEach(f => f.courses.forEach(c => unique.add(c)));
-    return ["All Courses", ...unique];
-  }, []);
+  const filteredFaculty = useMemo(() => {
+    return facultyData.filter(f => {
+      const fullName = `${f.title || ""} ${f.firstName || ""} ${f.middleName || ""} ${f.lastName || ""}`.trim();
 
-  // GET UNIQUE DEPARTMENT LIST
-  const allDepts = useMemo(() => {
-    const unique = new Set();
-    FACULTY.forEach((p) => unique.add(p.dept));
-    return ["All Departments", ...unique];
-  }, []);
+      const matchesSearch =
+        !searchQuery ||
+        `${fullName} ${f.designation || ""} ${f.department || ""} ${f.specialization || ""}`
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
 
+      const matchesType = selectedType === "all" || f.facultyType === selectedType;
+      const matchesCategory = selectedCategory === "all" || f.category === selectedCategory;
+      const matchesProgram = selectedProgram === "all" || (f.courses || []).some(c => c.program === selectedProgram);
+      const matchesCourse = selectedCourse === "all" || (f.courses || []).some(c => c.id === selectedCourse);
 
-  // FILTER LOGIC
-  const filtered = useMemo(() => {
-    const q = query.toLowerCase().trim();
+      return matchesSearch && matchesType && matchesCategory && matchesProgram && matchesCourse;
+    }).sort((a, b) => (a.order || 999) - (b.order || 999));
+  }, [searchQuery, selectedProgram, selectedCourse, selectedType, selectedCategory]);
 
-    return FACULTY.filter((f) => {
-      // Search Query Filter
-      const matchQuery =
-        !q ||
-        f.name.toLowerCase().includes(q) ||
-        f.title.toLowerCase().includes(q) ||
-        f.dept.toLowerCase().includes(q) ||
-        f.tags.some((t) => t.toLowerCase().includes(q));
-
-      // Course Filter
-      const matchCourse =
-        course === "All Courses" || f.courses.includes(course);
-
-      // Type Filter
-      const matchType =
-        type === "All Types" || f.type === type;
-        
-      // New: Department Filter
-      const matchDept = 
-        dept === "All Departments" || f.dept === dept;
-
-      return matchQuery && matchCourse && matchType && matchDept;
-    });
-  }, [query, course, type, dept]); 
+  const teachingFaculty = filteredFaculty.filter(f => f.category === 'teaching');
+  const boardMembers = filteredFaculty.filter(f => f.category === 'board-member');
+  const nonTeachingStaff = filteredFaculty.filter(f => ['administrative', 'support', 'non-teaching'].includes(f.category));
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <>
       <Header />
       <Hero />
 
-      <section className="py-16 bg-white">
-        <Container maxWidth="lg">
-
-          {/* PAGE HEADER */}
-          <div className="mb-10">
-            <h1 className="text-4xl font-bold text-gray-900">Our Faculty</h1>
-            <p className="text-gray-600">Highly qualified educators and researchers</p>
-          </div>
-- Props Updated
-          {/* SEARCH + FILTERS */}
-          <FacultySearch
-            query={query}
-            setQuery={setQuery}
-            
-            selectedCourse={course} 
-            setSelectedCourse={setCourse}
-            
-            types={type} 
-            setType={setType}
-            
-         
-            dept={dept}
-            setDept={setDept}
-            
-            allCourses={allCourses}
-            allDepts={allDepts}
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8">
+        <div className="max-w-6xl mx-auto px-6">
+          <FacultyFilters
+            faculty={facultyData}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedProgram={selectedProgram}
+            setSelectedProgram={setSelectedProgram}
+            selectedCourse={selectedCourse}
+            setSelectedCourse={setSelectedCourse}
+            selectedType={selectedType}
+            setSelectedType={setSelectedType}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            onClear={handleClear}
           />
 
-          {/* STATS */}
-          <div className="flex justify-center gap-10 mb-10">
-            <div className="text-center">
-              <div className="text-3xl font-bold">{filtered.length}</div>
-              <div className="text-xs text-gray-500">Results</div>
+          {/* Tabs */}
+          <div className="mt-8">
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+  
+  {/* All Filter Tab */}
+         <div 
+          onClick={() => setSelectedCategory('all')} 
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer transition-all duration-200 ${
+            selectedCategory === 'all' ? 'bg-blue-50 border-blue-500 text-blue-700 font-semibold' : 'bg-transparent text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <FiUsers className="text-xl" />
+          <span>All</span>
+          <span className="text-sm font-medium text-gray-500">({filteredFaculty.length})</span>
+        </div>
+
+        {/* Teaching Filter Tab */}
+        <div 
+          onClick={() => setSelectedCategory('teaching')} 
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer transition-all duration-200 ${
+            selectedCategory === 'teaching' ? 'bg-blue-50 border-blue-500 text-blue-700 font-semibold' : 'bg-transparent text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <FiBookOpen className="text-xl" />
+          <span>Teaching</span>
+          <span className="text-sm font-medium text-gray-500">({teachingFaculty.length})</span>
+        </div>
+
+        {/* Staff Filter Tab (Grouped Administrative, Support, Board Members) */}
+        <div 
+          onClick={() => setSelectedCategory('staff')} 
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer transition-all duration-200 ${
+            selectedCategory === 'staff' ? 'bg-blue-50 border-blue-500 text-blue-700 font-semibold' : 'bg-transparent text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+            <FiBriefcase className="text-xl" />
+            <span>Staff</span>
+            <span className="text-sm font-medium text-gray-500">({nonTeachingStaff.length + boardMembers.length})</span>
             </div>
 
-            <div className="text-center">
-              <div className="text-3xl font-bold">{FACULTY.length}</div>
-              <div className="text-xs text-gray-500">Total Faculty</div>
             </div>
-          </div>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filtered.map((person) => (
-              <FacultyCard key={person.id} person={person} />
-            ))}
+            {filteredFaculty.length === 0 ? (
+              <div className="text-center py-24">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">No faculty members found</h3>
+                <p className="text-lg text-gray-600 max-w-md mx-auto">Try adjusting your search or filter criteria.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {filteredFaculty.map(f => <FacultyCard key={f.id} faculty={f} />)}
+              </div>
+            )}
           </div>
-
-        </Container>
-      </section>
-    </main>
+        </div>
+    </>
   );
 }
