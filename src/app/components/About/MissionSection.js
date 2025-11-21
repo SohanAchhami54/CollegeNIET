@@ -16,9 +16,6 @@ export const metadata={
     title: "Our Mission - NIET",
     description: "Learn about NIET's mission to empower the next generation of engineers in biomedical, AI, and computer technology through innovative education and research."
 };
-
-
-
 export default function MissionSection() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50 px-6 text-center">
@@ -34,7 +31,7 @@ export default function MissionSection() {
           One Engineer at a Time
         </span>
         <p className={`text-lg text-gray-700 font-medium max-w-2xl mx-auto tracking-tight leading-relaxed ${robotoFont.className}`}> At NIET (National Institute of Engineering and Technology), 
-            From Nepal's first Biomedical Engineering college to a multi-program engineering institute. 500+ graduates, 40%+ pursuing global opportunities, 50+ PhD holders. We're creating innovators who shape tomorrow's tech landscape</p>
+            From Nepal&apos;s first Biomedical Engineering college to a multi-program engineering institute. 500+ graduates, 40%+ pursuing global opportunities, 50+ PhD holders. We&apos;re creating innovators who shape tomorrow&apos;s tech landscape</p>
       </h2>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">

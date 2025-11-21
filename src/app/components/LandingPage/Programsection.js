@@ -13,7 +13,7 @@ const ref=useRef(null);
 const isInView = useInView(ref, { once: true });
 const programs=getAllPrograms().slice(0,3);
   return (
-    <section ref={ref} className='w-100% mx-0 lg:mx-14 relative z-10 top-24 lg:top-30 mb-60 px-6 lg:px-12'>
+    <section ref={ref} className='w-100% mx-0 lg:mx-14 relative z-10 top-24 lg:top-30 mb-30 lg:mb-60 px-6 lg:px-12'>
       {/* first container  */}
       <div className='mb-16 lg:mb-20 '>
         <motion.div
@@ -68,7 +68,7 @@ const programs=getAllPrograms().slice(0,3);
                       <div className={`absolute inset-0  bg-gradient-to-r ${program.gradient} opacity-40 hover:opacity-30 transition-opacity `}></div>
 
                       {/* FloatingIcon  */}
-                      <div className='absolute px-3 py-3 top-6 right-6 bg-white/90 flex justify-center items-center rounded-2xl'>
+                      <div className='absolute w-14 h-14 top-6 right-6 bg-white/90 flex justify-center items-center rounded-2xl'>
                         <span className=''>
                          {React.cloneElement (program.icon,{className:'w-7 h-8'})}
                         </span>
