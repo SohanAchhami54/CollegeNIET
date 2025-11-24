@@ -172,11 +172,6 @@ const Academicprogram = () => {
                                         <span className={`${robotoFont.className} text-sm  font-semibold `}>Fee Structure</span>
                                     </button>
                              </section>
-                                  
-                           
-
-
-
                           </div>
 
                         </div>
