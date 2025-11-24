@@ -2,7 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { FiMail, FiBook, FiUser, FiPhone } from 'react-icons/fi';
-import { graduateFont, robotoFont } from '@/font';  
+import { graduateFont, robotoFont } from '@/font';
+import Image from 'next/image';
 
 export default function FacultyCard({ faculty }) {
   if (!faculty) {
@@ -33,11 +34,13 @@ export default function FacultyCard({ faculty }) {
       <article className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-cyan-400 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-4">
-            <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-cyan-100 group-hover:border-cyan-400 transition-all duration-300 shadow-lg">
+            <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-cyan-100 group-hover:border-cyan-400 transition-all duration-300 shadow-lg">
               {image ? (
-                <img
-                  src={image}
+                <Image
+                  // src={image}
+                  src={image.startsWith('/') ? image : `/` + image}
                   alt={fullName || 'Faculty member'}
+                  fill
                   className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
                 />
               ) : (
