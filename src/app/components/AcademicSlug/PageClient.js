@@ -1,0 +1,1753 @@
+"use client";
+import React, { useCallback, useState, useRef, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+// Icons
+import { LuBrain, LuBookOpen, LuLightbulb, LuCircleCheck, LuDollarSign, LuAward, LuFlaskConical, LuBriefcase, LuBookMarked, LuSparkles, LuLaptop, LuMicroscope, LuBuilding2, LuCircuitBoard, LuWrench, LuCpu, LuServer, LuSmartphone } from "react-icons/lu";
+import { FaRegCircleUser, FaRegCircleQuestion, FaCode } from "react-icons/fa6";
+import { FaNetworkWired } from "react-icons/fa";
+import { FiFileText, FiGitBranch, FiArrowRight } from "react-icons/fi";
+
+import { BsShield } from "react-icons/bs";
+import { GoStar, GoDatabase } from "react-icons/go";
+import { FiZap, FiCloud } from "react-icons/fi";
+import { IoCodeSharp, IoSettingsOutline } from "react-icons/io5";
+import { AiOutlineHeart } from "react-icons/ai";
+import { MdOutlineFileDownload } from "react-icons/md";
+import { motion, useInView } from 'framer-motion';
+import { graduateFont, robotoFont } from '@/font';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../Tabs/Tabs';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../Tabs/accordion";
+import Image from 'next/image';
+
+
+
+// Function to get appropriate icon for a course based on its name
+function getCourseIcon(courseName) {
+    const name = courseName.toLowerCase();
+
+    if (name.includes("programming") || name.includes("code") || name.includes("software")) return IoCodeSharp;
+    if (name.includes("computer") && (name.includes("organization") || name.includes("architecture"))) return LuCpu;
+    if (name.includes("data structure") || name.includes("algorithm")) return FiGitBranch;
+    if (name.includes("database")) return GoDatabase;
+    if (name.includes("network") || name.includes("communication")) return FaNetworkWired;
+    if (name.includes("digital logic") || name.includes("circuit")) return LuCircuitBoard;
+    if (name.includes("artificial intelligence") || name.includes("machine learning") || name.includes("ai")) return LuBrain;
+    if (name.includes("biomedical") || name.includes("medical")) return AiOutlineHeart;
+    if (name.includes("microcontroller") || name.includes("embedded")) return LuMicroscope;
+    // if (name.includes("web") || name.includes("internet")) return Globe;
+    if (name.includes("security") || name.includes("cyber")) return BsShield;
+    if (name.includes("cloud")) return FiCloud;
+    if (name.includes("mobile") || name.includes("android") || name.includes("ios")) return LuSmartphone;
+    if (name.includes("project") || name.includes("engineering project")) return LuWrench;
+    if (name.includes("introduction") || name.includes("fundamental")) return LuBookOpen;
+    if (name.includes("lab") || name.includes("laboratory")) return LuFlaskConical;
+
+    return FaCode; // Default icon
+}
+
+
+
+const PageClient = ({ program, allPrograms, relatedPrograms }) => {
+    const router = useRouter();
+    const [activeSection, setActiveSection] = useState("overview");
+
+    function getProgramBrochure(programId) {
+        const brochureMap = {
+            "btech-ai": { path: "/AI.pdf", filename: "B.Tech_AI_Brochure.pdf" },
+            "be-bme": { path: "/BioM.pdf", filename: "BE_Biomedical_Engineering_Brochure.pdf" },
+            "be-computer": { path: "/CE.pdf", filename: "BE_Computer_Engineering_Brochure.pdf" }
+        };
+
+        return brochureMap[programId] || { path: "/NEIT Prospectus.pdf", filename: "NEIT Prospectus.pdf" };
+    }
+
+
+
+
+
+    // Function to scroll to a specific section
+    const scrollToSection = useCallback((sectionId) => {
+        const refs = {
+            overview: overviewSectionRef,
+            "fee-structure": feeSectionRef,
+            "degree-highlights": degreeSectionRef,
+            faculty: facultySectionRef,
+            "labs-resources": labsSectionRef,
+            internships: internshipsSectionRef,
+            modules: modulesSectionRef,
+            "why-niet": whyUniversitySectionRef,
+            faq: faqSectionRef,
+        };
+
+        const ref = refs[sectionId];
+        if (ref?.current) {
+            const offset = 100; // Account for fixed header
+            const elementPosition = ref.current.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+            setActiveSection(sectionId);
+        }
+    }, []);
+
+
+    useEffect(() => {
+        if (!program) {
+            router.push("/academics");
+            return;
+        }
+
+        // Handle hash-based scrolling on page load
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+            setTimeout(() => {
+                scrollToSection(hash);
+            }, 100);
+        }
+    }, [program, router, scrollToSection]);
+
+
+    // Handle scroll to highlight active section
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = [
+                { id: "overview", ref: overviewSectionRef },
+                { id: "fee-structure", ref: feeSectionRef },
+                { id: "degree-highlights", ref: degreeSectionRef },
+                ...(program && (program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer") ? [
+                    { id: "faculty", ref: facultySectionRef },
+                    { id: "labs-resources", ref: labsSectionRef },
+                    { id: "internships", ref: internshipsSectionRef },
+                ] : []),
+                { id: "modules", ref: modulesSectionRef },
+                { id: "why-niet", ref: whyUniversitySectionRef },
+                { id: "faq", ref: faqSectionRef },
+            ];
+
+            for (const section of sections) {
+                if (section.ref.current) {
+                    const rect = section.ref.current.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 100) {
+                        setActiveSection(section.id);
+                        break;
+                    }
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [program]);
+
+
+    // Calculate total fee: for programs with discount, exclude security deposit from total
+    // For discounted programs, total is sum of discounted semester fees only (875,000)
+    // For non-discounted programs, total includes everything (1,370,000)
+    const totalFee = program.feeStructure.reduce((sum, fee) => {
+        if (program.discountInfo?.semesterFeeDiscount) {
+            // For discounted programs, only sum the discounted semester fees
+            const discountedSem1 = Math.round(fee.semester1Fee * (1 - program.discountInfo.semesterFeeDiscount / 100));
+            const discountedSem2 = Math.round(fee.semester2Fee * (1 - program.discountInfo.semesterFeeDiscount / 100));
+            return sum + discountedSem1 + discountedSem2;
+        } else {
+            // For non-discounted programs, include everything
+            return sum + fee.grandTotal;
+        }
+    }, 0);
+
+    // Calculate total discount amount
+    const totalDiscount = program?.discountInfo?.semesterFeeDiscount
+        ? program.feeStructure.reduce((sum, fee) => {
+            const discountPercent = program.discountInfo.semesterFeeDiscount;
+            const discount = Math.round(
+                (fee.semester1Fee + fee.semester2Fee) * (discountPercent / 100)
+            );
+            return sum + discount;
+        }, 0)
+        : 0;
+
+    const [showBackToTop, setShowBackToTop] = useState(false);
+
+
+    // Handle back to top button visibility
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowBackToTop(window.scrollY > 400);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Refs for animations
+    const heroRef = useRef(null);
+    const overviewSectionRef = useRef(null);
+    const feeSectionRef = useRef(null);
+    const degreeSectionRef = useRef(null);
+    const facultySectionRef = useRef(null);
+    const labsSectionRef = useRef(null);
+    const internshipsSectionRef = useRef(null);
+    const modulesSectionRef = useRef(null);
+    const whyUniversitySectionRef = useRef(null);
+    const faqSectionRef = useRef(null);
+    const mainContentRef = useRef(null);
+    const sidebarRef = useRef(null);
+    const stickyNavRef = useRef(null);
+    const relatedProgramsRef = useRef(null);
+    const ctaSectionRef = useRef(null);
+
+    // UseInView hooks (assuming you are using framer-motion or react-intersection-observer)
+    const isHeroInView = useInView(heroRef, { once: true });
+    const isOverviewInView = useInView(overviewSectionRef, { once: true, margin: "-100px" });
+    const isFeeInView = useInView(feeSectionRef, { once: true, margin: "-100px" });
+    const isDegreeInView = useInView(degreeSectionRef, { once: true, margin: "-100px" });
+    const isFacultyInView = useInView(facultySectionRef, { once: true, margin: "-100px" });
+    const isLabsInView = useInView(labsSectionRef, { once: true, margin: "-100px" });
+    const isInternshipsInView = useInView(internshipsSectionRef, { once: true, margin: "-100px" });
+    const isModulesInView = useInView(modulesSectionRef, { once: true, margin: "-100px" });
+    const isWhyUniversityInView = useInView(whyUniversitySectionRef, { once: true, margin: "-100px" });
+    const isFaqInView = useInView(faqSectionRef, { once: true, margin: "-100px" });
+
+    // Enhanced sticky positioning for sidebar
+    useEffect(() => {
+        if (!stickyNavRef.current || !mainContentRef.current || !sidebarRef.current) return;
+
+        const stickyNav = stickyNavRef.current;
+        const sidebarElement = sidebarRef.current;
+        const headerHeight = 112; // 7rem = 112px
+        let initialNavLeft = 0;
+        let initialNavWidth = 0;
+
+        const updateStickyPosition = () => {
+            const parentRect = mainContentRef.current.getBoundingClientRect();
+            const navRect = stickyNav.getBoundingClientRect();
+
+            // Store initial position and width on first call
+            if (initialNavLeft === 0) {
+                initialNavLeft = navRect.left;
+                initialNavWidth = navRect.width;
+            }
+
+            const parentTop = parentRect.top;
+            const parentBottom = parentRect.bottom;
+            const navHeight = navRect.height;
+
+            // Check if we should use fixed positioning
+            if (parentTop < headerHeight && parentBottom > headerHeight) {
+                let targetTop = headerHeight;
+
+                if (parentBottom < headerHeight + navHeight) {
+                    targetTop = Math.max(headerHeight, parentBottom - navHeight);
+                }
+
+                stickyNav.style.cssText = `
+                position: fixed !important;
+                top: ${targetTop}px !important;
+                left: ${initialNavLeft}px !important;
+                width: ${initialNavWidth}px !important;
+                z-index: 40 !important;
+            `;
+            } else {
+                stickyNav.style.cssText = `
+                position: relative !important;
+                top: 0 !important;
+                left: auto !important;
+                width: auto !important;
+                z-index: auto !important;
+            `;
+            }
+        };
+
+        // Initial update after a short delay
+        const timeout = setTimeout(() => {
+            updateStickyPosition();
+        }, 150);
+
+        // Update on scroll with throttling
+        let ticking = false;
+        const handleScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateStickyPosition();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        // Update on resize
+        const handleResize = () => {
+            initialNavLeft = 0;
+            initialNavWidth = 0;
+            updateStickyPosition();
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("resize", handleResize, { passive: true });
+
+        return () => {
+            clearTimeout(timeout);
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+
+
+
+
+
+
+    // Navigation items - conditionally includes faculty, labs, internships
+    const navItems = [
+        { id: "overview", label: "Overview", icon: <LuBookOpen /> },
+        { id: "fee-structure", label: "Fee", icon: <LuDollarSign /> },
+        { id: "degree-highlights", label: "Highlights", icon: <LuAward /> },
+        ...(program && (program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer") ? [
+            { id: "faculty", label: "Faculty", icon: <FaRegCircleUser /> },
+            { id: "labs-resources", label: "Labs", icon: <LuFlaskConical /> },
+            { id: "internships", label: "Internships", icon: <LuBriefcase /> }
+        ] : []),
+        { id: "modules", label: "Modules", icon: <LuBookMarked /> },
+        { id: "why-niet", label: "Why us", icon: <LuSparkles /> },
+        { id: "faq", label: "FAQ", icon: <FaRegCircleQuestion /> }
+    ];
+
+    return (
+        <>
+
+            <main className='relative bg-gradient-to-r from-white via-gray-50/30 to-white'>
+                {/* Decorative Background Elements */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/20 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-100/20 rounded-full blur-3xl"></div>
+                </div>
+
+                <div className='relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-24 xl:py-32'>
+
+                    {/* Mobile Navigation */}
+                    <div className='lg:hidden overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 -mx-4 sm:-mx-6 px-4 sm:px-6 sticky top-16 bg-white shadow-sm z-40'>
+                        <nav className='flex gap-2'>
+                            {navItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => scrollToSection(item.id)}
+                                    className={`flex justify-center items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm whitespace-nowrap transition-all font-medium ${activeSection === item.id
+                                        ? "bg-gradient-to-r from-[#0d4e92] to-cyan-500 text-white shadow-lg scale-105"
+                                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                                        }`}
+                                >
+                                    {/* <span className='h-3.5 w-3.5 sm:h-5 sm:w-5 flex-shrink-0'>
+                                        {item.icon}
+                                    </span> */}
+
+                                    {React.cloneElement(item.icon, {
+                                        className: ' h-3.5 w-3.5 sm:w-4 sm:h-4 '
+                                    })}
+                                    <span className='text-xs sm:text-sm'>{item.label}</span>
+                                </button>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* Desktop Sidebar Navigation */}
+                    <div className='hidden lg:fixed lg:left-0 lg:top-24 lg:w-64 lg:h-screen lg:border-r lg:border-gray-200 lg:bg-white lg:overflow-y-auto lg:z-30'>
+                        <nav className='p-6 space-y-2'>
+                            {navItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => scrollToSection(item.id)}
+                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left font-medium ${activeSection === item.id
+                                        ? "bg-gradient-to-r from-[#0d4e92] to-cyan-500 text-white shadow-md"
+                                        : "text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                >
+                                    <span className='h-5 w-5 flex-shrink-0'>{item.icon}</span>
+                                    <span>{item.label}</span>
+                                </button>
+                            ))}
+                        </nav>
+                    </div>
+
+
+
+
+
+                    {/* for side bar and main content  */}
+
+                    <div className='lg:flex lg:gap-12 items-start' ref={mainContentRef}>
+                        <aside ref={sidebarRef}
+                            className='hidden lg:block flex-shrink-0 '
+                            style={{ width: '25%', maxWidth: '25%' }}
+                        >
+                            <nav ref={stickyNavRef} className='bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100'>
+
+                                <h3 className={`text-xs font-bold text-gray-500 uppercase tracking-wider mb-6 ${graduateFont.className}`}>On this page</h3>
+                                <div className="space-y-1.5  ">
+                                    {[
+                                        { id: "overview", label: "Overview", icon: <LuBookOpen /> },
+                                        { id: "fee-structure", label: "Fee Structure", icon: <LuDollarSign /> },
+                                        { id: "degree-highlights", label: "Highlights & Careers", icon: <LuAward /> },
+                                        ...(program && (program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer") ? [
+                                            { id: "faculty", label: "Faculty", icon: <FaRegCircleUser /> },
+                                            { id: "labs-resources", label: "Labs & Resources", icon: <LuFlaskConical /> },
+                                            { id: "internships", label: "Internships", icon: <LuBriefcase /> },
+                                        ] : []),
+                                        { id: "modules", label: "Modules", icon: <LuBookMarked /> },
+                                        { id: "why-niet", label: "Why NIET?", icon: <LuSparkles /> },
+                                        { id: "faq", label: "FAQ", icon: <FaRegCircleQuestion /> },
+                                    ].map((item) => {
+                                        const ItemIcon = item.icon;
+                                        return (
+                                            <button
+                                                key={item.id}
+                                                onClick={() => scrollToSection(item.id)}
+                                                className={`group min-w-[270px] flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium  transition-all duration-200 ease-in-out text-left font-medium ${activeSection === item.id
+                                                    ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-[1.02]"
+                                                    : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-gray-900 hover:scale-[1.01] "
+                                                    }`}
+                                            >
+                                                <span className='flex-shrink-0'>
+                                                    {React.cloneElement(item.icon, { className: `h-5 w-5   ${activeSection === item.id ? 'text-white' : 'text-blue-600 group-hover:text-blue-700'}` })}
+                                                </span>
+                                                <span className={`${robotoFont.className}`} >{item.label}</span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                                {/* Action Buttons */}
+                                <div className="space-y-3 pt-6 border-t border-gray-200">
+                                    <Link
+                                        href={program ? getProgramBrochure(program.id).path : "/NEIT Prospectus.pdf"}
+                                        download={program ? getProgramBrochure(program.id).filename : "NEIT Prospectus.pdf"}
+                                        className="inline-flex items-center justify-center w-full"
+                                    >
+                                        <Button
+                                            size="default"
+                                            className="bg-white text-[#0d4e92] hover:bg-blue-50 text-sm w-full border border-gray-200 shadow-sm"
+                                            aria-label="Download program brochure flex justify-between items-center"
+                                        >
+                                            {/* <Download className="mr-2 h-4 w-4" /> */}
+                                            <MdOutlineFileDownload className="h-4 w-4  " />
+                                            <span className={`${robotoFont.className} font-normal`} > Download Brochure </span>
+
+                                        </Button>
+                                    </Link>
+                                    <Button
+                                        size="default"
+                                        variant="outline"
+                                        className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 text-sm w-full shadow-sm flex justify-center items-center "
+                                        onClick={() => scrollToSection("fee-structure")}
+                                        aria-label="View fee structure"
+                                    >
+                                        {/* <FileText className="mr-2 h-4 w-4" /> */}
+                                        <FiFileText />
+                                        <span className={`${robotoFont.className}`}>Fee Structure </span>
+                                    </Button>
+                                    <Link
+                                        href="https://entrance.puexam.edu.np/studentlogin"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center w-full"
+                                    >
+                                        <Button
+                                            size="default"
+                                            className="bg-white text-[#0d4e92] hover:bg-blue-50 text-sm w-full border border-gray-200 shadow-sm flex justify-center items-center"
+                                            aria-label="Apply now for this program"
+                                        >
+                                            <span className=""> Apply Now </span>
+                                            <FiArrowRight />
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </nav>
+
+                        </aside>
+
+
+                        {/* main content goes here  */}
+                        {/* Main Content Area */}
+
+
+                        <div className='space-y-12 sm:space-y-16 lg:space-y-24 flex-1 min-w-0'>
+                            {/* overview section  */}
+                            {/* --- Overview Section --- */}
+                            <motion.section
+                                ref={overviewSectionRef}
+                                id="overview"
+                                className="scroll-mt-28"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={isOverviewInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.7 }}
+                            >
+                                <div className="relative">
+                                    {/* Section Header */}
+                                    <div className="mb-6 sm:mb-8 lg:mb-10">
+                                        <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100 mb-4 sm:mb-6">
+                                            <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
+                                                < LuBookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                            </div>
+                                            <span className="text-xs sm:text-sm font-semibold text-blue-700 uppercase tracking-wider">Program Overview</span>
+                                        </div>
+                                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold  ${graduateFont.className}     text-gray-900 tracking-tight mb-3 sm:mb-4`}>
+                                            Discover Your Path
+                                        </h2>
+                                        <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-3xl">
+                                            {program.overview}
+                                        </p>
+                                    </div>
+
+                                    {/* What You Will Learn Card */}
+                                    <div className="relative mt-6 sm:mt-8 bg-gradient-to-br from-white to-blue-50/30 rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 lg:p-8 overflow-hidden">
+                                        {/* Decorative gradient overlay */}
+                                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl"></div>
+
+                                        <div className="relative">
+                                            <div className="flex items-center gap-3 lg:gap-4 mb-6">
+                                                <div className="p-2 rounded-lg bg-blue-100">
+                                                    <LuLightbulb className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
+                                                </div>
+                                                <h3 className={`${graduateFont.className} text-xl lg:text-2xl font-bold text-gray-900`}>What You Will Learn</h3>
+                                            </div>
+                                            <ul className="space-y-3 lg:space-y-4">
+                                                {program.youWill.map((item, index) => (
+                                                    <motion.li
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={isOverviewInView ? { opacity: 1, x: 0 } : {}}
+                                                        transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+                                                        className="flex items-center gap-3 lg:gap-4"
+                                                    >
+                                                        <div className="flex-shrink-0">
+                                                            <LuCircleCheck className="h-5 w-5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-gray-700 text-base">{item}</span>
+                                                    </motion.li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    {/* Why Program Section */}
+                                    {program.whyProgram && program.whyProgram.length > 0 && (
+                                        <div className="relative mt-6 sm:mt-8 bg-gradient-to-br from-white to-green-50/30 rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 lg:p-8 overflow-hidden">
+                                            {/* Decorative gradient overlay */}
+                                            <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-green-400/10 to-emerald-400/10 rounded-full blur-3xl"></div>
+
+                                            <div className="relative">
+                                                <div className="flex items-center gap-3 lg:gap-4 mb-6">
+                                                    <div className="p-2 rounded-lg bg-green-100">
+                                                        <GoStar className="h-5 w-5 lg:h-6 lg:w-6 text-green-600" />
+                                                    </div>
+                                                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900">Why {program.title}?</h3>
+                                                </div>
+                                                <ul className="space-y-3 lg:space-y-4">
+                                                    {program.whyProgram.map((item, index) => (
+                                                        <motion.li
+                                                            key={index}
+                                                            initial={{ opacity: 0, x: -20 }}
+                                                            animate={isOverviewInView ? { opacity: 1, x: 0 } : {}}
+                                                            transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+                                                            className="flex items-center gap-3 lg:gap-4"
+                                                        >
+                                                            <div className="flex-shrink-0">
+                                                                <GoStar className="h-5 w-5 text-green-600" />
+                                                            </div>
+                                                            <span className="text-gray-700 text-base">{item}</span>
+                                                        </motion.li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.section>
+
+                            {/* fee structure  */}
+                            <motion.section
+                                ref={feeSectionRef}
+                                id="fee-structure"
+                                className="scroll-mt-28"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={isFeeInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.7 }}
+                            >
+                                <div className="relative">
+                                    {/* Section Header */}
+                                    <div className="mb-6 sm:mb-8 lg:mb-10">
+                                        <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-100 mb-4 sm:mb-6">
+                                            <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500">
+                                                <LuDollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                            </div>
+                                            <span className="text-xs sm:text-sm font-semibold text-emerald-700 uppercase tracking-wider">Investment</span>
+                                        </div>
+                                        <h2 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4 ${graduateFont.className} `}>Fee Structure</h2>
+                                        <p className="text-base sm:text-lg text-gray-600 max-w-2xl">Transparent pricing for your educational journey</p>
+                                    </div>
+
+                                    {/* Fee Table Card */}
+                                    <div className="relative mt-6 sm:mt-8 rounded-xl sm:rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden">
+                                        {/* Scroll indicator - fade effect on right side */}
+                                        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-0 bg-gradient-to-l from-white to-transparent pointer-events-none z-10 sm:hidden"></div>
+
+                                        <div className="overflow-x-auto px-4 sm:px-0">
+                                            <div className="min-w-full inline-block">
+                                                <table className="w-full min-w-[600px] sm:min-w-full lg:table-fixed">
+                                                    <colgroup>
+                                                        <col className="w-auto lg:w-[35%]" />
+                                                        {program.feeStructure.map((_, index) => (
+                                                            <col key={index} className="lg:w-[16.25%]" />
+                                                        ))}
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr className="bg-gray-100 border-b-2 border-gray-300">
+                                                            <th scope="col" className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-5 text-left font-semibold text-gray-900 uppercase tracking-wide text-xs sm:text-sm">Particulars</th>
+                                                            {program.feeStructure.map((fee, index) => (
+                                                                <th key={index} scope="col" className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-5 text-center font-semibold text-gray-900 uppercase tracking-wide text-xs sm:text-sm">
+                                                                    {fee.year}
+                                                                </th>
+                                                            ))}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr className="border-b border-gray-200">
+                                                            <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 font-medium text-gray-900 text-xs sm:text-sm lg:text-sm">
+                                                                <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 lg:gap-2">
+                                                                    <span className="whitespace-nowrap">Admission Fee</span>
+                                                                    {program.discountInfo?.admissionFeeWaiver && (
+                                                                        <div className="text-[10px] sm:text-xs font-semibold text-red-800">
+                                                                            {(() => {
+                                                                                const text = program.discountInfo.note || "100% waiver in Admission Fee for this Batch";
+                                                                                return text.split(' ').map((word, i, arr) => {
+                                                                                    if (word === 'in' || word === 'for') {
+                                                                                        return <React.Fragment key={i}>{word}<br /></React.Fragment>;
+                                                                                    }
+                                                                                    return i < arr.length - 1 ? <React.Fragment key={i}>{word} </React.Fragment> : <React.Fragment key={i}>{word}</React.Fragment>;
+                                                                                });
+                                                                            })()}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                            {program.feeStructure.map((fee, index) => (
+                                                                <td key={index} className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center text-gray-700 text-xs sm:text-sm lg:text-sm">
+                                                                    {fee.admissionFee > 0 ? `NPR ${fee.admissionFee.toLocaleString()}` : <span className="text-gray-400">-</span>}
+                                                                </td>
+                                                            ))}
+                                                        </tr>
+                                                        {program.discountInfo?.semesterFeeDiscount && (
+                                                            <tr className="border-b border-gray-200 bg-blue-50/50">
+                                                                <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 font-medium text-gray-900 text-xs sm:text-sm lg:text-sm">
+                                                                    <span>Discount<br />({program.discountInfo.semesterFeeDiscount}% on Semester Fee)</span>
+                                                                </td>
+                                                                {program.feeStructure.map((fee, index) => {
+                                                                    const discountPercent = program?.discountInfo?.semesterFeeDiscount || 0;
+
+                                                                    const discount = Math.round(
+                                                                        (fee.semester1Fee + fee.semester2Fee) * (discountPercent / 100)
+                                                                    );
+
+                                                                    return (
+                                                                        <td
+                                                                            key={index}
+                                                                            className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center text-green-700 text-xs sm:text-sm lg:text-sm font-semibold"
+                                                                        >
+                                                                            -NPR {discount.toLocaleString()}
+                                                                        </td>
+                                                                    );
+                                                                })}
+
+                                                            </tr>
+                                                        )}
+                                                        <tr className="border-b border-gray-200">
+                                                            <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 whitespace-nowrap font-medium text-gray-900 text-xs sm:text-sm lg:text-sm">Semester 1 Fee</td>
+                                                            {program.feeStructure.map((fee, index) => {
+                                                                const discountedFee = program.discountInfo?.semesterFeeDiscount
+                                                                    ? Math.round(fee.semester1Fee * (1 - program.discountInfo.semesterFeeDiscount / 100))
+                                                                    : fee.semester1Fee;
+                                                                return (
+                                                                    <td key={index} className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center text-gray-700 text-xs sm:text-sm lg:text-sm">
+                                                                        NPR {discountedFee.toLocaleString()}
+                                                                    </td>
+                                                                );
+                                                            })}
+                                                        </tr>
+                                                        <tr className="border-b border-gray-200">
+                                                            <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 whitespace-nowrap font-medium text-gray-900 text-xs sm:text-sm lg:text-sm">Semester 2 Fee</td>
+                                                            {program.feeStructure.map((fee, index) => {
+                                                                const discountedFee = program.discountInfo?.semesterFeeDiscount
+                                                                    ? Math.round(fee.semester2Fee * (1 - program.discountInfo.semesterFeeDiscount / 100))
+                                                                    : fee.semester2Fee;
+                                                                return (
+                                                                    <td key={index} className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center text-gray-700 text-xs sm:text-sm lg:text-sm">
+                                                                        NPR {discountedFee.toLocaleString()}
+                                                                    </td>
+                                                                );
+                                                            })}
+                                                        </tr>
+                                                        <tr className="border-b border-gray-200">
+                                                            <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 whitespace-nowrap font-medium text-gray-900 text-xs sm:text-sm lg:text-sm">Security Deposit</td>
+                                                            {program.feeStructure.map((fee, index) => (
+                                                                <td key={index} className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center text-gray-700 text-xs sm:text-sm lg:text-sm">
+                                                                    {fee.universityRegFee > 0 ? `NPR ${fee.universityRegFee.toLocaleString()}` : <span className="text-gray-400">-</span>}
+                                                                </td>
+                                                            ))}
+                                                        </tr>
+                                                        <tr className="bg-gray-50 border-t-2 border-gray-300">
+                                                            <td className="px-4 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-4 whitespace-nowrap font-bold text-gray-900 text-sm sm:text-base lg:text-base">Grand Total</td>
+                                                            {program.feeStructure.map((fee, index) => {
+                                                                let grandTotal;
+                                                                if (program.discountInfo?.semesterFeeDiscount) {
+                                                                    // For discounted programs, grand total is only discounted semester fees
+                                                                    const discountedSem1 = Math.round(fee.semester1Fee * (1 - program.discountInfo.semesterFeeDiscount / 100));
+                                                                    const discountedSem2 = Math.round(fee.semester2Fee * (1 - program.discountInfo.semesterFeeDiscount / 100));
+                                                                    grandTotal = discountedSem1 + discountedSem2;
+                                                                } else {
+                                                                    // For non-discounted programs, include everything
+                                                                    grandTotal = fee.total;
+                                                                }
+                                                                return (
+                                                                    <td key={index} className="px-3 sm:px-4 lg:px-4 py-3 sm:py-4 lg:py-4 whitespace-nowrap text-center font-bold text-gray-900 text-sm sm:text-base lg:text-base">
+                                                                        NPR {grandTotal.toLocaleString()}
+                                                                    </td>
+                                                                );
+                                                            })}
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        {/* Mobile scroll hint */}
+                                        <div className="sm:hidden px-4 py-2 text-center text-xs text-gray-500 bg-gray-50 border-t border-gray-200">
+                                            <span className="inline-flex items-center gap-1">
+                                                <span>←</span> Scroll horizontally to view all columns
+                                                <span>→</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Total Program Amount */}
+                                    <div className="mt-6 sm:mt-8 p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl sm:rounded-2xl border border-gray-200 shadow-lg">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                                            <span className="text-base sm:text-lg font-semibold text-gray-700">Total Program Amount:</span>
+                                            <span className="text-xl sm:text-2xl font-bold text-gray-900">NPR {totalFee.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Note Card */}
+                                    <div className="mt-6 sm:mt-8 p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl sm:rounded-2xl border border-blue-200 shadow-lg">
+                                        <div className="flex items-start gap-3">
+                                            <div className="p-2 rounded-lg bg-blue-500 flex-shrink-0">
+                                                <FiFileText className="h-5 w-5 text-white" />
+                                            </div>
+                                            <div>
+                                                <p className="text-blue-900 font-semibold mb-1">Important Note</p>
+                                                <p className="text-blue-800 text-base leading-relaxed">
+                                                    Admission Fee and Security Deposit apply only to the first year. Fees are subject to change. Please contact admissions for the most current details.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* Career Highlights & Opportunities Section  */}
+                            <motion.section
+                                ref={degreeSectionRef}
+                                id="degree-highlights"
+                                className="scroll-mt-28"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={isDegreeInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.7 }}
+                            >
+                                <div className="relative">
+                                    {/* Section Header */}
+                                    <div className="mb-6 sm:mb-8 lg:mb-10">
+                                        <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100 mb-4 sm:mb-6">
+                                            <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
+                                                <LuAward className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                            </div>
+                                            <span className="text-xs sm:text-sm font-semibold text-purple-700 uppercase tracking-wider">Career Prospects</span>
+                                        </div>
+                                        <h2 className={` ${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4`}>Your Future Awaits</h2>
+                                        <p className="text-base sm:text-lg text-gray-600 max-w-2xl">Unlock your potential with skills and opportunities that shape tomorrow</p>
+                                    </div>
+
+                                    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                                        {/* Key Skills Card */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -30 }}
+                                            animate={isDegreeInView ? { opacity: 1, x: 0 } : {}}
+                                            transition={{ duration: 0.3, delay: 0.2 }}
+                                            className="relative bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8"
+                                        >
+                                            <div className="flex items-center gap-3 lg:gap-4 mb-6">
+                                                <div className="p-2 rounded-lg bg-blue-100">
+                                                    <FiZap className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
+                                                </div>
+                                                <h3 className={` text-xl lg:text-2xl font-bold text-gray-900 ${graduateFont.className} `} >Key Skills You'll Gain</h3>
+                                            </div>
+                                            <ul className="space-y-3 lg:space-y-4">
+                                                {program.degreeHighlights.map((highlight, index) => (
+                                                    <motion.li
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={isDegreeInView ? { opacity: 1, x: 0 } : {}}
+                                                        transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+                                                        className="flex items-center gap-3 lg:gap-4"
+                                                    >
+                                                        <div className="flex-shrink-0">
+                                                            <LuCircleCheck className="h-5 w-5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-gray-700 text-base">{highlight}</span>
+                                                    </motion.li>
+                                                ))}
+                                            </ul>
+                                        </motion.div>
+
+                                        {/* Career Paths Card */}
+                                        <motion.div
+                                            initial={{ opacity: 0, x: 30 }}
+                                            animate={isDegreeInView ? { opacity: 1, x: 0 } : {}}
+                                            transition={{ duration: 0.3, delay: 0.2 }}
+                                            className="relative bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8"
+                                        >
+                                            <div className="flex items-center gap-3 lg:gap-4 mb-6">
+                                                <div className="p-2 rounded-lg bg-cyan-100">
+                                                    <LuBriefcase className="h-5 w-5 lg:h-6 lg:w-6 text-cyan-600" />
+                                                </div>
+                                                <h3 className={`${graduateFont.className} text-xl lg:text-2xl font-bold text-gray-900 `}>Potential Career Paths</h3>
+                                            </div>
+                                            <ul className="space-y-3 lg:space-y-4">
+                                                {program.careerOutcomes.map((career, index) => (
+                                                    <motion.li
+                                                        key={index}
+                                                        initial={{ opacity: 0, x: 20 }}
+                                                        animate={isDegreeInView ? { opacity: 1, x: 0 } : {}}
+                                                        transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+                                                        className="flex items-center gap-3 lg:gap-4"
+                                                    >
+                                                        <div className="flex-shrink-0">
+                                                            <LuCircleCheck className="h-5 w-5 text-cyan-600" />
+                                                        </div>
+                                                        <span className="text-gray-700 text-base">{career}</span>
+                                                    </motion.li>
+                                                ))}
+                                            </ul>
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* faculty section  */}
+                            {program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer" ? (
+                                <motion.section
+                                    ref={facultySectionRef}
+                                    id="faculty"
+                                    className="scroll-mt-28"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={isFacultyInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.7 }}
+                                >
+                                    <div className="relative">
+                                        {/* Section Header */}
+                                        <div className="mb-6 sm:mb-8 lg:mb-10">
+                                            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 mb-4 sm:mb-6">
+                                                <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500">
+                                                    <FaRegCircleUser className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                                </div>
+                                                <span className="text-xs sm:text-sm font-semibold text-amber-700 uppercase tracking-wider">Expert Faculty</span>
+                                            </div>
+                                            <h2 className={`${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4`}>
+                                                Learn from Industry Experts
+                                            </h2>
+                                            <p className="text-base sm:text-lg text-gray-600 max-w-2xl">
+                                                Our distinguished faculty bring years of research and industry experience to the classroom
+                                            </p>
+                                        </div>
+
+                                        {/* Faculty Content - Program Specific */}
+                                        <div className="mt-8">
+                                            {program.id === "btech-ai" && (
+                                                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                    <p className="text-gray-700 text-base mb-6 leading-relaxed">
+                                                        Our AI program is led by faculty with expertise in cutting-edge research areas including computer vision, generative AI, natural language processing, and machine learning. These experts bring both academic rigor and industry insights to help you master the latest AI technologies.
+                                                    </p>
+                                                    <div className="flex flex-wrap gap-3 mb-6">
+                                                        <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">Computer Vision</span>
+                                                        <span className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">Generative AI</span>
+                                                        <span className="px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">NLP & LLMs</span>
+                                                        <span className="px-3 py-1.5 bg-cyan-100 text-cyan-700 rounded-full text-sm font-medium">Deep Learning</span>
+                                                        <span className="px-3 py-1.5 bg-pink-100 text-pink-700 rounded-full text-sm font-medium">Reinforcement Learning</span>
+                                                    </div>
+                                                    <Link href="/faculty-and-staff?program=B. Tech in AI">
+                                                        <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white">
+                                                            View All Faculty
+                                                            <FiArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </Link>
+                                                </div>
+                                            )}
+                                            {program.id === "be-bme" && (
+                                                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                    <p className="text-gray-700 text-base mb-6 leading-relaxed">
+                                                        Our biomedical engineering faculty include professors with extensive expertise in medical technology, clinical engineering, and healthcare innovation. Many have active collaborations with hospitals and medical institutions, bringing real-world healthcare challenges into the classroom.
+                                                    </p>
+                                                    <div className="flex flex-wrap gap-3 mb-6">
+                                                        <span className="px-3 py-1.5 bg-rose-100 text-rose-700 rounded-full text-sm font-medium">Medical Device Design</span>
+                                                        <span className="px-3 py-1.5 bg-pink-100 text-pink-700 rounded-full text-sm font-medium">Biomedical Instrumentation</span>
+                                                        <span className="px-3 py-1.5 bg-fuchsia-100 text-fuchsia-700 rounded-full text-sm font-medium">Medical Imaging</span>
+                                                        <span className="px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-medium">Prosthetics & Orthotics</span>
+                                                        <span className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">Clinical Engineering</span>
+                                                    </div>
+                                                    {/* <Link to="/faculty-and-staff?program=BE in Biomedical Engineering">
+                                                        <Button className="bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white">
+                                                            View All Faculty
+                                                            <FiArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </Link> */}
+                                                </div>
+                                            )}
+                                            {program.id === "be-computer" && (
+                                                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                    <p className="text-gray-700 text-base mb-6 leading-relaxed">
+                                                        Our computer engineering faculty feature professionals with significant industry experience from leading tech companies. They bring expertise in emerging areas like IoT, quantum computing, embedded systems, and network security, ensuring you learn the most current technologies.
+                                                    </p>
+                                                    <div className="flex flex-wrap gap-3 mb-6">
+                                                        <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">IoT & Edge Computing</span>
+                                                        <span className="px-3 py-1.5 bg-cyan-100 text-cyan-700 rounded-full text-sm font-medium">Quantum Computing</span>
+                                                        <span className="px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">Embedded Systems</span>
+                                                        <span className="px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">Network Security</span>
+                                                        <span className="px-3 py-1.5 bg-violet-100 text-violet-700 rounded-full text-sm font-medium">System Architecture</span>
+                                                    </div>
+                                                    <Link href="/faculty-and-staff?program=BE in Computer Engineering">
+                                                        <Button className="bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 text-white">
+                                                            View All Faculty
+                                                            <FiArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </Link>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.section>
+                            ) : null}
+
+                            {/* lab and resources section  */}
+                            {program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer" ? (
+                                <motion.section
+                                    ref={labsSectionRef}
+                                    id="labs-resources"
+                                    className="scroll-mt-28"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={isLabsInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.7 }}
+                                >
+                                    <div className="relative">
+                                        {/* Section Header */}
+                                        <div className="mb-6 sm:mb-8 lg:mb-10">
+                                            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 mb-4 sm:mb-6">
+                                                <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
+                                                    <LuFlaskConical className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                                </div>
+                                                <span className="text-xs sm:text-sm font-semibold text-emerald-700 uppercase tracking-wider">Labs & Resources</span>
+                                            </div>
+                                            <h2 className={`${graduateFont.className}  text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4`}>
+                                                State-of-the-Art Facilities
+                                            </h2>
+                                            <p className="text-base sm:text-lg text-gray-600 max-w-2xl">
+                                                Access cutting-edge laboratories and industry-standard tools to bring your learning to life
+                                            </p>
+                                        </div>
+
+                                        {/* Labs Content - Program Specific */}
+                                        <div className="mt-8">
+                                            {program.id === "btech-ai" && (
+                                                <div className="grid md:grid-cols-2 gap-6">
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-purple-100">
+                                                                <LuServer className="h-6 w-6 text-purple-600" />
+                                                            </div>
+                                                            <h3 className="text-xl font-bold text-gray-900">AI Research Labs</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Our dedicated AI labs feature GPU clusters for training deep learning models and high-performance computing infrastructure for large-scale AI research.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Cloud GPU access for model training</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>High-performance computing clusters</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-indigo-100">
+                                                                <IoCodeSharp className="h-6 w-6 text-indigo-600" />
+                                                            </div>
+                                                            <h3 className="text-xl font-bold text-gray-900">Software & Tools</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Access industry-standard AI development frameworks and tools used by leading tech companies.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>TensorFlow & PyTorch development environments</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Jupyter notebooks and MLflow for experiment tracking</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Cloud platforms: AWS, GCP, Azure</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {program.id === "be-bme" && (
+                                                <div className="grid md:grid-cols-2 gap-6">
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-rose-100">
+                                                                < AiOutlineHeart className="h-6 w-6 text-rose-600" />
+                                                            </div>
+                                                            <h3 className={`${graduateFont.className} text-xl font-bold text-gray-900 `}>Prosthetics & Orthotics Lab</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Hands-on experience designing and developing assistive devices and prosthetics with modern fabrication tools.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>3D printing and rapid prototyping equipment</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Biomechanical testing systems</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-pink-100">
+                                                                <LuMicroscope className="h-6 w-6 text-pink-600" />
+                                                            </div>
+                                                            <h3 className={`${graduateFont.className} text-xl font-bold text-gray-900 `}>Medical Imaging & Bioinstrumentation</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Advanced labs for medical imaging analysis and biomedical instrumentation development.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Medical imaging processing workstations</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Bioinstrumentation design and testing equipment</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Signal processing and analysis tools</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {program.id === "be-computer" && (
+                                                <div className="grid md:grid-cols-2 gap-6">
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-blue-100">
+                                                                <LuLaptop className="h-6 w-6 text-blue-600" />
+                                                            </div>
+                                                            <h3 className="text-xl font-bold text-gray-900">Computer Labs</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Modern computer labs equipped with the latest hardware and software for system design, embedded development, and network programming.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>High-performance workstations for system design</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>FPGA development boards and tools</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 lg:p-8">
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <div className="p-2 rounded-lg bg-cyan-100">
+                                                                < IoSettingsOutline className="h-6 w-6 text-cyan-600" />
+                                                            </div>
+                                                            <h3 className="text-xl font-bold text-gray-900">Industry-Standard Software</h3>
+                                                        </div>
+                                                        <p className="text-gray-700 mb-4 leading-relaxed">
+                                                            Access to professional software tools used in industry for hardware design, embedded systems, and network security.
+                                                        </p>
+                                                        <ul className="space-y-2">
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>VLSI design and simulation tools</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Embedded system development environments</span>
+                                                            </li>
+                                                            <li className="flex items-center gap-2 text-gray-600">
+                                                                <LuCircleCheck className="h-4 w-4 text-emerald-600" />
+                                                                <span>Network security and penetration testing tools</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </motion.section>
+                            ) : null}
+
+                            {/* Internships and placements  */}
+                            {program.id === "btech-ai" || program.id === "be-bme" || program.id === "be-computer" ? (
+                                <motion.section
+                                    ref={internshipsSectionRef}
+                                    id="internships"
+                                    className="scroll-mt-28"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={isInternshipsInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.7 }}
+                                >
+                                    <div className="relative">
+                                        {/* Section Header */}
+                                        <div className="mb-6 sm:mb-8 lg:mb-10">
+                                            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-100 mb-4 sm:mb-6">
+                                                <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-violet-500 to-purple-500">
+                                                    <LuBriefcase className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                                </div>
+                                                <span className="text-xs sm:text-sm font-semibold text-violet-700 uppercase tracking-wider">Industry Connections</span>
+                                            </div>
+                                            <h2 className={`${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4`} >
+                                                Internship Placements
+                                            </h2>
+                                            <p className="text-base sm:text-lg text-gray-600 max-w-2xl">
+                                                Gain real-world experience through internships with our industry partners
+                                            </p>
+                                        </div>
+
+                                        {/* Internships Content */}
+                                        <div className="mt-8">
+                                            <div className="bg-gradient-to-br from-white to-violet-50/30 rounded-2xl border border-violet-200 shadow-lg p-6 lg:p-8">
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <div className="p-2 rounded-lg bg-violet-100">
+                                                        <LuBuilding2 className="h-6 w-6 text-violet-600" />
+                                                    </div>
+                                                    <h3 className={` ${graduateFont.className} text-xl font-bold text-gray-900 `}>Industry Partnerships</h3>
+                                                </div>
+                                                <p className="text-gray-700 mb-6 leading-relaxed">
+                                                    Our strong relationships with leading companies in the industry provide students with valuable internship opportunities. These placements allow you to apply classroom knowledge in real-world settings, build professional networks, and gain hands-on experience that enhances your career prospects.
+                                                </p>
+                                                <div className="grid sm:grid-cols-2 gap-4">
+                                                    <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+                                                        <LuCircleCheck className="h-5 w-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                                                        <div>
+                                                            <h4 className="font-semibold text-gray-900 mb-1">Hands-On Experience</h4>
+                                                            <p className="text-sm text-gray-600">Work on real projects and contribute to industry solutions</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+                                                        <LuCircleCheck className="h-5 w-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                                                        <div>
+                                                            <h4 className="font-semibold text-gray-900 mb-1">Professional Network</h4>
+                                                            <p className="text-sm text-gray-600">Build connections with industry professionals and mentors</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+                                                        <LuCircleCheck className="h-5 w-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                                                        <div>
+                                                            <h4 className="font-semibold text-gray-900 mb-1">Career Preparation</h4>
+                                                            <p className="text-sm text-gray-600">Develop skills and experience that employers value</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3 p-4 bg-white rounded-lg border border-gray-200">
+                                                        <LuCircleCheck className="h-5 w-5 text-violet-600 flex-shrink-0 mt-0.5" />
+                                                        <div>
+                                                            <h4 className="font-semibold text-gray-900 mb-1">Industry Insights</h4>
+                                                            <p className="text-sm text-gray-600">Understand current industry practices and trends</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.section>
+                            ) : null}
+
+                            {/* Modules section  */}
+                            <motion.section
+                                ref={modulesSectionRef}
+                                id="modules"
+                                className="scroll-mt-28"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={isModulesInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.7 }}
+                            >
+                                <div className="relative">
+                                    {/* Section Header */}
+                                    <div className="mb-6 sm:mb-8 lg:mb-10">
+                                        <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border border-indigo-100 mb-4 sm:mb-6">
+                                            <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+                                                <LuBookMarked className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                            </div>
+                                            <span className="text-xs sm:text-sm font-semibold text-indigo-700 uppercase tracking-wider">Curriculum</span>
+                                        </div>
+                                        <h2 className={` ${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4`}>
+                                            Course Modules
+                                        </h2>
+                                        {program.curriculumDocuments && (program.curriculumDocuments.structure || program.curriculumDocuments.syllabus) && (
+                                            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                                                {program.curriculumDocuments.structure && (
+                                                    <Link
+                                                        href={program.curriculumDocuments.structure.path}
+                                                        download
+                                                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium rounded-lg border border-indigo-200 transition-all duration-200 hover:shadow-md hover:scale-105 text-sm sm:text-base"
+                                                    >
+
+                                                        {program.curriculumDocuments.structure.label}
+                                                    </Link>
+                                                )}
+                                                {program.curriculumDocuments.syllabus && (
+                                                    <Link
+                                                        href={program.curriculumDocuments.syllabus.path}
+                                                        download
+                                                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium rounded-lg border border-indigo-200 transition-all duration-200 hover:shadow-md hover:scale-105 text-sm sm:text-base"
+                                                    >
+                                                        <MdOutlineFileDownload className=" text-xl" />
+                                                        {program.curriculumDocuments.syllabus.label}
+                                                    </Link>
+                                                )}
+                                            </div>
+                                        )}
+                                        <p className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
+                                            Comprehensive curriculum designed for real-world success
+                                        </p>
+                                    </div>
+
+                                    {/* Curriculum Container with Enhanced Design */}
+                                    <div className="mt-8 relative">
+                                        <div className="relative bg-white rounded-2xl sm:rounded-3xl border border-gray-200 shadow-lg p-3 sm:p-4 lg:p-6 xl:p-8 overflow-hidden">
+
+                                            <Tabs defaultValue={program.modules[0]?.year || "YEAR ONE"} className="w-full relative z-10">
+                                                {/* Enhanced Year Tabs */}
+                                                <TabsList className="flex w-full bg-gray-50 rounded-xl sm:rounded-2xl p-1 mb-4 sm:mb-6 h-auto border border-gray-200 gap-1 sm:gap-1.5 overflow-x-auto">
+                                                    {program.modules.map((year, tabIndex) => (
+                                                        <TabsTrigger
+                                                            key={year.year}
+                                                            value={year.year}
+                                                            className="flex-1 min-w-[80px] sm:min-w-[100px] data-[state=active]:bg-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-sm rounded-lg sm:rounded-xl py-1.5 sm:py-2 lg:py-2.5 px-2 sm:px-3 lg:px-5 transition-all duration-300 text-gray-700 font-bold text-[10px] sm:text-xs lg:text-sm hover:text-gray-900 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                                                        >
+                                                            <span className="relative z-10">{year.year}</span>
+                                                        </TabsTrigger>
+                                                    ))}
+                                                </TabsList>
+
+                                                {/* Year Content */}
+                                                {program.modules.map((year, yearIndex) => (
+                                                    <TabsContent
+                                                        key={yearIndex}
+                                                        value={year.year}
+                                                        className="mt-0 animate-in fade-in-50 duration-300"
+                                                    >
+                                                        <div className="space-y-4 sm:space-y-5 lg:space-y-6">
+                                                            {year.semesters.map((semester, semIndex) => {
+                                                                // Calculate total credits for this semester
+                                                                const totalCredits = semester.modules.reduce((sum, module) => sum + module.credits, 0);
+
+                                                                return (
+                                                                    <motion.div
+                                                                        key={semIndex}
+                                                                        className="relative"
+                                                                        initial={{ opacity: 0, y: 20 }}
+                                                                        animate={isModulesInView ? { opacity: 1, y: 0 } : {}}
+                                                                        transition={{ duration: 0.3, delay: semIndex * 0.1 }}
+                                                                    >
+                                                                        {/* Semester Header with Enhanced Design */}
+                                                                        <div className="relative mb-2 sm:mb-3">
+                                                                            <div className="flex items-center justify-between gap-2 sm:gap-3 mb-1.5">
+                                                                                <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 flex-1 min-w-0">
+                                                                                    <div className="relative flex-shrink-0">
+                                                                                        <div className="relative h-6 sm:h-8 lg:h-10 w-1 sm:w-1.5 bg-indigo-600 rounded-full"></div>
+                                                                                    </div>
+                                                                                    <div className="flex-1 min-w-0">
+                                                                                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 lg:gap-2.5 mb-1">
+                                                                                            <h3 className={`${graduateFont.className} text-sm sm:text-base lg:text-lg font-bold text-gray-900 `}>
+                                                                                                {semester.semester}
+                                                                                            </h3>
+                                                                                            <span className="text-[9px] sm:text-[10px] lg:text-xs font-bold text-indigo-700 bg-indigo-50 px-1.5 sm:px-2 lg:px-2.5 py-0.5 rounded-full border border-indigo-200 whitespace-nowrap w-fit">
+                                                                                                {totalCredits} Total Credits
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <div className="h-0.5 w-10 sm:w-12 lg:w-16 bg-indigo-600 rounded-full"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        {/* Course Cards Grid */}
+                                                                        <div className="grid gap-2 sm:gap-2.5 lg:gap-3">
+                                                                            <Accordion type="single" collapsible className="w-full space-y-2 sm:space-y-2.5 lg:space-y-3">
+                                                                                {semester.modules.map((module, modIndex) => {
+                                                                                    const CourseIcon = getCourseIcon(module.name);
+                                                                                    // Extract short title for elective courses
+                                                                                    let displayName = module.name;
+                                                                                    let fullDescription = module.description;
+
+                                                                                    // Check if it's an elective course (handles formats like "Elective I:", "Elective-I", "Elective II:", etc.)
+                                                                                    const electiveMatch = module.name.match(/^(Elective\s*[-]?\s*[IVX]+(?:\s*[-:])?)\s*(.+)$/i);
+                                                                                    if (electiveMatch) {
+                                                                                        displayName = electiveMatch[1].replace(/[-:]\s*$/, '').trim(); // Just "Elective I" or "Elective II"
+                                                                                        const courseDetails = electiveMatch[2].trim();
+                                                                                        // Combine course details with existing description
+                                                                                        fullDescription = courseDetails + (module.description ? `\n\n${module.description}` : '');
+                                                                                    }
+
+                                                                                    return (
+                                                                                        <AccordionItem
+                                                                                            key={modIndex}
+                                                                                            value={`module-${yearIndex}-${semIndex}-${modIndex}`}
+                                                                                            className="group border-0"
+                                                                                        >
+                                                                                            <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-indigo-300">
+                                                                                                <AccordionTrigger className="flex w-full items-center justify-between p-2.5 sm:p-3 lg:p-4 text-left font-semibold text-gray-800 hover:no-underline group/trigger relative z-10">
+                                                                                                    <div className="flex items-center gap-2 sm:gap-2.5 lg:gap-3 flex-1 min-w-0">
+                                                                                                        {/* Course Icon with smaller size */}
+                                                                                                        <div className="flex-shrink-0 relative">
+                                                                                                            <div className="relative w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm group-hover/trigger:bg-indigo-700 transition-all duration-300">
+                                                                                                                <CourseIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        {/* Course Name */}
+                                                                                                        <span className={`text-xs sm:text-sm lg:text-base font-bold text-gray-900 pr-2 sm:pr-3 lg:pr-4 group-hover/trigger:text-indigo-700 transition-colors duration-300 break-words ${graduateFont.className}`}>
+                                                                                                            {displayName}
+                                                                                                        </span>
+                                                                                                    </div>
+
+                                                                                                    {/* Credits Badge with enhanced design */}
+                                                                                                    <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 flex-shrink-0">
+                                                                                                        <span className={`text-[9px] sm:text-[10px] lg:text-xs font-bold text-indigo-700 bg-indigo-50 px-1.5 sm:px-2 lg:px-3 py-0.5 sm:py-1 lg:py-1.5 rounded-full border border-indigo-200 whitespace-nowrap  ${graduateFont.className}`}>
+                                                                                                            {module.credits} Credits
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </AccordionTrigger>
+
+                                                                                                <AccordionContent className="px-2.5 sm:px-3 lg:px-4 pb-2.5 sm:pb-3 lg:pb-4 pt-0 relative z-10">
+                                                                                                    <div className="pl-[36px] sm:pl-[42px] lg:pl-[50px] border-t border-indigo-200 pt-2 sm:pt-2.5 lg:pt-3">
+                                                                                                        <p className="text-xs sm:text-sm lg:text-base text-gray-700 leading-relaxed font-medium whitespace-pre-line">
+                                                                                                            {fullDescription}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </AccordionContent>
+                                                                                            </div>
+                                                                                        </AccordionItem>
+                                                                                    );
+                                                                                })}
+                                                                            </Accordion>
+                                                                        </div>
+                                                                    </motion.div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </TabsContent>
+                                                ))}
+                                            </Tabs>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* Why niet  and FAQ */}
+                            <div className="space-y-6 lg:space-y-8 scroll-t-28" id='why-niet'>
+                                {/* why university   */}
+                                {program.whyUniversity && (
+                                    <motion.section
+                                        ref={whyUniversitySectionRef}
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={isWhyUniversityInView ? { opacity: 1, y: 0 } : {}}
+                                        transition={{ duration: 0.7 }}
+                                    >
+                                        <div className="relative h-full">
+                                            <div className="mb-6 sm:mb-8 lg:mb-10">
+                                                <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 mb-4 sm:mb-6">
+                                                    <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500">
+                                                        < LuSparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                                    </div>
+                                                    <span className="text-xs sm:text-sm font-semibold text-amber-700 uppercase tracking-wider">Why Choose Us</span>
+                                                </div>
+                                                <h2 className={`text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 tracking-tight mb-3 sm:mb-4 ${graduateFont.className}`}>Why Choose Us?</h2>
+                                                <p className="text-base sm:text-lg text-gray-600">Experience excellence in education</p>
+                                            </div>
+                                            <div className="relative bg-gradient-to-br from-white to-amber-50/30 p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                                                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-amber-400/10 to-orange-400/10 rounded-full blur-3xl"></div>
+                                                <div className="relative">
+                                                    <div className="flex items-start gap-3 lg:gap-4">
+                                                        <div className="p-2 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex-shrink-0">
+                                                            <GoStar className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="text-gray-700 leading-relaxed text-base">{program.whyUniversity}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.section>
+                                )}
+
+                                {/* FAQ  */}
+                                <motion.section
+                                    ref={faqSectionRef}
+                                    id="faq"
+                                    className="faq-section scroll-mt-28"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={isFaqInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.7 }}
+                                >
+                                    <div className="relative h-full">
+                                        {/* Section Header */}
+                                        <div className="mb-6 sm:mb-8 lg:mb-10">
+                                            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-rose-50 via-pink-50 to-fuchsia-50 border border-rose-100 mb-4 sm:mb-6">
+                                                <div className="p-1.5 sm:p-2 rounded-lg bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
+                                                    <FaRegCircleQuestion className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                                                </div>
+                                                <span className="text-xs sm:text-sm font-semibold text-rose-700 uppercase tracking-wider">Frequently Asked</span>
+                                            </div>
+                                            <h2 className={`${robotoFont.className}vtext-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-normal text-gray-900 tracking-tight mb-3 sm:mb-4`}>
+                                                FAQs
+                                            </h2>
+                                            <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                                                Get answers to common questions
+                                            </p>
+                                        </div>
+
+                                        {/* FAQ Container */}
+                                        <div className="relative mt-6 sm:mt-8">
+                                            <div className="space-y-4 sm:space-y-5 lg:space-y-6">
+                                                <Accordion type="single" collapsible className="w-full">
+                                                    <AccordionItem value="faq-1" className="border-0">
+                                                        <div className="bg-white rounded-lg">
+                                                            <AccordionTrigger className="flex w-full items-center justify-between gap-2 sm:gap-3 lg:gap-5 p-3 sm:p-4 lg:p-6 text-left hover:no-underline">
+                                                                <span className="text-sm sm:text-base font-semibold text-gray-900 flex-1 min-w-0 pr-2 sm:pr-3 lg:pr-5">
+                                                                    What are the admission requirements?
+                                                                </span>
+                                                                <div className="flex-shrink-0">
+                                                                    <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100">
+                                                                        <FaRegCircleQuestion className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                                                                    </div>
+                                                                </div>
+                                                            </AccordionTrigger>
+                                                            <AccordionContent className="px-3 sm:px-4 lg:px-6 pb-3 sm:pb-4 lg:pb-6 pt-0">
+                                                                <div className="pt-3 sm:pt-4 lg:pt-6">
+                                                                    <ul className="space-y-2 text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                                        {program.admissionEligibility.split('\n').map((item, index) => (
+                                                                            item.trim() && (
+                                                                                <li key={index} className="flex items-start gap-2">
+                                                                                    <span className="text-[#0d4e92] mt-1">•</span>
+                                                                                    <span>{item.replace(/^•\s*/, '')}</span>
+                                                                                </li>
+                                                                            )
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                            </AccordionContent>
+                                                        </div>
+                                                    </AccordionItem>
+
+                                                    {program.entranceExamRequired !== undefined && (
+                                                        <AccordionItem value="faq-entrance" className="border-0">
+                                                            <div className="bg-white rounded-lg">
+                                                                <AccordionTrigger className="flex w-full items-center justify-between gap-2 sm:gap-3 lg:gap-5 p-3 sm:p-4 lg:p-6 text-left hover:no-underline">
+                                                                    <span className="text-sm sm:text-base font-semibold text-gray-900 flex-1 min-w-0 pr-2 sm:pr-3 lg:pr-5">
+                                                                        Is an entrance exam required?
+                                                                    </span>
+                                                                    <div className="flex-shrink-0">
+                                                                        <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100">
+                                                                            <FiFileText className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                                                                        </div>
+                                                                    </div>
+                                                                </AccordionTrigger>
+                                                                <AccordionContent className="px-3 sm:px-4 lg:px-6 pb-3 sm:pb-4 lg:pb-6 pt-0">
+                                                                    <div className="pt-3 sm:pt-4 lg:pt-6">
+                                                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                                            {program.entranceExamNote || (program.entranceExamRequired ? "Yes, an entrance exam is required for admission to this program." : "No, there is no entrance exam required. Direct admission is available for this program.")}
+                                                                        </p>
+                                                                    </div>
+                                                                </AccordionContent>
+                                                            </div>
+                                                        </AccordionItem>
+                                                    )}
+
+                                                    <AccordionItem value="faq-2" className="border-0">
+                                                        <div className="bg-white rounded-lg">
+                                                            <AccordionTrigger className="flex w-full items-center justify-between gap-2 sm:gap-3 lg:gap-5 p-3 sm:p-4 lg:p-6 text-left hover:no-underline">
+                                                                <span className="text-sm sm:text-base font-semibold text-gray-900 flex-1 min-w-0 pr-2 sm:pr-3 lg:pr-5">
+                                                                    What are the program fees?
+                                                                </span>
+                                                                <div className="flex-shrink-0">
+                                                                    <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100">
+                                                                        <LuDollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                                                                    </div>
+                                                                </div>
+                                                            </AccordionTrigger>
+                                                            <AccordionContent className="px-3 sm:px-4 lg:px-6 pb-3 sm:pb-4 lg:pb-6 pt-0">
+                                                                <div className="pt-3 sm:pt-4 lg:pt-6">
+                                                                    <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                                        The total program fee is <strong className="font-bold text-gray-900">NPR {totalFee.toLocaleString()}</strong>. This includes all fees across all years.
+                                                                        Please refer to the detailed fee structure above for a year-by-year breakdown.
+                                                                    </p>
+                                                                </div>
+                                                            </AccordionContent>
+                                                        </div>
+                                                    </AccordionItem>
+
+                                                    <AccordionItem value="faq-3" className="border-0">
+                                                        <div className="bg-white rounded-lg">
+                                                            <AccordionTrigger className="flex w-full items-center justify-between gap-2 sm:gap-3 lg:gap-5 p-3 sm:p-4 lg:p-6 text-left hover:no-underline">
+                                                                <span className="text-sm sm:text-base font-semibold text-gray-900 flex-1 min-w-0 pr-2 sm:pr-3 lg:pr-5">
+                                                                    What are the career prospects after graduation?
+                                                                </span>
+                                                                <div className="flex-shrink-0">
+                                                                    <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100">
+                                                                        <LuBriefcase className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                                                                    </div>
+                                                                </div>
+                                                            </AccordionTrigger>
+                                                            <AccordionContent className="px-3 sm:px-4 lg:px-6 pb-3 sm:pb-4 lg:pb-6 pt-0">
+                                                                <div className="pt-3 sm:pt-4 lg:pt-6">
+                                                                    <p className="mb-3 sm:mb-4 font-semibold text-gray-900 text-base sm:text-lg">Graduates can pursue careers in:</p>
+                                                                    <ul className="space-y-2 sm:space-y-3 lg:space-y-4">
+                                                                        {program.careerOutcomes.map((career, index) => (
+                                                                            <li key={index} className="flex items-start gap-2 sm:gap-3 lg:gap-4">
+                                                                                <div className="flex-shrink-0 mt-1.5">
+                                                                                    <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                                                                                </div>
+                                                                                <span className="text-sm sm:text-base text-gray-700">{career}</span>
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </div>
+                                                            </AccordionContent>
+                                                        </div>
+                                                    </AccordionItem>
+
+                                                    <AccordionItem value="faq-4" className="border-0">
+                                                        <div className="bg-white rounded-lg">
+                                                            <AccordionTrigger className="flex w-full items-center justify-between gap-2 sm:gap-3 lg:gap-5 p-3 sm:p-4 lg:p-6 text-left hover:no-underline">
+                                                                <span className="text-sm sm:text-base font-semibold text-gray-900 flex-1 min-w-0 pr-2 sm:pr-3 lg:pr-5">
+                                                                    Are scholarships available?
+                                                                </span>
+                                                                <div className="flex-shrink-0">
+                                                                    <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100">
+                                                                        <LuAward className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+                                                                    </div>
+                                                                </div>
+                                                            </AccordionTrigger>
+                                                            <AccordionContent className="px-3 sm:px-4 lg:px-6 pb-3 sm:pb-4 lg:pb-6 pt-0">
+                                                                <div className="pt-3 sm:pt-4 lg:pt-6">
+                                                                    {program.scholarshipInfo ? (
+                                                                        <div className="space-y-2">
+                                                                            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                                                {program.scholarshipInfo.description}
+                                                                            </p>
+                                                                            {program.scholarshipInfo.note && (
+                                                                                <p className="text-sm text-gray-600 italic">
+                                                                                    {program.scholarshipInfo.note}
+                                                                                </p>
+                                                                            )}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                                                            Yes, we offer various scholarships including merit-based scholarships and need-based financial aid.
+                                                                            Please contact our admissions office for more information about available scholarships and eligibility criteria.
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                            </AccordionContent>
+                                                        </div>
+                                                    </AccordionItem>
+                                                </Accordion>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.section>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            {/* Related Courses Section */}
+            {relatedPrograms.length > 0 && (
+                <section ref={relatedProgramsRef} className="py-8 sm:py-10 lg:py-12 xl:py-16 bg-gradient-to-b from-white to-gray-50">
+                    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="text-center mb-6 sm:mb-8"
+                        >
+                            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-50 border border-blue-100 mb-3 sm:mb-4">
+                                <LuSparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#0d4e92]" />
+                                <span className="text-[#0d4e92] text-xs sm:text-sm">Related Programs</span>
+                            </div>
+                            <h2 className={`${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-2 sm:mb-3`}>
+                                Explore Other Programs
+                            </h2>
+                        </motion.div>
+
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                            {relatedPrograms.map((relatedProgram, index) => {
+                                const RelatedIcon = relatedProgram.icon;
+                                return (
+                                    <motion.div
+                                        key={relatedProgram.slug}
+                                        initial={{ opacity: 0, y: 50 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                                        className="group"
+                                    >
+                                        <Link href={`/academics/${relatedProgram.slug}`}>
+                                            <div className="relative h-full bg-white rounded-[2rem] overflow-hidden border border-gray-200 hover:border-gray-300 transition-all hover:shadow-2xl group/card">
+                                                <div className="relative h-64 overflow-hidden">
+                                                    <Image
+                                                        src={relatedProgram.image}
+                                                        alt={relatedProgram.title}
+                                                        fill
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+
+                                                    />
+                                                    <div className={`absolute inset-0 bg-gradient-to-br ${relatedProgram.gradient} opacity-40 group-hover:opacity-30 transition-opacity`}></div>
+
+                                                    {/* Floating Icon */}
+                                                    <div className="absolute top-6 right-6">
+                                                        <div className="w-14 text-3xl h-14 rounded-2xl bg-white/90 backdrop-blur-md shadow-xl flex items-center justify-center group-hover:scale-105 transition-transform">
+                                                            {relatedProgram.icon}
+
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Stats Badge */}
+                                                    <div className="absolute bottom-6 left-6">
+                                                        <div className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-md text-sm text-gray-900">
+                                                            {relatedProgram.duration} • {relatedProgram.degree}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Content */}
+                                                <div className="p-4 sm:p-6 lg:p-8">
+                                                    <h3 className={`${graduateFont.className} text-xl sm:text-2xl text-gray-900 mb-2 sm:mb-3`}>{relatedProgram.title}</h3>
+                                                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed line-clamp-2">{relatedProgram.overview}</p>
+
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="text-[#0d4e92] hover:text-blue-700 hover:bg-blue-50 p-0 group/btn h-auto"
+                                                    >
+                                                        <span className="text-sm sm:text-base">Explore Program</span>
+                                                        <FiArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover/btn:translate-x-1 transition-transform" />
+                                                    </Button>
+                                                </div>
+
+                                                {/* Gradient Border Effect */}
+                                                <div className={`absolute inset-0 rounded-[2rem] bg-gradient-to-br ${relatedProgram.gradient} opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none`}></div>
+                                            </div>
+                                        </Link>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            )}
+            {/* CTA Section */}
+            <section ref={ctaSectionRef} className="py-12 sm:py-16 lg:py-20 xl:py-32 bg-gradient-to-br from-blue-800 via-blue-900 to-slate-900 relative overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute top-0 right-0 w-[300px] sm:w-[450px] lg:w-[600px] h-[300px] sm:h-[450px] lg:h-[600px] bg-cyan-500/15 rounded-full blur-[150px]"></div>
+                    <div className="absolute bottom-0 left-0 w-[250px] sm:w-[375px] lg:w-[500px] h-[250px] sm:h-[375px] lg:h-[500px] bg-purple-500/15 rounded-full blur-[120px]"></div>
+                </div>
+
+                <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <h2 className={` ${graduateFont.className} text-2xl sm:text-3xl lg:text-4xl xl:text-6xl text-white mb-4 sm:mb-6 tracking-tight`}>
+                            Ready to Start Your Journey?
+                        </h2>
+                        <p className="text-base sm:text-lg lg:text-xl text-blue-100/90 mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto px-4">
+                            Apply now for admissions 2026. Join us and shape your future in technology and innovation.
+                        </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                            <Link
+                                href="https://entrance.puexam.edu.np/studentlogin"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center w-full sm:w-auto"
+                            >
+                                <Button
+                                    size="lg"
+                                    className="bg-white text-[#0d4e92] hover:bg-blue-50 text-base sm:text-lg px-6 sm:px-8 h-11 sm:h-12 w-full sm:w-auto"
+                                >
+                                    Apply Now
+                                    <FiArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                            </Link>
+                            <Link href="tel:+9779705320350">
+                                <Button
+
+                                    className="border-2   border-white bg-white/5 text-white hover:bg-white/20 text-base sm:text-lg px-6 sm:px-8 h-11 sm:h-12 w-full sm:w-auto"
+                                >
+                                    Contact Admissions
+                                </Button>
+                            </Link>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+        </>
+    );
+};
+
+export default PageClient;

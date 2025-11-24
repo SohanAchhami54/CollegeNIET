@@ -7,7 +7,7 @@ import { FiBookOpen } from "react-icons/fi";
 import { IoPeopleOutline } from "react-icons/io5";
 import { LuFlaskConical } from "react-icons/lu";
 import { PiSuitcase } from "react-icons/pi";
-<LuFlaskConical />
+{/* <LuFlaskConical /> */}
 const Graduate = () => {
     const ref=useRef(null);
     const isInView=useInView(ref,{once:true,margin:'-100px'});
