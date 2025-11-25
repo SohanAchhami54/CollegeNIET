@@ -191,7 +191,7 @@ const Page = async ({ params }) => {
             Program Not Found
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            The program you&apos;re looking for doesn't exist or has been removed.
+            The program you&lsquo;re looking for doesn't exist or has been removed.
           </p>
           <Link
             href="/academics"
