@@ -1,40 +1,53 @@
 "use client";
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import CorporateFareOutlinedIcon from "@mui/icons-material/CorporateFareOutlined";
-import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
-import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
-import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import {
+  Award,
+  CheckCircle,
+  Building,
+  Globe,
+  Shield,
+  Star,
+} from "lucide-react";
+import { graduateFont } from "@/font";
 
-const RecognitionSection = () => {
-  const ref = useRef();
-  const isInternaltimeView = useInView(ref, { once: true, margin: "-100px" });
+export default function RecognitionSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const freq = [
+  const recognitions = [
     {
-      icon: CorporateFareOutlinedIcon,
-      name: "Purvanchal University",
+      icon: Building,
+      name: "Purbanchal University",
       description: "Affiliated",
       gradient: "from-blue-500 to-cyan-400",
     },
     {
-      icon: EmojiEventsOutlinedIcon,
-      name: "ISO 9001:2015",
-      description: "Certified",
-      gradient: "from-purple-400 to-pink-400",
+      icon: Shield,
+      name: "UGC-QAA Certified",
+      description: "First in Kathmandu Valley",
+      gradient: "from-green-500 to-emerald-400",
     },
     {
-      icon: ShieldOutlinedIcon,
-      name: "Government Approved",
-      description: "Ministry of Education",
-      gradient: "from-green-500 to-emerald-300",
+      icon: Award,
+      name: "Best Private College",
+      description: "Ministry of Education Award",
+      gradient: "from-purple-500 to-pink-400",
     },
     {
-      icon: StarBorderRoundedIcon,
-      name: "International Standards",
-      description: "Accredited Programs",
+      icon: Star,
+      name: "International Conferences",
+      description: "ICIDN, Ka SAM, MMDR",
       gradient: "from-orange-500 to-amber-400",
     },
+  ];
+
+  const partners = [
+    "Wiley",
+    "Elsevier",
+    "SAGE",
+    "BIOMED-NEPAL Journal",
+    "International Conferences",
   ];
 
   return (
@@ -42,81 +55,91 @@ const RecognitionSection = () => {
       ref={ref}
       className="py-20 lg:py-32 bg-gradient-to-b from-white to-gray-50"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInternaltimeView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-16 lg:mb-20"
-      >
-        <h1 className="text-4xl md:text-6xl font-bold py-1">
-          Accredited
-          <br />
-          <span className="bg-gradient-to-r from-cyan-900 to-blue-400 bg-clip-text text-transparent">
-            Excellence
-          </span>
-        </h1>
-        <p className="p-2 m-2 text-lg md:text-xl text-gray-500">
-          Recognized by leading national and international educational bodies.
-        </p>
-      </motion.div>
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16 lg:mb-20"
+        >
+          <h2
+            className={`${graduateFont.className} text-4xl md:text-6xl font-bold py-1`}
+          >
+            Accredited
+            <br />
+            <span className="bg-gradient-to-r from-[#0d4e92] to-cyan-500 bg-clip-text text-transparent">
+              Excellence
+            </span>
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+            First UGC-QAA certified engineering college in Kathmandu Valley.
+            Awarded Best Private College by Ministry of Education. Hosting
+            international conferences since 2008.
+          </p>
+        </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6 md:px-12 lg:px-20">
-        {freq.map((start, index) => {
-          const Icon = start.icon;
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInternaltimeView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="h-64 border border-gray-200 rounded-3xl flex flex-col items-center justify-center hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer p-6 bg-white"
-            >
-              <div
-                className={`rounded-2xl h-20 w-20 mb-4 bg-gradient-to-br ${start.gradient} flex items-center justify-center transition-transform group-hover:scale-110`}
+        {/* Recognition Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {recognitions.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative"
               >
-                <Icon sx={{ fontSize: 40, color: "#fff" }} />
-              </div>
+                <div className="relative p-8 rounded-[2rem] bg-white border border-gray-200 hover:border-gray-300 hover:shadow-2xl transition-all h-full flex flex-col items-center text-center">
+                  {/* Icon with gradient hover */}
+                  <div
+                    className={`rounded-2xl h-20 w-20 mb-4 bg-gradient-to-br ${item.gradient} flex items-center justify-center transition-transform group-hover:scale-110`}
+                  >
+                    <Icon className="h-10 w-10 text-white" />
+                  </div>
 
-              <h2 className="text-xl font-semibold text-center">
-                {start.name}
-              </h2>
-              <h3 className="mt-2 text-gray-500 text-md text-center">
-                {start.description}
-              </h3>
-            </motion.div>
-          );
-        })}
-      </div>
+                  {/* Name and description */}
+                  <h3
+                    className={`${graduateFont.className} text-xl font-semibold mb-2`}
+                  >
+                    {item.name}
+                  </h3>
+                  <p className="text-gray-600">{item.description}</p>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInternaltimeView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="mt-20"
-      >
-        <h1 className="text-center text-gray-400 tracking-wide">
-          INDUSTRY PARTNERS
-        </h1>
-
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 px-6 md:px-20">
-          {[
-            "Partner 1",
-            "Partner 2",
-            "Partner 3",
-            "Partner 4",
-            "Partner 5",
-          ].map((start, index) => (
-            <div
-              key={index}
-              className="border p-4 border-gray-300 rounded-xl hover:shadow-lg transition"
-            >
-              <h1 className="text-center text-md text-gray-600">{start}</h1>
-            </div>
-          ))}
+                  {/* Glow effect */}
+                  <div
+                    className={`absolute inset-0 rounded-[2rem] bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity`}
+                  ></div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
-      </motion.div>
+
+        {/* Partner Logos */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <p className="text-center text-gray-400 mb-8 uppercase tracking-[0.2em] text-sm">
+            Research & Publications
+          </p>
+          <div className="flex flex-wrap justify-center gap-6">
+            {partners.map((partner, index) => (
+              <div
+                key={index}
+                className="px-6 py-3 rounded-2xl bg-white border border-gray-200 hover:border-[#0d4e92]/30 hover:shadow-lg transition-all"
+              >
+                <div className="text-gray-600 text-sm font-medium">
+                  {partner}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
-};
-
-export default RecognitionSection;
+}

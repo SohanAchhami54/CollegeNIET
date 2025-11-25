@@ -9,7 +9,8 @@ import Footer from "./components/Footer/Footer";
 import { ThemeProvider } from "@mui/material/styles";
 
 import theme from "../theme";
-
+import  ScrollToTop  from "./components/LandingPage/ScrollToTop";
+import WhatsAppFloatButton from "./components/LandingPage/WhatsAppFloatButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,15 +33,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         
-         <ThemeProvider theme={theme}> 
-        <Header/>
-        <div className="min-h-screen">
-           {children}
-        </div>
-        <Footer/>
+        <ThemeProvider theme={theme}>
+          <Header />
+          <div className="min-h-screen">
+            {children}
+
+            <ScrollToTop />
+            <WhatsAppFloatButton />
+          </div>
+          <Footer />
         </ThemeProvider>
-      
       </body>
     </html>
   );
