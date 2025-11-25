@@ -192,12 +192,12 @@ const Page = async ({ params }) => {
           <p className="text-lg text-gray-600 mb-8">
             The program you're looking for doesn't exist or has been removed.
           </p>
-          <a
+          <Link
             href="/academics"
             className="inline-block px-8 py-3 bg-gradient-to-r from-[#0d4e92] to-cyan-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
           >
             View All Programs
-          </a>
+          </Link>
         </div>
       </div>
     );
