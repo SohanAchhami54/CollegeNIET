@@ -152,7 +152,7 @@ export default function FacultyDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-12">
             <div className="lg:col-span-1 flex justify-center lg:justify-startlg:pl-20">
               <div className="relative w-full max-w-xs mx-auto lg:mx-0 ">
-                <div className="aspect-[4/5] rounded-lg overflow-hidden border-4 border-white shadow-2xl">
+                <div className="aspect-4/5 rounded-lg overflow-hidden border-4 border-white shadow-2xl">
                   {faculty.image ? (
                     // Next/Image can be used if configured; using img for simplicity
                     <img src={faculty.image} alt={fullName} className="w-full h-full object-cover" />
