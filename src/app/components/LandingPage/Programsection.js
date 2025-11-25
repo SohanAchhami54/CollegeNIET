@@ -29,7 +29,7 @@ const programs=getAllPrograms().slice(0,3);
            <span className={`text-blue-800 text-sm  tracking-tight ${robotoFont.className}`}>Our Programs</span>
           </div>
         
-           <h2 className={`${graduateFont.className}  text-5xl lg:text-6xl text-gray-900 mb-6 tracking-tight `}>
+           <h2 className={`${graduateFont.className} text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-6 tracking-tight `}>
             Choose Your
             <br />
             <span className='bg-gradient-to-r from-[#0d4e92] to-cyan-500 bg-clip-text text-transparent'>Engineering Path</span>
