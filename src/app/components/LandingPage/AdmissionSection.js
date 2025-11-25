@@ -1,104 +1,155 @@
-import React from "react";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Button } from "@mui/material";
-const AdmissionSection = () => {
-  const stat = [
+import {
+  FileText,
+  PenTool,
+  MessageSquare,
+  GraduationCap,
+  ArrowRight,
+} from "lucide-react";
+import { graduateFont } from "@/font";
+
+export default function AdmissionSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const steps = [
     {
-      icon: DescriptionOutlinedIcon,
-      topic: "Apply Online",
+      icon: FileText,
+      title: "Apply Online",
       description:
-        "Submit your application and documents through our streamedlined portal.",
+        "Submit your application and documents through our streamlined portal.",
     },
     {
-      icon: BorderColorOutlinedIcon,
-      topic: "Apply Online",
+      icon: PenTool,
+      title: "Entrance Exam",
       description:
-        "Submit your application and documents through our streamedlined portal.",
+        "Take the NIET exam covering math, science, and logical reasoning.",
     },
     {
-      icon: ChatBubbleOutlineOutlinedIcon,
-      topic: "Apply Online",
-      description:
-        "Submit your application and documents through our streamedlined portal.",
+      icon: MessageSquare,
+      title: "Interview",
+      description: "Discuss your goals with our admission committee.",
     },
     {
-      icon: SchoolOutlinedIcon,
-      topic: "Apply Online",
-      description:
-        "Submit your application and documents through our streamedlined portal.",
+      icon: GraduationCap,
+      title: "Enroll",
+      description: "Complete enrollment and begin your engineering journey.",
     },
   ];
-  return (
-    <div className="w-full bg-gradient-to-br from-blue-500 to-blue-800 ">
-      <div className="p-3 m-3 flex flex-col items-center justify-center">
-        <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl text-white mt-15 ">
-          Your Journey to NIET
-          <br />
-          <span className="text-cyan-400 block text-center">Starts Here</span>
-        </h1>
-        <p className="mt-4 text-sm sm:text-md md:text-lg lg:text-xl text-gray-300">
-          Four simple steps to transform into a world-class engineer.
-        </p>
-      </div>
-      <div className="m-2 p-2 sm:p-2 sm:m-2 lg:m-3 lg:3 flex flex-col md:flex-row items-center justify-around gap-1 md:gap-3 lg:gap-4">
-        {stat.map((stats, index) => {
-          const Icon = stats.icon;
-          return (
-            <div key={index}
-             className="border border-gray-200 flex flex-col border relative rounded-3xl  p-3 m-3 sm:m-2 lg:p-3 lg:m-3 lg:mt-7  overflow-visible">
-              <div className="absolute -top-4 -left-4  w-12 h-12 rounded-2xl  backdrop-blur-sm border border-white/20 flex items-center justify-center ">
-                <span className="text-2xl text-white/60">0{index + 1}</span>
-              </div>
 
-              <div className="h-17  w-17 border-0 rounded-2xl bg-white flex items-center justify-center m-4 p-4 ">
-                <Icon color="primary" sx={{ height: 35, width: 35 }} />
-              </div>
-              <h1 className="text-gray-300 text-md md:text-lg lg:text-xl lg:p-1 lg:m-1">
-                {stats.topic}
-              </h1>
-              <p className="text-gray-300 lg:p-1 lg:m-1">{stats.description}</p>
-            </div>
-          );
-        })}
+  return (
+    <section
+      id="admissions"
+      ref={ref}
+      className="py-20 lg:py-32 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white relative overflow-hidden"
+    >
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-[100px] animate-pulse"></div>
+        <div
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[120px] animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
-      <div>
-        <div className="flex flex-col items-center justify-center p-2">
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16 lg:mb-20"
+        >
+          <h2
+            className={`${graduateFont.className} text-4xl lg:text-6xl text-white mb-6 tracking-tight`}
+          >
+            Your Journey to NIET
+            <br />
+            <span className="text-cyan-300">Starts Here</span>
+          </h2>
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            Four simple steps to transform into a world-class engineer.
+          </p>
+        </motion.div>
+
+        {/* Steps Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative group"
+              >
+                {/* Step Number */}
+                <div className="absolute -top-4 -left-4 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center z-10">
+                  <span className="text-2xl text-white/60">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* Card */}
+                <div className="relative p-8 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all h-full">
+                  <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Icon className="h-8 w-8 text-blue-600" />
+                  </div>
+
+                  <h3
+                    className={`${graduateFont.className} text-xl text-white mb-3`}
+                  >
+                    {step.title}
+                  </h3>
+                  <p className="text-blue-100">{step.description}</p>
+                </div>
+
+                {/* Arrow Connector (Desktop) */}
+                {index < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 z-20">
+                    <ArrowRight className="h-6 w-6 text-white/30" />
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center"
+        >
           <Button
+            size="large"
+            className="group flex items-center justify-center shadow-2xl px-10 h-14 text-lg"
+            variant="contained"
             sx={{
               backgroundColor: "white",
+              color: "#0d4e92",
               borderRadius: "9999px",
-              color: "#0b4c78",
-              border: "1px solid #d1d5db",
-              px: 2,
-              fontWeight: "bold",
-              height: 56,
-              fontSize: "1.125rem",
-
-              textTransform: "none",
-              display: "flex",
-              alignItems: "center",
+              "&:hover": {
+                backgroundColor: "#ebf8ff",
+              },
             }}
           >
             Start Your Application
-            <ArrowForwardIcon
-              sx={{
-                ml: 2,
-                height: "20px",
-                width: "20px",
-              }}
-            />
+            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </Button>
-          <p className="p-2 text-white text-sm mt-4 mb-8">
-            Application for 2026 admission open. Early deadline:March 31,2026
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-export default AdmissionSection;
+          <p className="text-blue-100 mt-6 text-sm">
+            Applications for 2026 admission open • Early deadline: November 30,
+            2025
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
