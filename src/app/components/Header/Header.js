@@ -58,9 +58,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scroll ? "backdrop-blur-xl shadow-lg border-cyan-100/30 bg-white/70" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scroll ? "backdrop-blur-xl shadow-lg border-cyan-100/30 bg-white/70" : "bg-transparent"
+        }`}
     >
       <nav className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
@@ -78,9 +77,8 @@ const Header = () => {
               </div>
               <div className="flex flex-col gap-0">
                 <span
-                  className={`text-xl md:text-2xl ${scroll ? "text-gray-900" : "text-white"} ${
-                    graduateFont.className
-                  }`}
+                  className={`text-xl md:text-2xl ${scroll ? "text-gray-900" : "text-white"} ${graduateFont.className
+                    }`}
                 >
                   NIET
                 </span>
@@ -94,35 +92,31 @@ const Header = () => {
           {/* Desktop Menu */}
           <ul className="hidden lg:flex justify-between items-center gap-2 text-gray-700">
             <li
-              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
             >
               <Link href="/about">About</Link>
             </li>
 
             {/* Academics Dropdown */}
             <li
-              className={`relative hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`relative hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
               ref={dropdownRef}
             >
               <button
                 onClick={() => setAcademicsDropdownOpen(!academicsDropdownOpen)}
-                className={`flex items-center gap-1 transition-colors ${
-                  scroll ? "text-gray-900" : "text-white"
-                }`}
+                className={`flex items-center gap-1 transition-colors ${scroll ? "text-gray-900" : "text-white"
+                  }`}
               >
                 Academics
                 <ExpandMoreIcon
-                  className={`transition-all ${
-                    scroll ? "text-gray-900" : "text-white"
-                  } ${academicsDropdownOpen ? "rotate-180" : "rotate-0"}`}
+                  className={`transition-all ${scroll ? "text-gray-900" : "text-white"
+                    } ${academicsDropdownOpen ? "rotate-180" : "rotate-0"}`}
                 />
               </button>
 
-               {academicsDropdownOpen && (
+              {academicsDropdownOpen && (
                 <div
                   role="menu"
                   aria-label="Academic programs"
@@ -178,19 +172,19 @@ const Header = () => {
                                   ? 'text-white'
                                   : 'text-cyan-600 group-hover:text-[#0d4e92] group-hover:scale-110'
                                   }`} /> */}
-                                  
-                                <div className="relative flex-shrink-0 mt-1">
-  <div
-    className="p-2.5 rounded-lg bg-gradient-to-br from-cyan-50 to-blue-50"
-  >
-    {React.cloneElement(program.icon, {
-      className:
-        "h-5 w-5 text-cyan-600",
-    })}
-  </div>
-</div>
 
-                                  
+                                <div className="relative flex-shrink-0 mt-1">
+                                  <div
+                                    className="p-2.5 rounded-lg bg-gradient-to-br from-cyan-50 to-blue-50"
+                                  >
+                                    {React.cloneElement(program.icon, {
+                                      className:
+                                        "h-5 w-5 text-cyan-600",
+                                    })}
+                                  </div>
+                                </div>
+
+
                               </div>
                             </div>
 
@@ -253,9 +247,8 @@ const Header = () => {
             </li>
 
             <li
-              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
             >
               <Link href="/faculty">Faculty and Staff</Link>
             </li>
@@ -263,9 +256,8 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className={`lg:hidden flex transition-colors bg-white/10 p-1 rounded-lg ${
-              scroll ? "text-gray-900" : "text-white"
-            }`}
+            className={`lg:hidden flex transition-colors bg-white/10 p-1 rounded-lg ${scroll ? "text-gray-900" : "text-white"
+              }`}
             onClick={() => setMobileView(!mobileView)}
           >
             {mobileView ? <CloseIcon className="w-7 h-7" /> : <MenuIcon className="w-7 h-7" />}
@@ -273,149 +265,141 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu */}
-       {mobileView && (
-  <div className="lg:hidden py-6 bg-white/95 backdrop-blur-xl rounded-3xl mt-2 shadow-2xl border border-cyan-100/40">
-    <div className="flex flex-col gap-2 px-4">
+        {mobileView && (
+          <div className="lg:hidden py-6 bg-white/95 backdrop-blur-xl rounded-3xl mt-2 shadow-2xl border border-cyan-100/40">
+            <div className="flex flex-col gap-2 px-4">
 
-      <Link
-        href="/about"
-        className="text-gray-700 hover:text-cyan-500 transition-colors py-2"
-        onClick={handleLinkClick}
-      >
-        About
-      </Link>
-
-      {/* Mobile Academics Section - Enhanced */}
-      <div className="px-4">
-        <div className="mb-3 mt-4 px-2">
-          <h3 className={`text-sm ${graduateFont.className} font-semibold text-gray-500 uppercase tracking-wider`}>
-            Academic Programs
-          </h3>
-        </div>
-
-        <div className="space-y-3">
-          {programs.map((program, index) => {
-            const isActive =
-              location.pathname === program.href ||
-              (location.pathname.startsWith("/academics/") &&
-                location.pathname === program.href);
-
-            return (
               <Link
-                key={index}
-                href={program.href}
-                className={`group relative flex items-start gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
-                  isActive
-                    ? "text-[#0d4e92] font-semibold bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 shadow-sm"
-                    : "text-gray-700 hover:text-[#0d4e92] hover:bg-gradient-to-r hover:from-cyan-50/70 hover:to-blue-50/50"
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label={`Navigate to ${program.name}${
-                  program.isNew ? " - New program" : ""
-                }`}
+                href="/about"
+                className="text-gray-700 hover:text-cyan-500 transition-colors py-2"
+                onClick={handleLinkClick}
               >
-                {/* ICON BLOCK - FIXED */}
-                <div className="relative z-10 flex-shrink-0 mt-0.5">
-                  <div
-                    className={`p-2 rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? "bg-gradient-to-br from-cyan-500 to-blue-500 shadow-md"
-                        : "bg-gradient-to-br from-cyan-50 to-blue-50 group-hover:from-cyan-100 group-hover:to-blue-100 group-hover:shadow-md"
-                    }`}
-                  >
-                    {React.cloneElement(program.icon, {
-                      className: `h-5 w-5 transition-colors duration-200 ${
-                        isActive
-                          ? "text-white"
-                          : "text-cyan-600 group-hover:text-[#0d4e92]"
-                      }`,
-                    })}
-                  </div>
-                </div>
-
-                {/* TEXT BLOCK */}
-                <div className="flex-1 flex flex-col gap-1.5 min-w-0">
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <span
-                      className={`text-sm font-semibold transition-colors duration-200 ${
-                        isActive
-                          ? "text-[#0d4e92]"
-                          : "text-gray-900 group-hover:text-[#0d4e92]"
-                      }`}
-                    >
-                      {program.name}
-                    </span>
-
-                    {program.isNew && (
-                      <span
-                        className="flex-shrink-0 text-xs font-semibold bg-emerald-600 text-white px-2.5 py-1 rounded"
-                        aria-label="New program for 2025"
-                      >
-                        NEW
-                      </span>
-                    )}
-                  </div>
-
-                  {program.descriptor && (
-                    <p
-                      className={`text-xs leading-relaxed transition-colors duration-200 ${
-                        isActive
-                          ? "text-gray-600"
-                          : "text-gray-500 group-hover:text-gray-700"
-                      }`}
-                    >
-                      {program.descriptor}
-                    </p>
-                  )}
-                </div>
-
-                <div
-                  className={`flex-shrink-0 mt-0.5 transition-all duration-200 ${
-                    isActive
-                      ? "opacity-100"
-                      : "opacity-0 group-hover:opacity-100"
-                  }`}
-                >
-                  <RiArrowDropRightLine className="h-4 w-4 text-cyan-600 " />
-                </div>
+                About
               </Link>
-            );
-          })}
-        </div>
 
-        {/* View All Programs Button */}
-        <Link
-          href="/academics"
-          onClick={() => setMobileView(false)}
-          className="mt-6 flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-50 to-blue-50 hover:from-cyan-100 hover:to-blue-100 text-[#0d4e92] font-semibold text-sm transition-all duration-200 hover:shadow-md"
-        >
-          <LuGraduationCap className="h-4 w-4" />
-          <span>View All Programs</span>
-          <RiArrowDropRightLine className="h-4 w-4 rotate-[-90deg]" />
-        </Link>
-      </div>
+              {/* Mobile Academics Section - Enhanced */}
+              <div className="px-4">
+                <div className="mb-3 mt-4 px-2">
+                  <h3 className={`text-sm ${graduateFont.className} font-semibold text-gray-500 uppercase tracking-wider`}>
+                    Academic Programs
+                  </h3>
+                </div>
 
-      {/* Mobile Faculty and Staff */}
-      <Link
-        href="/faculty-and-staff"
-        className={`relative transition-all duration-200 px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92] hover:bg-gradient-to-r hover:from-cyan-50/80 hover:to-blue-50/60 ${
-          location.pathname === "/faculty-and-staff" ||
-          location.pathname.startsWith("/faculty-and-staff")
-            ? "text-[#0d4e92] font-semibold bg-gradient-to-r from-cyan-50/60 to-blue-50/40"
-            : ""
-        }`}
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        Faculty and Staff
+                <div className="space-y-3">
+                  {programs.map((program, index) => {
+                    const isActive =
+                      location.pathname === program.href ||
+                      (location.pathname.startsWith("/academics/") &&
+                        location.pathname === program.href);
 
-        {(location.pathname === "/faculty-and-staff" ||
-          location.pathname.startsWith("/faculty-and-staff")) && (
-          <span className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-[#0d4e92] rounded-full shadow-sm"></span>
+                    return (
+                      <Link
+                        key={index}
+                        href={program.href}
+                        className={`group relative flex items-start gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${isActive
+                          ? "text-[#0d4e92] font-semibold bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 shadow-sm"
+                          : "text-gray-700 hover:text-[#0d4e92] hover:bg-gradient-to-r hover:from-cyan-50/70 hover:to-blue-50/50"
+                          }`}
+                        onClick={() => setMobileView(false)}
+                        aria-label={`Navigate to ${program.name}${program.isNew ? " - New program" : ""
+                          }`}
+                      >
+                        {/* ICON BLOCK - FIXED */}
+                        <div className="relative z-10 flex-shrink-0 mt-0.5">
+                          <div
+                            className={`p-2 rounded-lg transition-all duration-200 ${isActive
+                              ? "bg-gradient-to-br from-cyan-500 to-blue-500 shadow-md"
+                              : "bg-gradient-to-br from-cyan-50 to-blue-50 group-hover:from-cyan-100 group-hover:to-blue-100 group-hover:shadow-md"
+                              }`}
+                          >
+                            {React.cloneElement(program.icon, {
+                              className: `h-5 w-5 transition-colors duration-200 ${isActive
+                                ? "text-white"
+                                : "text-cyan-600 group-hover:text-[#0d4e92]"
+                                }`,
+                            })}
+                          </div>
+                        </div>
+
+                        {/* TEXT BLOCK */}
+                        <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                            <span
+                              className={`text-sm font-semibold transition-colors duration-200 ${isActive
+                                ? "text-[#0d4e92]"
+                                : "text-gray-900 group-hover:text-[#0d4e92]"
+                                }`}
+                            >
+                              {program.name}
+                            </span>
+
+                            {program.isNew && (
+                              <span
+                                className="flex-shrink-0 text-xs font-semibold bg-emerald-600 text-white px-2.5 py-1 rounded"
+                                aria-label="New program for 2025"
+                              >
+                                NEW
+                              </span>
+                            )}
+                          </div>
+
+                          {program.descriptor && (
+                            <p
+                              className={`text-xs leading-relaxed transition-colors duration-200 ${isActive
+                                ? "text-gray-600"
+                                : "text-gray-500 group-hover:text-gray-700"
+                                }`}
+                            >
+                              {program.descriptor}
+                            </p>
+                          )}
+                        </div>
+
+                        <div
+                          className={`flex-shrink-0 mt-0.5 transition-all duration-200 ${isActive
+                            ? "opacity-100"
+                            : "opacity-0 group-hover:opacity-100"
+                            }`}
+                        >
+                          <RiArrowDropRightLine className="h-4 w-4 text-cyan-600 " />
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+                {/* View All Programs Button */}
+                <Link
+                  href="/academics"
+                  onClick={() => setMobileView(false)}
+                  className="mt-6 flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-50 to-blue-50 hover:from-cyan-100 hover:to-blue-100 text-[#0d4e92] font-semibold text-sm transition-all duration-200 hover:shadow-md"
+                >
+                  <LuGraduationCap className="h-4 w-4" />
+                  <span>View All Programs</span>
+                  <RiArrowDropRightLine className="h-4 w-4 rotate-[-90deg]" />
+                </Link>
+              </div>
+
+              {/* Mobile Faculty and Staff */}
+              <Link
+                href="/faculty"
+                className={`relative transition-all duration-200 px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92] hover:bg-gradient-to-r hover:from-cyan-50/80 hover:to-blue-50/60 ${location.pathname === "/faculty-and-staff" ||
+                  location.pathname.startsWith("/faculty-and-staff")
+                  ? "text-[#0d4e92] font-semibold bg-gradient-to-r from-cyan-50/60 to-blue-50/40"
+                  : ""
+                  }`}
+                onClick={() => setMobileView(false)}
+              >
+                Faculty and Staff
+
+                {(location.pathname === "/faculty" ||
+                  location.pathname.startsWith("/faculty")) && (
+                    <span className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-[#0d4e92] rounded-full shadow-sm"></span>
+                  )}
+              </Link>
+            </div>
+          </div>
         )}
-      </Link>
-    </div>
-  </div>
-)}
 
       </nav>
     </header>
@@ -423,4 +407,3 @@ const Header = () => {
 };
 
 export default Header;
-    

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function WhatsAppFloatButton() {
@@ -34,9 +35,10 @@ export default function WhatsAppFloatButton() {
       style={{ zIndex: 9999 }}
       aria-label="Contact us on WhatsApp"
     >
-      <img
+      <Image
         src="/whatsapp.png"
         alt="WhatsApp"
+        fill
         className="w-full h-full object-contain rounded-full"
         loading="eager"
         draggable="false"
