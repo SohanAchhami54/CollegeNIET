@@ -4,11 +4,13 @@ import CampusLife from "next/image";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import LocalCafeOutlinedIcon from "@mui/icons-material/LocalCafeOutlined";
 import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import { useInView, motion } from "framer-motion";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { graduateFont } from "@/font";
 
 const CampusLifeSection = () => {
   const ref = useRef(null);
@@ -90,46 +92,47 @@ const CampusLifeSection = () => {
 
   const itemsPerView = 3;
   const maxIndex = Math.max(0, testData.length - itemsPerView);
-
   const nextData = () =>
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
   const prevData = () => setCurrentIndex((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="bg-gradient-to-b from-[#0d4e92]/5 to-white ">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInternalTimeView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="flex flex-col items-center justify-center mt-11"
+        className="flex flex-col items-center justify-center mt-10 mb-15"
       >
-        <h1 className="text-6xl">
+        <h1 className={`${graduateFont.className} text-5xl lg:text-6xl mt-30`}>
           Experience
           <br />
-          <span className="items-center ml-7 bg-gradient-to-r from-[#0b4c78] via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          <span
+            className={`${graduateFont.className} ml-7 bg-gradient-to-r from-[#0b4c78] via-purple-500 to-pink-500 bg-clip-text text-transparent`}
+          >
             NIET Life
           </span>
         </h1>
-        <p className="m-3 p-3 text-xl text-gray-500">
-          A vibrant community of innovators,makers and future leaders.
+        <p className="m-3 p-3 text-xl text-gray-500 text-center">
+          A vibrant community of innovators, makers, and future leaders.
         </p>
       </motion.div>
 
       {/* Video + Features */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 ml-12 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-start px-4 lg:px-12 mb-16">
         {/* Video */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={isInternalTimeView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="relative w-full h-80 sm:h-96 lg:h-[500px] p-6 "
+          className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[600px] p-6 mx-auto lg:mx-0"
         >
           <CampusLife
-            src="/blue.jpg"
+            src="/pexels.jpg"
             alt="CampusSection"
             fill
-            className=" object-cover rounded-4xl"
+            className="object-cover rounded-4xl"
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <button>
@@ -139,7 +142,7 @@ const CampusLifeSection = () => {
                   width: 80,
                   color: "white",
                   transition: "transform 0.4s ease",
-                  " &:hover": { transform: "scale(1.1)" },
+                  "&:hover": { transform: "scale(1.1)" },
                 }}
               />
             </button>
@@ -151,7 +154,7 @@ const CampusLifeSection = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={isInternalTimeView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center gap-6 mt-10 lg:mt-20 lg:mr-10"
+          className="flex flex-col justify-start gap-6 mt-10 lg:mt-25 lg:mr-10 "
         >
           {[
             {
@@ -169,19 +172,26 @@ const CampusLifeSection = () => {
               title: "Sports & Recreation",
               desc: "Modern gym, sports facilities, and wellness programs",
             },
+            {
+              icon: PeopleAltOutlinedIcon,
+              title: "Student Clubs",
+              desc: "Active student organizations and cultural activities",
+            },
           ].map((start, index) => {
             const Icon = start.icon;
             return (
               <div
                 key={index}
-                className="flex items-center border rounded-2xl border-gray-200 p-3 m-3 hover:shadow-2xl transition-all group "
+                className="flex items-center border rounded-2xl border-gray-200 p-3  hover:shadow-2xl transition-all group"
               >
-                <div className="w-15 h-15 m-2 p-2 flex items-center justify-center border-0 rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 group-hover:scale-110 transition-transform">
-                  <Icon sx={{ m: 3, height: 30, width: 30, color: "white" }} />
+                <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 group-hover:scale-110 transition-transform">
+                  <Icon sx={{ height: 30, width: 30, color: "white" }} />
                 </div>
-                <div>
-                  <h3 className="m-0.5 p-0.5 text-xl">{start.title}</h3>
-                  <p className="ml-1 text-gray-500">{start.desc}</p>
+                <div className="ml-4">
+                  <h3 className={`${graduateFont.className} text-xl`}>
+                    {start.title}
+                  </h3>
+                  <p className="text-gray-500">{start.desc}</p>
                 </div>
               </div>
             );
@@ -190,34 +200,36 @@ const CampusLifeSection = () => {
       </div>
 
       {/* Testimonials */}
-      <div className="text-4xl text-bold flex items-center justify-center">
-        <h1 className="mb-5">What Our Students Say</h1>
+      <div
+        className={`${graduateFont.className} text-xl lg:text-4xl font-bold flex items-center justify-center mb-5`}
+      >
+        <h1>What Our Students Say</h1>
       </div>
 
       <div className="relative">
         <div className="overflow-hidden">
           <div
-            className="flex transition-transform duration-500 gap-4"
+            className="flex transition-transform duration-500 gap-2 mr-10 ml-10 mt-4"
             style={{
               transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
             {testData.map((start, index) => (
-              <div key={index} className="w-full lg:w-1/3 flex-shrink-0">
+              <div key={index} className="flex-shrink-0 w-full lg:w-1/3 ">
                 <div
-                  className="flex-none flex flex-col m-2 p-4 border rounded-2xl relative z-10 bg-white shadow-lg bg-gradient-to-br from-gray-900 to-gray-800"
+                  className="flex flex-col m-2 p-4 border rounded-2xl relative z-10 bg-white shadow-lg bg-gradient-to-br from-gray-900 to-gray-800"
                   style={{
                     minWidth: `calc((100% - ${
                       (itemsPerView - 1) * 16
                     }px) / ${itemsPerView})`,
-                    height: "300px", // Set fixed height
+                    height: "300px",
                   }}
                 >
-                  <FormatQuoteIcon className="text-gray-300 mb-3 " />
-                  <p className='text-gray-200 mb-2 m-6'>{start.quote}</p>
-                  <div className="mt-4 p-2 flex flex-row">
+                  <FormatQuoteIcon className="text-gray-300 mb-3" />
+                  <p className="text-gray-200 mb-2 m-6">{start.quote}</p>
+                  <div className="mt-4 p-2 flex flex-row items-center">
                     <div
-                      className={`w-10 h-10 rounded-full bg-gradient-to-br p-2 m-2 ${start.gradient}`}
+                      className={`w-10 h-10 rounded-full p-2 m-2 bg-gradient-to-br ${start.gradient}`}
                     ></div>
                     <div className="pt-1">
                       <h2 className="font-bold text-gray-200">{start.name}</h2>
@@ -235,25 +247,32 @@ const CampusLifeSection = () => {
           <button
             onClick={prevData}
             disabled={currentIndex === 0}
-            className={`border rounded-4xl p-3 m-3 border-gray-300 ${
+            className={`border rounded-4xl p-3 border-gray-300 ${
               currentIndex === 0
                 ? "opacity-30 cursor-not-allowed"
                 : "hover:border-blue-500 hover:bg-blue-50"
-            } hover:shadow-lg transition hover:border-blue-500`}
+            } transition hover:shadow-lg`}
           >
             <ArrowBackIosIcon sx={{ height: "20px", paddingLeft: "2px" }} />
           </button>
           <button
             onClick={nextData}
             disabled={currentIndex >= maxIndex}
-            className={`border rounded-4xl p-3 m-2 border-gray-300     ${
+            className={`border rounded-4xl p-3 border-gray-300 ${
               currentIndex >= maxIndex
                 ? "opacity-30 cursor-not-allowed"
                 : "hover:border-blue-500 hover:bg-blue-50"
-            } hover:shadow-lg transition hover:border-blue-500`}
+            } transition hover:shadow-lg`}
           >
             <ArrowForwardIosIcon sx={{ height: "20px" }} />
           </button>
+        </div>
+        <div className="flex justify-center mt-4 mb-30">
+          <div className="text-sm text-gray-500">
+            Showing {currentIndex + 1}-
+            {Math.min(currentIndex + itemsPerView, testData.length)} of{" "}
+            {testData.length}
+          </div>
         </div>
       </div>
     </div>
