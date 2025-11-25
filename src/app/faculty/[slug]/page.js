@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { facultyData } from "@/data/faculty";
 import Header from "../../components/Header/Header";
 import { PiMedalLight } from "react-icons/pi";
+import Image from "next/image";
 
 import {
   FiArrowLeft,
@@ -179,7 +180,7 @@ export default function FacultyDetailPage() {
               <h1 className={`${graduateFont.className} text-3xl sm:text-4xl md:text-5xl font-extrabold mb-2 leading-tight`}>{fullName}</h1>
 
               <p className={`${robotoFont.className} text-lg sm:text-xl text-white font-medium mb-4`}>{faculty.designation}</p>
-
+{/* 
               <div className="space-y-2 mb-6 text-gray-300">
                 <p className="flex items-start gap-3 justify-center lg:justify-start">
                   <PiMedalLight className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
@@ -190,7 +191,25 @@ export default function FacultyDetailPage() {
                   {faculty.leadershipRole || "Chairman"}
                 </p>
                 <p className={`${robotoFont.className} text-sm italic pl-8 pt-1`}>{faculty.specialization || "Artificial Intelligence, Machine Learning, Computer Vision"}</p>
-              </div>
+              </div> */}
+
+                <div className="space-y-2 mb-6 text-gray-300">
+                <p className="flex items-start gap-3 justify-center lg:justify-start text-sm sm:text-base">
+                  <PiMedalLight className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  <span className="font-medium">Head of Department</span>
+                  <span className="hidden sm:inline"> — {faculty.department}</span>
+                </p>
+
+                <p className="flex items-start gap-3 justify-center lg:justify-start text-sm sm:text-base">
+                  <PiMedalLight className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                  {faculty.leadershipRole || "Chairman"}
+                </p>
+                {/* Specialization: smaller text on mobile, left-pad only on sm+ */}
+                <p className={`${robotoFont.className} text-sm sm:text-sm italic sm:pl-8 pt-1 text-center lg:text-left break-words max-w-[40rem]`}>
+                    {faculty.specialization || "Artificial Intelligence, Machine Learning, Computer Vision"}
+                </p>
+                </div>
+
 
               {/* Contact links row */}
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 mt-8">
@@ -451,8 +470,15 @@ export default function FacultyDetailPage() {
                                     className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col items-center gap-4"
                                 >
                                     {/* Adjusted image size to be slightly smaller on mobile */}
-                                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-cyan-500 flex-shrink-0">
-                                        <Image  src={f.image || '/placeholder.jpg'} alt={`${f.firstName} ${f.lastName}`} fill className="w-full h-full object-cover" />
+                                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-cyan-500 flex-shrink-0 relative">
+                                    <Image
+                                        src={f.image || '/placeholder.jpg'}
+                                        alt={`${f.firstName} ${f.lastName}`}
+                                        fill
+                                        sizes="(max-width: 640px) 96px, 112px"
+                                        className="object-cover"
+                                        priority={false}
+                                    />
                                     </div>
                                     <div className="text-center">
                                         <h3 className={`${graduateFont.className} font-bold text-gray-900 text-lg`}>{f.firstName} {f.lastName}</h3>
