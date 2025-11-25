@@ -801,7 +801,7 @@ const PageClient = ({ program, allPrograms, relatedPrograms }) => {
                                                 <div className="p-2 rounded-lg bg-blue-100">
                                                     <FiZap className="h-5 w-5 lg:h-6 lg:w-6 text-blue-600" />
                                                 </div>
-                                                <h3 className={` text-xl lg:text-2xl font-bold text-gray-900 ${graduateFont.className} `} >Key Skills You'll Gain</h3>
+                                                <h3 className={` text-xl lg:text-2xl font-bold text-gray-900 ${graduateFont.className} `} >Key Skills You&apos;ll Gain</h3>
                                             </div>
                                             <ul className="space-y-3 lg:space-y-4">
                                                 {program.degreeHighlights.map((highlight, index) => (

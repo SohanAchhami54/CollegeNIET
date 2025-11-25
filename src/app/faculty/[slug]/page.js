@@ -26,6 +26,7 @@ import {
 import { motion } from "framer-motion";
 
 import { graduateFont, robotoFont } from "../../../font";
+import Image from "next/image";
 
 const Badge = ({ children, className = "", isHeader = false }) => {
   const baseClasses = `inline-flex items-center rounded-full px-3 py-1 text-xs font-medium tracking-wide transition-colors duration-200`;
@@ -155,7 +156,7 @@ export default function FacultyDetailPage() {
                 <div className="aspect-4/5 rounded-lg overflow-hidden border-4 border-white shadow-2xl">
                   {faculty.image ? (
                     // Next/Image can be used if configured; using img for simplicity
-                    <img src={faculty.image} alt={fullName} className="w-full h-full object-cover" />
+                    <Image src={faculty.image} alt={fullName} fill className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-gray-400 flex items-center justify-center">
                       <FiUsers className="h-24 w-24 text-white" />
@@ -442,9 +443,9 @@ export default function FacultyDetailPage() {
                         <h2 className={`${graduateFont.className}  text-center text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8`}>Related Faculty Members</h2>
                         {/* Grid: 1 column on mobile, 2 columns on small screens, 3 columns on medium screens (md) */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                            {relatedFaculty.map(f => (
+                            {relatedFaculty.map((f,i) => (
                                 <Link 
-                                    key={f.slug} 
+                                    key= {`${f.slug}-${i} `} 
                                     href={`/faculty/${f.slug}`} 
                                     // Added p-6 for better padding on all screen sizes
                                     className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col items-center gap-4"

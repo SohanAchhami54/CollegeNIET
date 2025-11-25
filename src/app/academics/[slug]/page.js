@@ -171,6 +171,7 @@
 import { getAllPrograms, getProgramBySlug } from '@/data/programs';
 import { Hero } from '@/app/components/AcademicSlug/Hero';
 import PageClient from '@/app/components/AcademicSlug/PageClient';
+import Link from 'next/link';
 
 // Server Component - Handles async params and data fetching
 const Page = async ({ params }) => {
@@ -190,7 +191,7 @@ const Page = async ({ params }) => {
             Program Not Found
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            The program you're looking for doesn't exist or has been removed.
+            The program you&apos;re looking for doesn't exist or has been removed.
           </p>
           <Link
             href="/academics"
