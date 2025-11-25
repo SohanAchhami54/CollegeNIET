@@ -2,6 +2,7 @@ import { getAllPrograms } from '@/data/programs';
 import { graduateFont, robotoFont } from '@/font';
 import { motion,useInView } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useRef } from 'react'
 import { FiArrowRight } from 'react-icons/fi';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
@@ -155,10 +156,12 @@ const Academicprogram = () => {
 
                            {/* button  */}
                              <section className='flex flex-wrap items-center   gap-3'>
+                              <Link href={`/academics/${program.slug}`} >
                                   <button className='flex items-center justify-center gap-4 bg-[#0D4E92]  text-white rounded-lg px-3 py-2 hover:bg-blue-900'>
                                     <span className='text-sm font-semibold '>View Full Details</span>
                                       <FiArrowRight/>
                                     </button> 
+                                    </Link>
                                     <button className='flex items-center justify-center  gap-2 md:gap-4 rounded-lg border-2 border-black/10 px-3 py-2 transition-all duration-200 ease-linear 0.9s    hover:bg-gray-100'> 
                                         <TbDownload className=''/>
                                         <span className={`${robotoFont.className} text-sm  font-semibold`}>Download Brochure</span>
@@ -169,11 +172,6 @@ const Academicprogram = () => {
                                         <span className={`${robotoFont.className} text-sm  font-semibold `}>Fee Structure</span>
                                     </button>
                              </section>
-                                  
-                           
-
-
-
                           </div>
 
                         </div>
