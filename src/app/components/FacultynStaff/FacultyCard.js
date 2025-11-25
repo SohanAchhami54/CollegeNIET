@@ -29,7 +29,7 @@ export default function FacultyCard({ faculty }) {
   const uniquePrograms = Array.from(new Set(courses.map(c => c.program).filter(Boolean)));
 
   return (
-    <Link href={`/faculty-and-staff/${slug || '#'}`} className="block">
+    <Link href={`/faculty/${faculty.slug || '#'}`} className="block">
       <article className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-cyan-400 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-4">
