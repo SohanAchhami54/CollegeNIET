@@ -209,7 +209,7 @@ export const facultyData = [
     department: "Biomedical Engineering",
     facultyType: "part-time",
     category: "teaching",
-    image: "guy.jpg",
+    image: "/guy.jpg",
     bio: "Dr. Sanjay Thapa is a practicing physician and researcher who brings clinical perspective to biomedical engineering education.",
     specialization: "Clinical Engineering, Medical Imaging, Healthcare Technology",
     courses: [
