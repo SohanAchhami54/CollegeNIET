@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import CampusLife from "next/image";
+import Image from "next/image";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import LocalCafeOutlinedIcon from "@mui/icons-material/LocalCafeOutlined";
 import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
@@ -14,7 +14,7 @@ import { graduateFont } from "@/font";
 
 const CampusLifeSection = () => {
   const ref = useRef(null);
-  const isInternalTimeView = useInView(ref, { once: true, margin: "-100px" });
+  const isVisible = useInView(ref, { once: true, margin: "-100px" });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const testData = [
@@ -92,69 +92,70 @@ const CampusLifeSection = () => {
 
   const itemsPerView = 3;
   const maxIndex = Math.max(0, testData.length - itemsPerView);
-  const nextData = () =>
-    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
-  const prevData = () => setCurrentIndex((prev) => Math.max(prev - 1, 0));
+
+  const nextData = () => setCurrentIndex((p) => Math.min(p + 1, maxIndex));
+  const prevData = () => setCurrentIndex((p) => Math.max(p - 1, 0));
 
   return (
-    <div ref={ref} className="bg-gradient-to-b from-[#0d4e92]/5 to-white ">
-      {/* Header */}
+    <section
+      ref={ref}
+      className="bg-gradient-to-b from-[#0d4e92]/5 to-white py-16 lg:py-28"
+    >
+      {/* HEADER */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
-        animate={isInternalTimeView ? { opacity: 1, y: 0 } : {}}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="flex flex-col items-center justify-center mt-10 mb-15"
+        className="text-center px-4"
       >
-        <h1 className={`${graduateFont.className} text-5xl lg:text-6xl mt-30`}>
+        <h1
+          className={`${graduateFont.className} text-4xl lg:text-6xl font-bold mb-4`}
+        >
           Experience
           <br />
-          <span
-            className={`${graduateFont.className} ml-7 bg-gradient-to-r from-[#0b4c78] via-purple-500 to-pink-500 bg-clip-text text-transparent`}
-          >
+          <span className="bg-gradient-to-r from-[#0b4c78] via-purple-500 to-pink-500 bg-clip-text text-transparent">
             NIET Life
           </span>
         </h1>
-        <p className="m-3 p-3 text-xl text-gray-500 text-center">
+
+        <p className="text-lg lg:text-xl text-gray-600 max-w-xl mx-auto">
           A vibrant community of innovators, makers, and future leaders.
         </p>
       </motion.div>
 
-      {/* Video + Features */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-12 items-start px-4 lg:px-12 mb-16">
-        {/* Video */}
+      {/* VIDEO + FEATURES */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-6 m-0 lg:m-15 lg:px-12 mt-16">
+        {/* IMAGE SECTION */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
-          animate={isInternalTimeView ? { opacity: 1, x: 0 } : {}}
+          animate={isVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[600px] p-6 mx-auto lg:mx-0"
+          className="relative aspect-[4/5] rounded-3xl overflow-hidden group"
         >
-          <CampusLife
+          <Image
             src="/pexels.jpg"
-            alt="CampusSection"
+            alt="Campus Life"
             fill
-            className="object-cover rounded-4xl"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <button>
-              <PlayCircleFilledWhiteIcon
-                sx={{
-                  height: 80,
-                  width: 80,
-                  color: "white",
-                  transition: "transform 0.4s ease",
-                  "&:hover": { transform: "scale(1.1)" },
-                }}
-              />
-            </button>
+            <PlayCircleFilledWhiteIcon
+              sx={{
+                width: 90,
+                height: 90,
+                color: "white",
+                filter: "drop-shadow(0 0 12px rgba(0,0,0,0.5))",
+              }}
+            />
           </div>
         </motion.div>
 
-        {/* Features */}
+        {/* FEATURES LIST */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
-          animate={isInternalTimeView ? { opacity: 1, x: 0 } : {}}
+          animate={isVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-start gap-6 mt-10 lg:mt-25 lg:mr-10 "
+          className="flex flex-col gap-6 justify-center"
         >
           {[
             {
@@ -177,105 +178,123 @@ const CampusLifeSection = () => {
               title: "Student Clubs",
               desc: "Active student organizations and cultural activities",
             },
-          ].map((start, index) => {
-            const Icon = start.icon;
+          ].map((item, i) => {
+            const Icon = item.icon;
             return (
-              <div
-                key={index}
-                className="flex items-center border rounded-2xl border-gray-200 p-3  hover:shadow-2xl transition-all group"
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-all"
               >
-                <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 group-hover:scale-110 transition-transform">
-                  <Icon sx={{ height: 30, width: 30, color: "white" }} />
+                <div className="min-w-16 min-h-16 rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 flex items-center justify-center text-white">
+                  <Icon sx={{ width: 30, height: 30, color: "white" }} />
                 </div>
-                <div className="ml-4">
-                  <h3 className={`${graduateFont.className} text-xl`}>
-                    {start.title}
-                  </h3>
-                  <p className="text-gray-500">{start.desc}</p>
+
+                <div>
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </motion.div>
       </div>
 
-      {/* Testimonials */}
-      <div
-        className={`${graduateFont.className} text-xl lg:text-4xl font-bold flex items-center justify-center mb-5`}
+      {/* TESTIMONIAL HEADER */}
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className={`${graduateFont.className} text-center text-3xl lg:text-4xl mt-20`}
       >
-        <h1>What Our Students Say</h1>
-      </div>
+        What Our Students Say
+      </motion.h2>
 
-      <div className="relative">
+      {/* TESTIMONIAL CAROUSEL */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative mt-10 px-4 lg:px-12"
+      >
         <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 gap-2 mr-10 ml-10 mt-4"
+          <motion.div
+            className="flex gap-6 transition-transform duration-500"
             style={{
               transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
-            {testData.map((start, index) => (
-              <div key={index} className="flex-shrink-0 w-full lg:w-1/3 ">
+            {testData.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="min-w-[80%] sm:min-w-[50%] lg:min-w-[33%] p-6 rounded-3xl bg-gray-900 text-white relative overflow-hidden"
+              >
                 <div
-                  className="flex flex-col m-2 p-4 border rounded-2xl relative z-10 bg-white shadow-lg bg-gradient-to-br from-gray-900 to-gray-800"
-                  style={{
-                    minWidth: `calc((100% - ${
-                      (itemsPerView - 1) * 16
-                    }px) / ${itemsPerView})`,
-                    height: "300px",
-                  }}
-                >
-                  <FormatQuoteIcon className="text-gray-300 mb-3" />
-                  <p className="text-gray-200 mb-2 m-6">{start.quote}</p>
-                  <div className="mt-4 p-2 flex flex-row items-center">
-                    <div
-                      className={`w-10 h-10 rounded-full p-2 m-2 bg-gradient-to-br ${start.gradient}`}
-                    ></div>
-                    <div className="pt-1">
-                      <h2 className="font-bold text-gray-200">{start.name}</h2>
-                      <p className="text-gray-400 text-sm">{start.role}</p>
-                    </div>
+                  className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${item.gradient} opacity-20 blur-2xl`}
+                ></div>
+
+                <FormatQuoteIcon className="text-white/30 mb-4" />
+
+                <p className="text-white/90 leading-relaxed mb-6">
+                  "{item.quote}"
+                </p>
+
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${item.gradient}`}
+                  ></div>
+                  <div>
+                    <h4 className="text-white">{item.name}</h4>
+                    <p className="text-white/50 text-sm">{item.role}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        {/* Navigation */}
-        <div className="flex flex-row items-center justify-center gap-4 mt-6">
+        {/* CAROUSEL BUTTONS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center gap-4 mt-6"
+        >
           <button
             onClick={prevData}
             disabled={currentIndex === 0}
-            className={`border rounded-4xl p-3 border-gray-300 ${
-              currentIndex === 0
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:border-blue-500 hover:bg-blue-50"
-            } transition hover:shadow-lg`}
+            className="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center disabled:opacity-40"
           >
-            <ArrowBackIosIcon sx={{ height: "20px", paddingLeft: "2px" }} />
+            <ArrowBackIosIcon fontSize="small" />
           </button>
+
           <button
             onClick={nextData}
             disabled={currentIndex >= maxIndex}
-            className={`border rounded-4xl p-3 border-gray-300 ${
-              currentIndex >= maxIndex
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:border-blue-500 hover:bg-blue-50"
-            } transition hover:shadow-lg`}
+            className="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center disabled:opacity-40"
           >
-            <ArrowForwardIosIcon sx={{ height: "20px" }} />
+            <ArrowForwardIosIcon fontSize="small" />
           </button>
-        </div>
-        <div className="flex justify-center mt-4 mb-30">
-          <div className="text-sm text-gray-500">
-            Showing {currentIndex + 1}-
-            {Math.min(currentIndex + itemsPerView, testData.length)} of{" "}
-            {testData.length}
-          </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+
+        {/* PROGRESS INDICATOR */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isVisible ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex justify-center mt-4 text-gray-500 text-sm"
+        >
+          Showing {currentIndex + 1}-
+          {Math.min(currentIndex + itemsPerView, testData.length)} of{" "}
+          {testData.length}
+        </motion.div>
+      </motion.div>
+    </section>
   );
 };
 

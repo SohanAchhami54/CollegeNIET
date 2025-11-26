@@ -48,7 +48,7 @@ const FAQSection = () => {
   return (
     <section
       ref={ref}
-      className="py-20 lg:py-32 bg-white relative overflow-hidden"
+      className="py-20 lg:py-32  bg-white relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-br from-purple-50 to-pink-50 rounded-full blur-3xl opacity-50"></div>
       <motion.div
@@ -57,7 +57,7 @@ const FAQSection = () => {
         transition={{ duration: 0.6 }}
         className="text-center mb-16"
       >
-        <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10">
+        <div className=" max-w-4xl  mx-auto px-6 lg:px-12 relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 border border-purple-100 mb-6">
             <AutoAwesomeOutlinedIcon className="h-4 w-4 text-[#0b4c78]" />
             <span>FAQ</span>
@@ -80,7 +80,7 @@ const FAQSection = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={isInternalTimeView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="m-2  max-w-200 mx-auto space-y-4 "
+        className="m-2  max-w-200 mx-4 lg:mx-auto space-y-4 "
       >
         {faqs.map((faq, idx) => (
           <Accordion
@@ -88,10 +88,10 @@ const FAQSection = () => {
             className="rounded-xl overflow-hidden shadow-sm mb-4 p-3 border border-gray-200
              hover:border-[#0b4c78]/30 hover:shadow-lg transition-colors"
             sx={{
-              borderRadius: "16px", 
+              borderRadius: "16px",
               overflow: "hidden",
-              "&:before": { display: "none" }, 
-              "&.Mui-expanded": { borderRadius: "16px" }, 
+              "&:before": { display: "none" },
+              "&.Mui-expanded": { borderRadius: "16px" },
             }}
           >
             <AccordionSummary
