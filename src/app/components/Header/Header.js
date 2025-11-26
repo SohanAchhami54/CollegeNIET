@@ -100,25 +100,22 @@ const Header = () => {
           {/* Desktop Menu */}
           <ul className="hidden lg:flex justify-between items-center gap-2 text-gray-700">
             <li
-              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
             >
               <Link href="/about">About</Link>
             </li>
 
             {/* Academics Dropdown */}
             <li
-              className={`relative hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`relative hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
               ref={dropdownRef}
             >
               <button
                 onClick={() => setAcademicsDropdownOpen(!academicsDropdownOpen)}
-                className={`flex items-center gap-1 transition-colors ${
-                  scroll ? "text-gray-900" : "text-white"
-                }`}
+                className={`flex items-center gap-1 transition-colors ${scroll ? "text-gray-900" : "text-white"
+                  }`}
               >
                 Academics
                 <ExpandMoreIcon
@@ -235,9 +232,8 @@ const Header = () => {
             </li>
 
             <li
-              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${
-                scroll ? "text-gray-900" : "text-white"
-              }`}
+              className={`hover:bg-gray-400/15 rounded-3xl px-5 py-2 transition-colors cursor-pointer ${scroll ? "text-gray-900" : "text-white"
+                }`}
             >
               <Link href="/faculty">Faculty and Staff</Link>
             </li>
@@ -245,9 +241,8 @@ const Header = () => {
 
           {/* MOBILE BUTTON */}
           <button
-            className={`lg:hidden flex transition-colors bg-white/10 p-1 rounded-lg ${
-              scroll ? "text-gray-900" : "text-white"
-            }`}
+            className={`lg:hidden flex transition-colors bg-white/10 p-1 rounded-lg ${scroll ? "text-gray-900" : "text-white"
+              }`}
             onClick={() => setMobileView(!mobileView)}
           >
             {mobileView ? (
