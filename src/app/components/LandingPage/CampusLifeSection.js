@@ -241,7 +241,7 @@ const CampusLifeSection = () => {
                 <FormatQuoteIcon className="text-white/30 mb-4" />
 
                 <p className="text-white/90 leading-relaxed mb-6">
-                  "{item.quote}"
+                  {item.quote}
                 </p>
 
                 <div className="flex items-center gap-3">
