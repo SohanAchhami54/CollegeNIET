@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { FiMail, FiBook, FiUser, FiPhone } from 'react-icons/fi';
 import { graduateFont, robotoFont } from '@/font';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 18, scale: 0.995 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.48, ease: [0.2,0.8,0.2,1] } },
+};
 
 export default function FacultyCard({ faculty }) {
   if (!faculty) {
@@ -31,7 +37,7 @@ export default function FacultyCard({ faculty }) {
 
   return (
     <Link href={`/faculty/${faculty.slug || '#'}`} className="block">
-      <article className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-cyan-400 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+      <motion.article className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-cyan-400 shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-4">
             <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-cyan-100 group-hover:border-cyan-400 transition-all duration-300 shadow-lg">
@@ -102,7 +108,7 @@ export default function FacultyCard({ faculty }) {
             </div>
           )}
         </div>
-      </article>
+      </motion.article>
     </Link>
   );
 }
