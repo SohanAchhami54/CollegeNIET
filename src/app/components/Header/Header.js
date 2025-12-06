@@ -333,14 +333,18 @@ const Header = () => {
                   <RiArrowDropRightLine className="h-4 w-4" />
                 </Link>
               </div>
-
               <Link
-                href="/faculty-and-staff"
-                onClick={() => setMobileView(false)}
-                className="px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92]"
-              >
+                 href="/faculty"
+                 onClick={() => setMobileView(false)}
+                 className="px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92]"
+               >
                 Faculty and Staff
-              </Link>
+               </Link>
+
+                  
+
+
+
             </div>
           </div>
         )}
