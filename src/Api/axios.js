@@ -2,8 +2,8 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: "https://biomedical.edu.np/",
-    headers:{
-        'Content-Type':'application/json',
+    headers: {
+        'Content-Type': 'application/json',
     }
 });
 
