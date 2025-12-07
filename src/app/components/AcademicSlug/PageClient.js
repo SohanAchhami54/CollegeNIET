@@ -922,6 +922,12 @@ const PageClient = ({ program, allPrograms, relatedPrograms }) => {
                                                             <FiArrowRight className="ml-2 h-4 w-4" />
                                                         </Button>
                                                     </Link> */}
+                                                    <Link href={`/faculty?program=${encodeURIComponent(programName)}`}>
+                                                        <Button className= "bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white">
+                                                            View All Faculty
+                                                            <FiArrowRight className="ml-2 h-4 w-4" />
+                                                        </Button>
+                                                    </Link>
                                                 </div>
                                             )}
                                             {program.id === "be-computer" && (

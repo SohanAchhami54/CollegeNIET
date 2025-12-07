@@ -1,5 +1,3 @@
-// 
-
 "use client";
 import React from "react";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
