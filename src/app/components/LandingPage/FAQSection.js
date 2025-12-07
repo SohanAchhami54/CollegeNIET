@@ -10,6 +10,9 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const FAQSection = () => {
+
+
+
   const ref = useRef(null);
   const isInternalTimeView = useInView(ref, { once: true, margin: "-100px" });
   const faqs = [
