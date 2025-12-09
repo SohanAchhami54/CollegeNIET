@@ -916,18 +916,18 @@ const PageClient = ({ program, allPrograms, relatedPrograms }) => {
                                                         <span className="px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-medium">Prosthetics & Orthotics</span>
                                                         <span className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">Clinical Engineering</span>
                                                     </div>
-                                                    {/* <Link to="/faculty-and-staff?program=BE in Biomedical Engineering">
+                                                    <Link href="/faculty-and-staff?program=BE in Biomedical Engineering">
                                                         <Button className="bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white">
                                                             View All Faculty
                                                             <FiArrowRight className="ml-2 h-4 w-4" />
                                                         </Button>
-                                                    </Link> */}
-                                                    <Link href={`/faculty?program=${encodeURIComponent(programName)}`}>
+                                                    </Link>
+                                                    {/* <Link href={`/faculty?program=${encodeURIComponent(programName)}`}>
                                                         <Button className= "bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white">
                                                             View All Faculty
                                                             <FiArrowRight className="ml-2 h-4 w-4" />
                                                         </Button>
-                                                    </Link>
+                                                    </Link> */}
                                                 </div>
                                             )}
                                             {program.id === "be-computer" && (
