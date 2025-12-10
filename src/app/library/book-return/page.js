@@ -71,7 +71,7 @@ export default function BookReturnPage() {
 
   useEffect(() => {
     loadLibraryData();
-  }, [fetchTransactions]);
+  }, [loadLibraryData]);
 
   async function fetchTransactions() {
     try {
