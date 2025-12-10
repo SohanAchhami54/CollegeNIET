@@ -11,7 +11,7 @@ const reusecom = {
   badgeIcon3:<AutoAwesomeIcon className="text-blue-400" />,
   badgeIcon4:<AutoAwesomeIcon className="text-blue-400" />,
   badgeText:"Pioneering Engineering Eduction Since 2005",
-  headingpart1:"NIET-Pioneering Engineering",
+  headingpart1:"🚀 NIET-Pioneering Engineering",
   headingpart2:'Eduction Since 2005',
   paragraph:"NIET (National Institute of Engineering and Technology) is Nepal's premier institute for Biomedical Engineering, now expanding into AI and Computer Engineering to shape the future of technology and healthcare ",
   badgeText2:"BE in Biomedical Engineering",
