@@ -1,6 +1,5 @@
 "use client";
-
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@mui/material";
 import {
@@ -11,6 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { graduateFont } from "@/font";
+import api from "@/Api/axios";
 
 export default function AdmissionSection() {
   const ref = useRef(null);

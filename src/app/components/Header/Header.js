@@ -57,11 +57,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scroll
-          ? "backdrop-blur-xl shadow-lg border-cyan-100/30 bg-white/70"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scroll
+        ? "backdrop-blur-xl shadow-lg border-cyan-100/30 bg-white/70"
+        : "bg-transparent"
+        }`}
     >
       <nav className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 lg:h-24">
@@ -80,16 +79,14 @@ const Header = () => {
               </div>
               <div className="flex flex-col gap-0">
                 <span
-                  className={`text-xl md:text-2xl ${
-                    scroll ? "text-gray-900" : "text-white"
-                  } ${graduateFont.className}`}
+                  className={`text-xl md:text-2xl ${scroll ? "text-gray-900" : "text-white"
+                    } ${graduateFont.className}`}
                 >
                   NIET
                 </span>
                 <span
-                  className={`text-xs opacity-55 ${
-                    scroll ? "text-black" : "text-white"
-                  }`}
+                  className={`text-xs opacity-55 ${scroll ? "text-black" : "text-white"
+                    }`}
                 >
                   (FORMER COLLEGE OF BIOMEDICAL ENGINEERING AND APPLIED SCIENCES)
                 </span>
@@ -119,9 +116,8 @@ const Header = () => {
               >
                 Academics
                 <ExpandMoreIcon
-                  className={`transition-all ${
-                    scroll ? "text-gray-900" : "text-white"
-                  } ${academicsDropdownOpen ? "rotate-180" : ""}`}
+                  className={`transition-all ${scroll ? "text-gray-900" : "text-white"
+                    } ${academicsDropdownOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
@@ -156,7 +152,7 @@ const Header = () => {
                   </div>
 
                   {/* LIST */}
-                  <div className="px-6 py-4">
+                  <div className="px-6 py-6">
                     <div className="grid grid-cols-1 gap-3">
                       {programs.map((program, index) => {
                         const isActive =
@@ -169,37 +165,36 @@ const Header = () => {
                             key={index}
                             href={program.href}
                             onClick={() => setAcademicsDropdownOpen(false)}
-                            className={`group relative flex items-start gap-4 px-4 py-4 rounded-xl transition-all ${
-                              isActive
-                                ? "bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 text-[#0d4e92]"
-                                : "hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50"
-                            }`}
+                            className={`group relative flex items-start gap-4 px-4 py-4 rounded-xl transition-all ${isActive
+                              ? "bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 text-[#0d4e92]"
+                              : "hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50"
+                              }`}
                           >
                             {/* ICON SMALL WITH HOVER SCALE */}
                             <div className="p-2.5 rounded-lg bg-gradient-to-br from-cyan-50 to-blue-50 transition-transform duration-300 group-hover:scale-125 group-hover:shadow-md">
                               {React.cloneElement(program.icon, {
                                 className:
-                                  "h-4 w-4 text-cyan-600 transition-transform duration-300",
+                                  "h-5 w-5 text-cyan-600 transition-transform duration-300",
                               })}
                             </div>
 
                             {/* TEXT SMALL */}
                             <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs font-semibold text-gray-900 group-hover:text-[#0d4e92]">
+                              <div className="flex items-center gap-1">
+                                <span className="text-md tracking-tighter font-semibold mb-1 text-gray-900 group-hover:text-[#0d4e92]">
                                   {program.name}
                                 </span>
 
                                 {/* NEW BADGE */}
                                 {program.isNew && (
-                                  <span className="ml-1 px-2 py-[2px] text-[10px] font-semibold rounded bg-green-600 text-white">
+                                  <span className="ml-1 px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">
                                     NEW
                                   </span>
                                 )}
                               </div>
 
                               {program.descriptor && (
-                                <p className="text-[10px] text-gray-500 mt-1">
+                                <p className="text-xs text-gray-500 mt-1">
                                   {program.descriptor}
                                 </p>
                               )}
@@ -280,11 +275,10 @@ const Header = () => {
                       <Link
                         key={index}
                         href={program.href}
-                        className={`group flex items-start gap-3 px-4 py-3.5 rounded-xl transition-all ${
-                          isActive
-                            ? "bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 text-[#0d4e92]"
-                            : "hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700"
-                        }`}
+                        className={`group flex items-start gap-3 px-4 py-3.5 rounded-xl transition-all ${isActive
+                          ? "bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 text-[#0d4e92]"
+                          : "hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700"
+                          }`}
                         onClick={() => setMobileView(false)}
                       >
                         {/* MOBILE ICON WITH HOVER SCALE */}
@@ -334,14 +328,14 @@ const Header = () => {
                 </Link>
               </div>
               <Link
-                 href="/faculty"
-                 onClick={() => setMobileView(false)}
-                 className="px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92]"
-               >
+                href="/faculty"
+                onClick={() => setMobileView(false)}
+                className="px-4 py-3 rounded-2xl text-gray-700 hover:text-[#0d4e92]"
+              >
                 Faculty and Staff
-               </Link>
+              </Link>
 
-                  
+
 
 
 
