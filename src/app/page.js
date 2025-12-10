@@ -5,7 +5,7 @@ import AdmissionSection from "./components/LandingPage/AdmissionSection";
 import FAQSection from "./components/LandingPage/FAQSection";
 import RecognitionSection from "./components/LandingPage/RecognitionSection";
 
-import CTASection from "./components/LandingPage/CTASection";
+//import CTASection from "./components/LandingPage/CTASection";
 //import CTASection from "./components/LandingPage/CTASection";
 
 import Programsection from "./components/LandingPage/Programsection";
@@ -23,7 +23,7 @@ export default function Home() {
       <AdmissionSection />
       <RecognitionSection />
       <FAQSection />
-      <CTASection/>
+      {/* <CTASection/> */}
       {/* <Data1 /> */}
 
 
