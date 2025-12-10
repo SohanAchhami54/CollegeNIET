@@ -8,6 +8,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import api from "@/Api/axios";
 
 const FAQSection = () => {
 
@@ -47,6 +49,8 @@ const FAQSection = () => {
         "Yes, NIET welcomes international students from SAARC and other countries. We provide support with visa processing, accommodation, and cultural integration. International students must meet the same academic requirements and entrance exam criteria.",
     },
   ];
+
+
   return (
     <section
       ref={ref}

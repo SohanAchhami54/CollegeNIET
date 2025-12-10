@@ -10,7 +10,13 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'www.pinterest.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'biomedical.edu.np',
+                pathname: '/**'
+            }
         ],
+
     },
 
     // Proxy all /api requests to the backend

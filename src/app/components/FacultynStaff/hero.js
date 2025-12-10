@@ -7,16 +7,18 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { motion } from "framer-motion";
 
 import Reusablebuilding from "../ReusableComHero/Reusablebuilding";
-import Reusablecomhero from "../ReusableComHero/Reusablecomhero"; 
-import { graduateFont, robotoFont } from "@/font";   
+import Reusablecomhero from "../ReusableComHero/Reusablecomhero";
+import { graduateFont, robotoFont } from "@/font";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/Api/axios";
 
 export default function FacultyHeroSection() {
 
   const facultyHeroContent = {
-    badgeIcon: <AutoAwesomeIcon className="text-white" />,  
-    badgeText: "Expert Engineering Faculty & Staff",  
-    headingpart1: "Meet Our",  
-    headingpart2: "Expert Team",  
+    badgeIcon: <AutoAwesomeIcon className="text-white" />,
+    badgeText: "Expert Engineering Faculty & Staff",
+    headingpart1: "Meet Our",
+    headingpart2: "Expert Team",
     paragraph:
       "Experienced educators, researchers, and administrators with PhD and Masters degrees from leading institutions. Our faculty combines academic excellence with real-world industry expertise to deliver exceptional engineering education in Nepal."
   };
@@ -31,7 +33,7 @@ export default function FacultyHeroSection() {
   const statsbottom = [
     { icon: <AutoAwesomeIcon style={{ color: "white" }} />, description: 'Industry Experience' },
     { icon: <LanguageIcon style={{ color: "white" }} />, description: 'Global Universities' },
-    { icon: <ScienceIcon style={{ color: "white" }} />, description: 'Research Excellence'},
+    { icon: <ScienceIcon style={{ color: "white" }} />, description: 'Research Excellence' },
     { icon: <LeaderboardIcon style={{ color: "white" }} />, description: 'Student Success' }
   ];
 
@@ -52,9 +54,25 @@ export default function FacultyHeroSection() {
     visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] } }
   };
 
+
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['herosection'],
+    queryFn: () => api.get('website/hero-section/')
+  })
+  if (isLoading) {
+    return <p> Loading.....</p>
+  }
+  if (error) {
+    return <p>{error.message} </p>
+  }
+  console.log('Hero message:', data)
+  const facultypage = data.data[0]
+  console.log('facultypagedata:', facultypage)
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 px-6 py-32 lg:py-40">
-      
+
       {/* Background animation */}
       <motion.div
         initial={{ opacity: 0, scale: 1.05 }}
@@ -62,12 +80,12 @@ export default function FacultyHeroSection() {
         transition={{ duration: 1.4, ease: "easeOut" }}
         className="absolute inset-0"
       >
-        <Reusablebuilding />
+        <Reusablebuilding path={facultypage.background_image} />
       </motion.div>
 
       {/* Main Content */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
-        
+
         <motion.div
           variants={container}
           initial="hidden"
@@ -99,24 +117,24 @@ export default function FacultyHeroSection() {
           </motion.div>
 
 
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center mt-10">
-        {statsbottom.map((item, index) => (
-            <motion.div
-            key={index}
-            variants={statItem}
-            className="flex items-center justify-center gap-2 
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center mt-10">
+            {statsbottom.map((item, index) => (
+              <motion.div
+                key={index}
+                variants={statItem}
+                className="flex items-center justify-center gap-2 
                         px-6 py-3  backdrop-blur-lg 
                         border border-blue-100 
                         rounded-full 
                         whitespace-nowrap 
                         transition-all duration-300 
                         hover:scale-105"
-            >
-            {item.icon}
-            <span className="text-white text-sm">{item.description}</span>
-            </motion.div>
-        ))}
-        </motion.div>
+              >
+                {item.icon}
+                <span className="text-white text-sm">{item.description}</span>
+              </motion.div>
+            ))}
+          </motion.div>
 
 
         </motion.div>
