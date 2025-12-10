@@ -1,6 +1,7 @@
 "use client"
 import api from '@/Api/axios';
 import { graduateFont, robotoFont } from '@/font';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
@@ -47,21 +48,39 @@ const Graduate = () => {
     },
   ];
 
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
-      const result = await api.get('/website/why-graduate-trust-niet/content/')
-      console.log('why gradient trust niet', result)
-      setData(result.data);
-    }
-    getData();
-  }, [])
+  // const [data, setData] = useState([]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const result = await api.get('/website/why-graduate-trust-niet/content/')
+  //     console.log('why gradient trust niet', result)
+  //     setData(result.data);
+  //   }
+  //   getData();
+  // }, [])
 
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['graduate'],
+        queryFn: () => api.get('/website/why-graduate-trust-niet/').then(res => res.data)
+      },
+      {
+        queryKey: ['graduatecontent'],
+        queryFn: () => api.get('/website/why-graduate-trust-niet/content/').then(res => res.data)
+      }
+    ]
+  })
 
+  const [graduate, graduatecontent] = results
+  console.log('graduate:', graduate.data)
+  console.log('graduatecontent:', graduatecontent.data)
+  if (graduate.isLoading || graduatecontent.isLoading) {
+    return <p>Loading...</p>;
+  }
 
-
-
-
+  if (graduate.isError || graduatecontent.isError) {
+    return <p>Error: {graduate.error?.message || graduatecontent.error?.message}</p>;
+  }
   return (
     <>
       <section ref={ref} className=' bg-gradient-to-b from-gray-50 to-white  lg:py-32 relative over-flow   mb-30 lg:mb-55'>
@@ -79,7 +98,7 @@ const Graduate = () => {
               <br />
               Trust niet
             </h2>
-            <p className='max-w-3xl mx-auto text-xl  text-gray-600'>Nepal&apos;s Best Private College Award winner. First UGC-QAA certified engineering college in kathmandu valley. Proven track record of global success.</p>
+            <p className='max-w-3xl mx-auto text-xl  text-gray-600'>{graduate.data?.support_text} </p>
           </motion.div>
 
           {/* image section  */}
