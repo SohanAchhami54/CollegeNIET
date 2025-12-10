@@ -23,8 +23,8 @@ export default function Home() {
       <AdmissionSection />
       <RecognitionSection />
       <FAQSection />
-      {/* <CTASection/> */}
-      <Data1 />
+      <CTASection/>
+      {/* <Data1 /> */}
 
 
 
