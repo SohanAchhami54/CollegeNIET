@@ -93,10 +93,11 @@ const Graduate = () => {
             className="text-center mb-16 lg:mb-20"
           >
             <h2 className={`${graduateFont.className} text-4xl lg:text-6xl text-black tracking-tight`}>
-              Why
+              {/* Why
               <span className='bg-gradient-to-r from-blue-800 to-cyan-500 text-transparent bg-clip-text'> 500 + Graduates</span>
               <br />
-              Trust niet
+              Trust niet */}
+              {graduate.data?.heading_line}
             </h2>
             <p className='max-w-3xl mx-auto text-xl  text-gray-600'>{graduate.data?.support_text} </p>
           </motion.div>
@@ -105,7 +106,7 @@ const Graduate = () => {
           <div className='pb-12'>
             <ul className='  grid md:grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-7'>
               {
-                graduates.map((g) => {
+                graduatecontent.data?.map((g) => {
                   return (
 
                     <motion.li key={g.id}
@@ -127,19 +128,25 @@ const Graduate = () => {
                       className=' relative h-full overflow-hidden rounded-4xl border border-black/15 transition-all duration-100 ease-in hover:shadow-2xl group' >
                       <div className='relative h-55 overflow-hidden '>
                         {/* <img src={g.image} alt={g.alt}  className='object-cover  w-full h-auto'/> */}
-                        <Image src={g.image} alt={g.alt} fill className='w-full h-full object-cover transition-all duration-400 ease-in group-hover:scale-110' />
+                        <Image src={`https://biomedical.edu.np/${g.photo}`} alt={g.heading} fill className='w-full h-full object-cover transition-all duration-400 ease-in group-hover:scale-110' />
 
                         <div className='absolute top-6 right-6 w-14 h-14 flex justify-center items-center rounded-2xl bg-white transition-all duration-75 ease-out group-hover:scale-110'>
-                          <span className=''>
+                          {/* <span className=''>
                             {React.cloneElement(g.icon, { className: ' text-blue-800 w-7 h-7 transition-all duration-75 ease-out group-hover:scale-100' })}
-                          </span>
+                          </span> */}
+                          <Image
+                            src={`https://biomedical.edu.np/${g.icon}`}
+                            alt={g.heading}
+                            width={28}
+                            height={28}
+                          />
                         </div>
                       </div>
                       {/* content section  */}
                       <div className='p-8 '>
                         <div className='flex flex-wrap'>
-                          <h2 className={`${graduateFont.className} text-2xl mb-3`}>{g.title} </h2>
-                          <p className={`${robotoFont.className} text-lg`}>{g.description} </p>
+                          <h2 className={`${graduateFont.className} text-2xl mb-3`}>{g.heading} </h2>
+                          <p className={`${robotoFont.className} text-lg`}>{g.support_text} </p>
                         </div>
 
                       </div>
