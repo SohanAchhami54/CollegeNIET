@@ -11,11 +11,50 @@ import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { graduateFont } from "@/font";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQueries,
+} from "@tanstack/react-query";
+import api from "@/Api/axios";
 
 const CampusLifeSection = () => {
   const ref = useRef(null);
   const isVisible = useInView(ref, { once: true, margin: "-100px" });
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["experience_niet_life"],
+        queryFn: () =>
+          api.get("/website/experience-niet-life/").then((res) => res.data),
+      },
+      {
+        queryKey: ["experience_niet_life_detail"],
+        queryFn: () =>
+          api
+            .get("/website/experience-niet-life/content/")
+            .then((res) => res.data),
+      },
+
+      {
+        queryKey: ["testimonial_list"],
+        queryFn: () =>
+          api.get("/website/what-our-students-say/").then((res) => res.data),
+      },
+    ],
+  });
+
+  const [experience_niet_life, experience_niet_life_detail, testimonial_list] =
+    results;
+  // console.log("experience_niet_life:", experience_niet_life);
+  // console.log("experience_niet_life_detail:", experience_niet_life_detail.data);
+  // console.log("testimonial_list:", testimonial_list.data);
+
+  const testimonialData = Array.isArray(testimonial_list?.data)
+    ? testimonial_list.data
+    : [];
 
   const testData = [
     {
@@ -111,15 +150,24 @@ const CampusLifeSection = () => {
         <h1
           className={`${graduateFont.className} text-4xl lg:text-6xl font-bold mb-4`}
         >
-          Experience
+          {experience_niet_life?.data?.heading_line
+            ?.split(" ")
+            .slice(0, 1)
+            .join(" ")}
           <br />
           <span className="bg-gradient-to-r from-[#0b4c78] via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            NIET Life
+            {experience_niet_life?.data?.heading_line
+              ?.split(" ")
+              ?.slice(1)
+              ?.join(" ")}
           </span>
         </h1>
 
         <p className="text-lg lg:text-xl text-gray-600 max-w-xl mx-auto">
-          A vibrant community of innovators, makers, and future leaders.
+          {experience_niet_life?.data?.support_text
+            ?.split(" ")
+            ?.slice(1)
+            ?.join(" ")}
         </p>
       </motion.div>
 
@@ -157,48 +205,30 @@ const CampusLifeSection = () => {
           transition={{ duration: 0.8 }}
           className="flex flex-col gap-6 justify-center"
         >
-          {[
-            {
-              icon: WorkspacePremiumOutlinedIcon,
-              title: "Technical Competitions",
-              desc: "Hackathons, robotics contests, and innovation challenges",
-            },
-            {
-              icon: LocalCafeOutlinedIcon,
-              title: "Innovation Hub",
-              desc: "24/7 coworking space for student projects and startups",
-            },
-            {
-              icon: FitnessCenterOutlinedIcon,
-              title: "Sports & Recreation",
-              desc: "Modern gym, sports facilities, and wellness programs",
-            },
-            {
-              icon: PeopleAltOutlinedIcon,
-              title: "Student Clubs",
-              desc: "Active student organizations and cultural activities",
-            },
-          ].map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-all"
-              >
-                <div className="min-w-16 min-h-16 rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 flex items-center justify-center text-white">
-                  <Icon sx={{ width: 30, height: 30, color: "white" }} />
-                </div>
+          {experience_niet_life_detail?.data?.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="flex items-center gap-4 p-5 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-all"
+            >
+              <div className="min-w-16 min-h-16 rounded-2xl bg-gradient-to-br from-[#0b4c78] to-cyan-400 flex items-center justify-center text-white">
+                <Image
+                  src={`https://biomedical.edu.np${item.icon}`}
+                  alt={item.heading || "icon"}
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+              </div>
 
-                <div>
-                  <h3 className="text-xl font-semibold">{item.title}</h3>
-                  <p className="text-gray-600">{item.desc}</p>
-                </div>
-              </motion.div>
-            );
-          })}
+              <div>
+                <h3 className="text-xl font-semibold">{item.heading}</h3>
+                <p className="text-gray-600">{item.support_text}</p>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
 
@@ -226,7 +256,7 @@ const CampusLifeSection = () => {
               transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
-            {testData.map((item, i) => (
+            {testimonialData.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
@@ -241,7 +271,7 @@ const CampusLifeSection = () => {
                 <FormatQuoteIcon className="text-white/30 mb-4" />
 
                 <p className="text-white/90 leading-relaxed mb-6">
-                  {item.quote}
+                  {item.saying}
                 </p>
 
                 <div className="flex items-center gap-3">
@@ -250,7 +280,7 @@ const CampusLifeSection = () => {
                   ></div>
                   <div>
                     <h4 className="text-white">{item.name}</h4>
-                    <p className="text-white/50 text-sm">{item.role}</p>
+                    <p className="text-white/50 text-sm">{item.profession}</p>
                   </div>
                 </div>
               </motion.div>

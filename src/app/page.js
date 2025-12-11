@@ -25,9 +25,6 @@ export default function Home() {
       <FAQSection />
       {/* <CTASection/> */}
       {/* <Data1 /> */}
-
-
-
     </>
   );
 }

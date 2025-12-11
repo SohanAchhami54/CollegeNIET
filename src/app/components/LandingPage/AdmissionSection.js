@@ -11,10 +11,34 @@ import {
 } from "lucide-react";
 import { graduateFont } from "@/font";
 import api from "@/Api/axios";
+import { useQueries } from "@tanstack/react-query";
+import Image from "next/image";
 
 export default function AdmissionSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["admission_detail"],
+        queryFn: () =>
+          api.get("/website/journey-to-niet/").then((res) => res.data),
+      },
+      {
+        queryKey: ["admission_detail_step"],
+        queryFn: () =>
+          api.get("/website/journey-to-niet/step/").then((res) => res.data),
+      },
+    ],
+  });
+  const [admission_detail, admission_detail_step] = results;
+  console.log("admission-detail:", admission_detail);
+  console.log("admission-detail-steps:", admission_detail_step.data);
+
+  const admissionstepsDetail = Array.isArray(admission_detail_step?.data)
+    ? admission_detail_step.data
+    : [];
 
   const steps = [
     {
@@ -67,18 +91,26 @@ export default function AdmissionSection() {
           <h2
             className={`${graduateFont.className} text-4xl lg:text-6xl text-white mb-6 tracking-tight`}
           >
-            Your Journey to NIET
+            {admission_detail?.data?.heading_line
+              ?.split(" ")
+              ?.slice(0, 3)
+              .join(" ")}
             <br />
-            <span className="text-cyan-300">Starts Here</span>
+            <span className="text-cyan-300">
+              {admission_detail?.data?.heading_line
+                ?.split(" ")
+                ?.slice(3)
+                .join(" ")}
+            </span>
           </h2>
           <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Four simple steps to transform into a world-class engineer.
+            {admission_detail?.data?.support_text}
           </p>
         </motion.div>
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {steps.map((step, index) => {
+          {admissionstepsDetail.map((step, index) => {
             const Icon = step.icon;
             return (
               <motion.div
@@ -98,15 +130,21 @@ export default function AdmissionSection() {
                 {/* Card */}
                 <div className="relative p-8 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all h-full">
                   <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <Icon className="h-8 w-8 text-blue-600" />
+                    <Image
+                      src={`https://biomedical.edu.np${step.icon}`}
+                      alt={steps.heading || "icon"}
+                      width={8}
+                      height={8}
+                      className="h-8 w-8 text-blue-600"
+                    />
                   </div>
 
                   <h3
                     className={`${graduateFont.className} text-xl text-white mb-3`}
                   >
-                    {step.title}
+                    {step.heading}
                   </h3>
-                  <p className="text-blue-100">{step.description}</p>
+                  <p className="text-blue-100">{step.support_text}</p>
                 </div>
 
                 {/* Arrow Connector (Desktop) */}
@@ -145,8 +183,8 @@ export default function AdmissionSection() {
           </Button>
 
           <p className="text-blue-100 mt-6 text-sm">
-            Applications for 2026 admission open • Early deadline: November 30,
-            2025
+            Applications for {admission_detail?.data?.deadline} admission open •
+            Early deadline: {admission_detail?.data?.intake_year}
           </p>
         </motion.div>
       </div>
