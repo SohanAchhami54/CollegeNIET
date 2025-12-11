@@ -5,10 +5,35 @@ import { motion, useInView } from "framer-motion";
 import { Award, Shield, Star, Building } from "lucide-react";
 import Image from "next/image";
 import { graduateFont } from "@/font";
+import { useQueries } from "@tanstack/react-query";
 
 export default function RecognitionSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["accreduitation_excellence"],
+        queryFn: () =>
+          api
+            .get("/website/homepage-accredition-partnership/")
+            .then((res) => res.data),
+      },
+    ],
+  });
+
+  const [accreduitation_excellence] = results;
+
+  // Debug: See full structure
+  console.log("FULL ACCREDITATION RESPONSE:", accreduitation_excellence);
+
+  // Safely extract list depending on API structure
+  const accreditationData = Array.isArray(accreduitation_excellence?.data?.data)
+    ? accreduitation_excellence.data.data
+    : Array.isArray(accreduitation_excellence?.data)
+    ? accreduitation_excellence.data
+    : [];
 
   const recognitions = [
     {
@@ -80,7 +105,7 @@ export default function RecognitionSection() {
                 MAIN RECOGNITION GRID
         -------------------------------- */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {recognitions.map((item, index) => {
+          {accreditationData.map((item, index) => {
             const Icon = item.icon;
             return (
               <motion.div
@@ -95,7 +120,7 @@ export default function RecognitionSection() {
                   {item.imageSrc ? (
                     <div className="mb-6 group-hover:scale-110 transition-transform w-20 h-20 relative">
                       <Image
-                        src={item.imageSrc}
+                        src={`https://biomedical.edu.np${item.icon}`}
                         alt={item.name}
                         fill
                         className="object-contain"

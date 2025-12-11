@@ -10,6 +10,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'www.pinterest.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'biomedical.edu.np'
+            }
         ],
     },
 
