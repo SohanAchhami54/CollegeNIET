@@ -88,11 +88,11 @@ const Graduate = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16 lg:mb-20"
           >
-            <h2 className={`${graduateFont.className} text-4xl lg:text-6xl text-black tracking-tight`}>
+            <h2 className={`${graduateFont.className} text-4xl lg:text-6xl text-black tracking-tight mb-5`}>
               {words[0]}
-              <span className='bg-gradient-to-r from-blue-800 to-cyan-500 text-transparent bg-clip-text'> {words[1]} {words[2]} {words[3]}</span>
+              <span className='bg-gradient-to-r from-blue-800 to-cyan-500 text-transparent bg-clip-text '> {words[1]} {words[2]} {words[3]} </span>
               <br />
-              {words[4]}
+              {words[4]} {words[5]}
 
 
             </h2>
