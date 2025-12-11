@@ -15,6 +15,7 @@ const nextConfig = {
                 hostname: 'biomedical.edu.np'
             }
         ],
+
     },
 
     // Proxy all /api requests to the backend

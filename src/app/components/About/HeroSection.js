@@ -4,19 +4,21 @@ import Reusablebuilding from "../ReusableComHero/Reusablebuilding";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import Reusablecomhero from "../ReusableComHero/Reusablecomhero";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/Api/axios";
 
 const reusecom = {
-  badgeIcon : <AutoAwesomeIcon className="text-blue-400" />,
-  badgeIcon2:<AutoAwesomeIcon className="text-blue-400" />,
-  badgeIcon3:<AutoAwesomeIcon className="text-blue-400" />,
-  badgeIcon4:<AutoAwesomeIcon className="text-blue-400" />,
-  badgeText:"Pioneering Engineering Eduction Since 2005",
-  headingpart1:"NIET-Pioneering Engineering",
-  headingpart2:'Eduction Since 2005',
-  paragraph:"NIET (National Institute of Engineering and Technology) is Nepal's premier institute for Biomedical Engineering, now expanding into AI and Computer Engineering to shape the future of technology and healthcare ",
-  badgeText2:"BE in Biomedical Engineering",
-  badgeText3:"BTech in AI (Artificial Intelligence) (NEW 2025)",
-  badgeText4:"BE in Computer Engineering (NEW 2025)"
+  badgeIcon: <AutoAwesomeIcon className="text-blue-400" />,
+  badgeIcon2: <AutoAwesomeIcon className="text-blue-400" />,
+  badgeIcon3: <AutoAwesomeIcon className="text-blue-400" />,
+  badgeIcon4: <AutoAwesomeIcon className="text-blue-400" />,
+  badgeText: "Pioneering Engineering Eduction Since 2005",
+  headingpart1: "🚀 NIET-Pioneering Engineering",
+  headingpart2: 'Eduction Since 2005',
+  paragraph: "NIET (National Institute of Engineering and Technology) is Nepal's premier institute for Biomedical Engineering, now expanding into AI and Computer Engineering to shape the future of technology and healthcare ",
+  badgeText2: "BE in Biomedical Engineering",
+  badgeText3: "BTech in AI (Artificial Intelligence) (NEW 2025)",
+  badgeText4: "BE in Computer Engineering (NEW 2025)"
 };
 
 // Motion variants
@@ -24,37 +26,53 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.14,   
+      staggerChildren: 0.14,
       delayChildren: 0.12
     }
   }
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 }, 
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.75,          
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.75,
       ease: [0.25, 0.1, 0.25, 1]
-    } 
+    }
   }
 };
 
 
 export default function HeroSection() {
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['herosection'],
+    queryFn: () => api.get('website/hero-section/')
+  })
+  if (isLoading) {
+    return <p> Loading.....</p>
+  }
+  if (error) {
+    return <p>{error.message} </p>
+  }
+  console.log('Hero message:', data)
+  const aboutpage = data.data[1]
+  console.log('aboutpagedata:', aboutpage)
+
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 px-6">
       {/* building image */}
       <motion.div
         initial={{ opacity: 0, scale: 0.99 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.7, ease: [0.2,0.8,0.2,1] }}
+        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
         className="absolute inset-0 pointer-events-none"
         aria-hidden
       >
-        <Reusablebuilding />
+        <Reusablebuilding path={aboutpage.background_image} />
       </motion.div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">

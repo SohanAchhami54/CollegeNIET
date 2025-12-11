@@ -4,7 +4,7 @@ import { graduateFont, robotoFont } from '@/font';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, } from 'react'
 import { FiBookOpen } from "react-icons/fi";
 import { IoPeopleOutline } from "react-icons/io5";
 import { LuFlaskConical } from "react-icons/lu";
@@ -48,32 +48,22 @@ const Graduate = () => {
     },
   ];
 
-  // const [data, setData] = useState([]);
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const result = await api.get('/website/why-graduate-trust-niet/content/')
-  //     console.log('why gradient trust niet', result)
-  //     setData(result.data);
-  //   }
-  //   getData();
-  // }, [])
 
   const results = useQueries({
     queries: [
       {
         queryKey: ['graduate'],
-        queryFn: () => api.get('/website/why-graduate-trust-niet/').then(res => res.data)
+        queryFn: () => api.get('website/why-graduate-trust-niet/').then(res => res.data)
       },
       {
         queryKey: ['graduatecontent'],
-        queryFn: () => api.get('/website/why-graduate-trust-niet/content/').then(res => res.data)
+        queryFn: () => api.get('website/why-graduate-trust-niet/content/').then(res => res.data)
       }
     ]
   })
 
   const [graduate, graduatecontent] = results
-  console.log('graduate:', graduate.data)
-  console.log('graduatecontent:', graduatecontent.data)
+
   if (graduate.isLoading || graduatecontent.isLoading) {
     return <p>Loading...</p>;
   }
@@ -81,35 +71,43 @@ const Graduate = () => {
   if (graduate.isError || graduatecontent.isError) {
     return <p>Error: {graduate.error?.message || graduatecontent.error?.message}</p>;
   }
+
+  console.log('graduate:', graduate.data)
+  console.log('graduatecontent:', graduatecontent.data)
+
+  const words = graduate.data?.heading_line.split(" ") || []; // split into array of words
+
   return (
     <>
-      <section ref={ref} className=' bg-gradient-to-b from-gray-50 to-white  lg:py-32 relative over-flow   mb-30 lg:mb-55'>
+      <section ref={ref} className='bg-gradient-to-b from-gray-50 to-white  lg:py-32 relative over-flow   mb-30 lg:mb-55'>
         <section className='w-100% mx-0 lg:mx-14 relative z-10 px-6  lg:px-12 '>
           {/* header part  */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 1, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="text-center mb-16 lg:mb-20"
           >
             <h2 className={`${graduateFont.className} text-4xl lg:text-6xl text-black tracking-tight`}>
-              Why
-              <span className='bg-gradient-to-r from-blue-800 to-cyan-500 text-transparent bg-clip-text'> 500 + Graduates</span>
+              {words[0]}
+              <span className='bg-gradient-to-r from-blue-800 to-cyan-500 text-transparent bg-clip-text'> {words[1]} {words[2]} {words[3]}</span>
               <br />
-              Trust niet
+              {words[4]}
+
+
             </h2>
-            <p className='max-w-3xl mx-auto text-xl  text-gray-600'>{graduate.data?.support_text} </p>
+            <p className='max-w-3xl mx-auto text-xl  text-gray-600'>{graduate.data.support_text} </p>
           </motion.div>
 
           {/* image section  */}
           <div className='pb-12'>
             <ul className='  grid md:grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-7'>
               {
-                graduates.map((g) => {
+                graduatecontent.data?.map((g) => {
                   return (
 
                     <motion.li key={g.id}
-                      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                      initial={{ opacity: 1, y: 40, scale: 0.95 }}
                       animate={
                         isInView
                           ? {
@@ -119,27 +117,35 @@ const Graduate = () => {
                             transition: {
                               duration: 0.6,
                               ease: "easeOut",
-                              //delay: index * 0.15,
+
                             },
                           }
                           : {}
                       }
                       className=' relative h-full overflow-hidden rounded-4xl border border-black/15 transition-all duration-100 ease-in hover:shadow-2xl group' >
                       <div className='relative h-55 overflow-hidden '>
-                        {/* <img src={g.image} alt={g.alt}  className='object-cover  w-full h-auto'/> */}
-                        <Image src={g.image} alt={g.alt} fill className='w-full h-full object-cover transition-all duration-400 ease-in group-hover:scale-110' />
 
-                        <div className='absolute top-6 right-6 w-14 h-14 flex justify-center items-center rounded-2xl bg-white transition-all duration-75 ease-out group-hover:scale-110'>
-                          <span className=''>
-                            {React.cloneElement(g.icon, { className: ' text-blue-800 w-7 h-7 transition-all duration-75 ease-out group-hover:scale-100' })}
-                          </span>
+                        <Image src={`https://biomedical.edu.np${g.photo}`} alt={g.heading} width={100}
+                          height={100}
+
+                          className='w-full h-full object-cover transition-all duration-400 ease-in group-hover:scale-110' />
+
+                        <div className='absolute top-6 right-6 w-14 h-14 flex justify-center items-center rounded-2xl bg-white  transition-all duration-75 ease-out group-hover:scale-110'>
+
+                          <Image
+                            src={`https://biomedical.edu.np${g.icon}`}
+                            alt={g.heading}
+                            width={28}
+                            height={28}
+
+                          />
                         </div>
                       </div>
-                      {/* content section  */}
+
                       <div className='p-8 '>
                         <div className='flex flex-wrap'>
-                          <h2 className={`${graduateFont.className} text-2xl mb-3`}>{g.title} </h2>
-                          <p className={`${robotoFont.className} text-lg`}>{g.description} </p>
+                          <h2 className={`${graduateFont.className} text-2xl mb-3`}>{g.heading} </h2>
+                          <p className={`${robotoFont.className} text-lg`}>{g.support_text} </p>
                         </div>
 
                       </div>
