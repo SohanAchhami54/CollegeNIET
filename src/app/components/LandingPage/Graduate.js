@@ -86,7 +86,7 @@ const Graduate = () => {
             initial={{ opacity: 1, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16 lg:mb-20"
+            className="text-center mb-14 lg:mb-16"
           >
             <h2 className={`${graduateFont.className} text-4xl lg:text-6xl text-black tracking-tight mb-5`}>
               {words[0]}
@@ -101,7 +101,7 @@ const Graduate = () => {
 
           {/* image section  */}
           <div className='pb-12'>
-            <ul className='  grid md:grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-7'>
+            <ul className='  grid  grid-cols-1 md:grid-cols-2 gap-2 lg:gap-2'>
               {
                 graduatecontent.data?.map((g) => {
                   return (
@@ -125,8 +125,7 @@ const Graduate = () => {
                       className=' relative h-full overflow-hidden rounded-4xl border border-black/15 transition-all duration-100 ease-in hover:shadow-2xl group' >
                       <div className='relative h-55 overflow-hidden '>
 
-                        <Image src={`https://biomedical.edu.np${g.photo}`} alt={g.heading} width={100}
-                          height={100}
+                        <Image src={`https://biomedical.edu.np${g.photo}`} alt={g.heading} fill
 
                           className='w-full h-full object-cover transition-all duration-400 ease-in group-hover:scale-110' />
 
