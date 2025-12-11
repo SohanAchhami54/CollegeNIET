@@ -53,7 +53,7 @@ const Hero = () => {
     return <p>{error.message} </p>
   }
   console.log('Hero message:', data)
-  const homepage = data.data[2]
+  const homepage = data.data[3]
   console.log('homepagedata:', homepage)
 
   const words = homepage.heading_line.split(" "); // split into array of words

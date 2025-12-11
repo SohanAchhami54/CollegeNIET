@@ -67,7 +67,7 @@ export default function FacultyHeroSection() {
     return <p>{error.message} </p>
   }
   console.log('Hero message:', data)
-  const facultypage = data.data[0]
+  const facultypage = data.data[1]
   console.log('facultypagedata:', facultypage)
 
   return (
