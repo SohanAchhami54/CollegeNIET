@@ -9,6 +9,7 @@ import { IoCodeSharp,  } from "react-icons/io5";
 import { FiGitBranch } from "react-icons/fi";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FaCode, FaNetworkWired } from "react-icons/fa";
+import { BsShield } from "react-icons/bs";
 import { LuBrain, LuBookOpen,  LuFlaskConical,  LuBookMarked,  LuMicroscope, LuCircuitBoard, LuWrench, LuCpu,  LuSmartphone } from "react-icons/lu";
 import Link from "next/link";
 import { GoDatabase } from "react-icons/go";
