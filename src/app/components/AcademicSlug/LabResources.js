@@ -1,8 +1,9 @@
 import React from 'react'
-import { IoCodeSharp } from 'react-icons/io5'
-import { LuCircleCheck, LuFlaskConical, LuServer } from 'react-icons/lu'
+import { IoCodeSharp, IoSettingsOutline } from 'react-icons/io5'
+import { LuCircleCheck, LuFlaskConical, LuLaptop, LuMicroscope, LuServer } from 'react-icons/lu'
 import { graduateFont } from '@/font';
 import { motion } from 'framer-motion';
+import { AiOutlineHeart } from 'react-icons/ai';
 export const LabResources = ({ program, labsSectionRef, isLabsInView }) => {
     return (
         <>
