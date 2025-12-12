@@ -101,7 +101,7 @@ const Graduate = () => {
 
           {/* image section  */}
           <div className='pb-12'>
-            <ul className='  grid  grid-cols-1 md:grid-cols-2 gap-2 lg:gap-2'>
+            <ul className='  grid  grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6'>
               {
                 graduatecontent.data?.map((g) => {
                   return (
