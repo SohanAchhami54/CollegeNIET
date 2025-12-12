@@ -67,21 +67,16 @@ export default function FacultyHeroSection() {
     return <p>{error.message} </p>
   }
   console.log('Hero message:', data)
-  const facultypage = data.data[1]
+  const facultypage = data.data[4]
   console.log('facultypagedata:', facultypage)
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 px-6 py-32 lg:py-40">
+    <section className="relative min-h-screen overflow-hidden bg-gradient-to-r from-blue-950 via-blue-900 to-slate-900 px-6 py-32 lg:py-40">
 
       {/* Background animation */}
-      <motion.div
-        initial={{ opacity: 0, scale: 1.05 }}
-        animate={{ opacity: 0.28, scale: 1 }}
-        transition={{ duration: 1.4, ease: "easeOut" }}
-        className="absolute inset-0"
-      >
+      
         <Reusablebuilding path={facultypage.background_image} />
-      </motion.div>
+     
 
       {/* Main Content */}
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
