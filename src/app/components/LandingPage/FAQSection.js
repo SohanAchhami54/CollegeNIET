@@ -2,7 +2,6 @@
 import React, { useRef } from "react";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import { motion, useInView } from "framer-motion";
-import { isInternalTimeView } from "@mui/x-date-pickers/internals";
 import { Accordion, AccordionItem } from "@mui/material";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
