@@ -11,7 +11,7 @@ import RecognitionSection from "./components/LandingPage/RecognitionSection";
 import Programsection from "./components/LandingPage/Programsection";
 import CampusLifeSection from "./components/LandingPage/CampusLifeSection";
 import Graduate from "./components/LandingPage/Graduate";
-import Data1 from "@/Uttam/Data1";
+//import Data1 from "@/Uttam/Data1";
 
 export default function Home() {
   return (
