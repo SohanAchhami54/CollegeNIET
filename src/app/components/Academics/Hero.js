@@ -29,7 +29,7 @@ const Hero = () => {
     return <p>{error.message} </p>
   }
   console.log('academic hero :', data)
-  const academicpage = data.data[0]
+  const academicpage = data.data[3]
   console.log('academicpagedata:', academicpage)
 
   return (

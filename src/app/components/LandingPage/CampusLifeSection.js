@@ -9,7 +9,7 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import { useInView, motion } from "framer-motion";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { graduateFont } from "@/font";
 import {
   QueryClient,

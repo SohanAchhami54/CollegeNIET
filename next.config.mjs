@@ -17,6 +17,7 @@ const nextConfig = {
         ],
 
     },
+    
 
     // Proxy all /api requests to the backend
 };
