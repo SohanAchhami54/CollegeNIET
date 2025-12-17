@@ -1,4 +1,4 @@
-import { Hero } from '@/app/components/AcademicSlug/HeroAcademic/Hero';
+import { Hero } from '@/app/components/AcademicSlug/HeroAcademic/HeroAcademic';
 import PageClient from '@/app/components/AcademicSlug/PageClient/PageClient';
 import { getAllPrograms, getProgramBySlug } from '@/data/programs';
 

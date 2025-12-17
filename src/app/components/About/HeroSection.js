@@ -58,7 +58,7 @@ export default function HeroSection() {
     return <p>{error.message} </p>
   }
   console.log('Hero message:', data)
-  const aboutpage = data.data[2]
+  const aboutpage = data.data[5]
   console.log('aboutpagedata:', aboutpage)
 
 
