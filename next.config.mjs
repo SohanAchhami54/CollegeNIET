@@ -12,7 +12,8 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'biomedical.edu.np'
+                hostname: 'biomedical.edu.np',
+                 pathname: '/**',
             }
         ],
 
