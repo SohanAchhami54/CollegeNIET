@@ -16,19 +16,19 @@ import { LuAward } from "react-icons/lu";
 import { LuDot } from "react-icons/lu";
 import { robotoFont } from '@/font';
 import { motion, useInView, useScroll } from 'framer-motion';
-import Link from 'next/link';
-import { useQueries, useQuery } from '@tanstack/react-query';
+
+
 import api from '@/Api/axios';
 export const Hero = ({ program }) => {
-  function getProgramBrochure(programId) {
-    const brochureMap = {
-      "btech-ai": { path: "/AI.pdf", filename: "B.Tech_AI_Brochure.pdf" },
-      "be-bme": { path: "/BioM.pdf", filename: "BE_Biomedical_Engineering_Brochure.pdf" },
-      "be-computer": { path: "/CE.pdf", filename: "BE_Computer_Engineering_Brochure.pdf" }
-    };
 
-    return brochureMap[programId] || { path: "/NEIT Prospectus.pdf", filename: "NEIT Prospectus.pdf" };
-  }
+
+const handleBrochureDownload = () => {
+  if (!currentProgramData?.brochure) return;
+
+  window.location.href = `/api/download-brochure?path=${currentProgramData.brochure}`;
+};
+
+
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
   const imageRef = useRef(null);
@@ -40,28 +40,7 @@ export const Hero = ({ program }) => {
    
 
 
-  // const results = useQueries({
-  //   queries: [
-  //     {
-  //       queryKey: ['aiherosection'],
-  //       queryFn: () => api.get('website/hero-section/').then(res => res.data)
-  //     },
-  //     {
-  //       queryKey: ['graduatecontent'],
-  //       queryFn: () => api.get('website/why-graduate-trust-niet/content/').then(res => res.data)
-  //     }
-  //   ]
-  // })
 
-  // const [graduate, graduatecontent] = results
-
-  // if (graduate.isLoading || graduatecontent.isLoading) {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (graduate.isError || graduatecontent.isError) {
-  //   return <p>Error: {graduate.error?.message || graduatecontent.error?.message}</p>;
-  // }
 const [heroSectionProgram,setHeroSectionProgram]=useState([])
 const [currentProgramData,setCurrentProgramData]=useState({})
  useEffect(()=>{
@@ -172,17 +151,17 @@ console.log('heroSectionProgram:',heroSectionProgram)
               <div className='flex flex-wrap text-sm gap-2 sm:gap-3 lg:gap-4 mb-6'>
                 <div className='flex flex-wrap gap-2 justify-center items-center text-white bg-white/10 px-5 py-3 rounded-3xl border-2 border-white/15'>
                   <span>Duration: </span>
-                  <span className='font-semibold'> {program.duration}</span>
+                  <span className='font-semibold'> {currentProgramData.duration}</span>
                 </div>
 
                 <div className='flex flex-wrap gap-2 justify-center items-center text-white bg-white/10 px-5 py-3 rounded-3xl  border-2 border-white/15'>
                   <span>Credit: </span>
-                  <span className='font-semibold'> {program.credit} </span>
+                  <span className='font-semibold'> {currentProgramData.credit} </span>
                 </div>
 
                 <div className='flex flex-wrap gap-2 justify-center items-center text-white bg-white/10 px-5 py-3 rounded-3xl  border-2 border-white/15'>
                   <span>Intake: </span>
-                  <span className='font-semibold'> {program.intake} </span>
+                  <span className='font-semibold'> {currentProgramData.current_intake}({currentProgramData.total_seats})  </span>
                 </div>
               </div>
 
@@ -192,22 +171,14 @@ console.log('heroSectionProgram:',heroSectionProgram)
               <div className='flex flex-wrap gap-3 pt-4 sm:pt-6'>
 
                 <div className='flex flex-wrap items-center gap-2'>
-                  <Link
-                    href={program ? getProgramBrochure(program.id).path : "/NEIT Prospectus.pdf"}
-                    download={program ? getProgramBrochure(program.id).filename : "NEIT Prospectus.pdf"}
-                    className="inline-flex items-center justify-center"
-                  >
-                    <Button
+            <Button
+  onClick={handleBrochureDownload}
+  className="bg-white text-[#0d4e92] hover:bg-blue-50 px-6 py-5 flex gap-2"
+>
+  <FiDownload className="h-4 w-4" />
+  Download Brochure
+</Button>
 
-                      className=" inline-flex  bg-white text-[#0d4e92] hover:bg-blue-50 text-sm border border-gray-200 shadow-sm px-6 py-5"
-                      aria-label="Download program brochure flex justify-between items-center"
-                    >
-                      {/* <Download className="mr-2 h-4 w-4" /> */}
-                      <FiDownload className="h-4 w-4  " />
-                      <span className={`${robotoFont.className} font-medium text-md`} > Download Brochure </span>
-
-                    </Button>
-                  </Link>
 
                   <Button
                     variant="outline"
