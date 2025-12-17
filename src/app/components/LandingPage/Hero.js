@@ -47,10 +47,13 @@ const Hero = () => {
     queryFn: () => api.get('website/hero-section/')
   })
   if (isLoading) {
-    return <p> Loading.....</p>
+    return <p className=' text-center text-red-500'> Loading.....</p>
   }
-  if (error) {
-    return <p>{error.message} </p>
+  {isLoading ? (
+     <p className='text-center text-red-500'>Loading...</p>
+  ):error?(
+    <p>{error?.message} </p>
+  ):('')
   }
   console.log('Hero message:', data)
   const homepage = data.data[6]

@@ -102,6 +102,7 @@ export default function AccreditationSection() {
                   
                   {/* Icon */}
                   <div className="w-20 h-20 mb-6 relative">
+                  
                     <Image
                       src={`https://biomedical.edu.np${item.icon}`}
                       alt={item.heading}

@@ -16,8 +16,6 @@ import { LuAward } from "react-icons/lu";
 import { LuDot } from "react-icons/lu";
 import { robotoFont } from '@/font';
 import { motion, useInView, useScroll } from 'framer-motion';
-
-
 import api from '@/Api/axios';
 export const Hero = ({ program }) => {
 
@@ -42,9 +40,13 @@ const handleBrochureDownload = () => {
 
 
 const [heroSectionProgram,setHeroSectionProgram]=useState([])
-const [currentProgramData,setCurrentProgramData]=useState({})
- useEffect(()=>{
-   api.get('website/academic-programs/')
+const [currentProgramData,setCurrentProgramData]=useState({}) //for duration,credit and intake
+
+const [heroSectionData, setHeroSectionData] = useState(null);//for action and bg_image
+const [currentHeroData,setCurrentHeroData]=useState({})
+const fetchAcademicPrograms=async()=>{
+  try {
+    api.get('website/academic-programs/')
    .then((res)=>res.data)
    .then ((res)=> {
     setHeroSectionProgram(res)
@@ -70,16 +72,70 @@ const [currentProgramData,setCurrentProgramData]=useState({})
        setCurrentProgramData(matchedProgram)
       
   })
+  }catch(error){
+    console.error('Error fetching academic programs:',error)
+  }   
+}
+
+ const fetchHeroSection = async () => {
+    try {
+       api.get('website/hero-section/')
+     .then((res)=>res.data)
+     .then ((res)=> {
+     setHeroSectionData(res)
+    
+    const matchedProgram=res.find((item)=>{
+      console.log('items:',item)
+      
+      //const programSlug=item.slug.toLowerCase()
+      const componentSlug=program.slug.toLowerCase()
+       const heading=item.heading_line.toLowerCase()
+
+      if(componentSlug.includes('computer')  && heading.includes('computer engineering') ){
+        return true
+      }
+       if(componentSlug.includes('biomedical') && heading.includes('biomedical engineering')){
+        return true
+      }
+       if(componentSlug.includes('artificial')&& heading.includes('artificial intelligence')){
+        return true
+      }
+        return false
+    })
+       setCurrentHeroData(matchedProgram)
+      
+  })
+    } catch (error) {
+      console.error('Error fetching hero section:', error);
+    }
+  };
+console.log('academicherosectiondata:',heroSectionData)
+
+ useEffect(()=>{
+     fetchAcademicPrograms()
+     fetchHeroSection()
  },[program.slug])
 console.log('heroSectionProgram:',heroSectionProgram)
  console.log('currentProgramData:',currentProgramData)
+ console.log('heroSectionData:',heroSectionData)
+ console.log('currentHeroData:',currentHeroData)
+console.log("currentheropage_pic:",currentHeroData.background_image)
+
+
 //const herosectionai
   return (
     <>
       <section className='relative min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900 inset-0 z-1 pt-20 lg:pt-24 pb-8 lg:pb-0 overflow-hidden'>
         {/* image  */}
         <div className='absolute w-100% h-auto inset-0 z-0'>
-          <Image src={program.image} alt={program.title} fill className='w-full h-full object-cover opacity-20 '></Image>
+         {currentHeroData?.background_image && (
+     <Image
+     src={`https://biomedical.edu.np${currentHeroData.background_image}`}
+     alt='bg-image'
+     fill
+     className='w-full h-full object-cover opacity-20'
+    />
+   )}
         </div>
 
         {/* hero section  */}
@@ -142,9 +198,9 @@ console.log('heroSectionProgram:',heroSectionProgram)
             >
               <div className='inline-flex  items-center gap-2 mb-6 px-3 py-2  rounded-3xl bg-white/10 border border-white/15'>
                 <LuGraduationCap className='text-cyan-500 w-5 h-5 ' />
-                <div className='text-xs sm:text-base text-white tracking-tight font-semibold'>{program.degree} </div>
+                <div className='text-xs sm:text-base text-white tracking-tight font-semibold'>{currentHeroData.call_to_action_1} </div>
               </div>
-              <h1 className='text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl leading-[1.1] text-white mb-7'>{program.title} </h1>
+              <h1 className='text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl leading-[1.1] text-white mb-7'>{currentHeroData.heading_line} </h1>
 
 
 
@@ -165,7 +221,7 @@ console.log('heroSectionProgram:',heroSectionProgram)
                 </div>
               </div>
 
-              <p className={` text-sm lg:text-xl  ${robotoFont.className} text-gray-300 mb-6`}>{program.description} </p>
+              <p className={` text-sm lg:text-xl  ${robotoFont.className} text-gray-300 mb-6`}>{currentHeroData.support_text} </p>
 
               {/* button  */}
               <div className='flex flex-wrap gap-3 pt-4 sm:pt-6'>
@@ -176,7 +232,7 @@ console.log('heroSectionProgram:',heroSectionProgram)
   className="bg-white text-[#0d4e92] hover:bg-blue-50 px-6 py-5 flex gap-2"
 >
   <FiDownload className="h-4 w-4" />
-  Download Brochure
+ {currentHeroData.call_to_action_4}
 </Button>
 
 
@@ -184,14 +240,14 @@ console.log('heroSectionProgram:',heroSectionProgram)
                     variant="outline"
                     className={`${robotoFont.className} border border-white bg-white/15 text-white hover:bg-white/15 hover:text-white font-medium flex items-center justify-center gap-4 text-md px-6 py-5 rounded-sm`}>
                     <MdOutlineFeed />
-                    <span>Fee Structure</span>
+                    <span>{currentHeroData.call_to_action_2} </span>
 
                   </Button>
 
                   <Button
                     variant="outline"
                     className={` ${robotoFont.className}  border !border-white hover:bg-white  font-medium flex items-center justify-center  bg-white text-blue-900 gap-4 text-md px-6 py-5 rounded-sm`}>
-                    <span>Apply Now</span>
+                    <span>{currentHeroData.call_to_action_3} </span>
                     <FiArrowRight />
                   </Button>
                 </div>
