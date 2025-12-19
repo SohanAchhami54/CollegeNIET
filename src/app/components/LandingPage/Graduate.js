@@ -79,7 +79,7 @@ const Graduate = () => {
 
   return (
     <>
-      <section ref={ref} className='bg-gradient-to-b from-gray-50 to-white  lg:py-32 relative over-flow   mb-30 lg:mb-55'>
+      <section ref={ref} className='bg-gradient-to-b from-gray-50 to-white  lg:py-32 relative over-flow   mb-18'>
         <section className='w-100% mx-0 lg:mx-14 relative z-10 px-6  lg:px-12 '>
           {/* header part  */}
           <motion.div
@@ -101,7 +101,7 @@ const Graduate = () => {
 
           {/* image section  */}
           <div className='pb-12'>
-            <ul className='  grid  grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6'>
+            <ul className='  grid  grid-cols-1 md:grid-cols-2 '>
               {
                 graduatecontent.data?.map((g) => {
                   return (

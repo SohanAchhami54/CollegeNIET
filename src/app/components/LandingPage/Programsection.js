@@ -8,17 +8,30 @@ import { motion, useInView } from "framer-motion";
 import { robotoFont } from '@/font';
 import { getAllPrograms } from '@/data/programs';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import api from '@/Api/axios';
+import ProgramsSkeleton from '../Skeleton/HompageSkeleton/ProgramSectionSkeleton';
 const Programsection = () => {
 const ref=useRef(null);
 const isInView = useInView(ref, { once: true });
 const programs=getAllPrograms().slice(0,3);
+
+const {data,isLoading}=useQuery({
+  queryKey:['homeprogramsection'],
+  queryFn: async()=> api.get('website/academic-programs')
+})
+if(isLoading){
+  return <ProgramsSkeleton/>
+}
+
+console.log('Hero-section:',data)
   return (
-    <section ref={ref} className='w-100% mx-0 lg:mx-14 relative z-10 top-24 lg:top-30 mb-30 lg:mb-60 px-6 lg:px-12'>
+    <section ref={ref} className='w-100% mx-0 lg:mx-14 relative z-10 top-24 lg:top-30 mb-30 lg:mb-45 px-6 lg:px-12'>
       {/* first container  */}
       <div className='mb-16 lg:mb-20 '>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 30 }}
+          animate={isInView ? { opacity: 2, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="mb-16 lg:mb-20"
         >
@@ -49,8 +62,8 @@ const programs=getAllPrograms().slice(0,3);
             const Icon=program.icon;
             return (
               <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 1, y: 30 }}
+          animate={isInView ? { opacity: 2, y: 0 } : {}}
           transition={{ duration: 1 }}
           className="mb-16 lg:mb-20"
           key={program.slug}
