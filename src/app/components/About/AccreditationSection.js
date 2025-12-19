@@ -55,6 +55,8 @@ export default function AccreditationSection() {
 
   const items = accreditation_partnerships.data || [];
 
+  
+
   return (
     <section className="py-40 lg:py-32 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
