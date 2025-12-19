@@ -728,7 +728,7 @@ import { LuCpu } from "react-icons/lu";
 export const programs = [
     {
         id: "btech-ai",
-        slug: "btech-artificial-intelligence",
+        slug: "b-tech-in-artificial-intelligence",
         icon: <LuBrain className='text-black' />,
         title: "B. Tech in Artificial Intelligence",
         degree: "B. Tech",
@@ -1147,7 +1147,7 @@ export const programs = [
     },
     {
         id: "be-bme",
-        slug: "be-biomedical-engineering",
+        slug: "be-in-biomedical-engineering",
         icon: <LuHeartPulse className='text-black' />,
         title: "BE in Biomedical Engineering",
         degree: "BE",
@@ -1545,7 +1545,7 @@ export const programs = [
     },
     {
         id: "be-computer",
-        slug: "be-computer-engineering",
+        slug: "be-in-computer-engineering",
         icon: < LuCpu className='text-black' />,
         title: "BE in Computer Engineering",
         degree: "BE",

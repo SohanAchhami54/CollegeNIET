@@ -7,7 +7,13 @@ import EastIcon from '@mui/icons-material/East';
 import Reusablecomhero from '../ReusableComHero/Reusablecomhero';
 import Reusablebuilding from '../ReusableComHero/Reusablebuilding';
 import { useQuery } from '@tanstack/react-query';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
+
 import api from '@/Api/axios';
+import HeroSkeleton from '../Skeleton/HompageSkeleton/HeroSkeleton';
+
 const Hero = () => {
   const graduates = [
     {
@@ -42,19 +48,16 @@ const Hero = () => {
 
 
   //api call for home data
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['herosection'],
     queryFn: () => api.get('website/hero-section/')
   })
   if (isLoading) {
-    return <p className=' text-center text-red-500'> Loading.....</p>
-  }
-  {isLoading ? (
-     <p className='text-center text-red-500'>Loading...</p>
-  ):error?(
-    <p>{error?.message} </p>
-  ):('')
-  }
+  return (
+   <HeroSkeleton/>
+  );
+}
+
   console.log('Hero message:', data)
   const homepage = data.data[6]
   console.log('homepagedata:', homepage)
