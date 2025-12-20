@@ -47,19 +47,19 @@ const fadeUp = {
 
 export default function HeroSection() {
 
-  const { data, isLoading, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['herosection'],
     queryFn: () => api.get('website/hero-section/')
   })
-  if (isLoading) {
-    return <p> Loading.....</p>
-  }
-  if (error) {
-    return <p>{error.message} </p>
-  }
-  console.log('Hero message:', data)
-  const aboutpage = data.data[5]
-  console.log('aboutpagedata:', aboutpage)
+  // if (isLoading) {
+  //   return <p> Loading.....</p>
+  // }
+  // if (error) {
+  //   return <p>{error.message} </p>
+  // }
+  // console.log('Hero message:', data)
+  const aboutpage = data?.data[5]
+  // console.log('aboutpagedata:', aboutpage)
 
 
   return (
@@ -72,7 +72,7 @@ export default function HeroSection() {
         className="absolute inset-0 pointer-events-none"
         aria-hidden
       >
-        <Reusablebuilding path={aboutpage.background_image} />
+        <Reusablebuilding path={aboutpage?.background_image} />
       </motion.div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">

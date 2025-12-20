@@ -58,9 +58,9 @@ const Hero = () => {
   );
 }
 
-  console.log('Hero message:', data)
+  // console.log('Hero message:', data)
   const homepage = data.data[6]
-  console.log('homepagedata:', homepage)
+  // console.log('homepagedata:', homepage)
 
   const words = homepage.heading_line.split(" "); // split into array of words
   const firstPart = words.slice(0, -1).join(" "); // all words except last
@@ -70,8 +70,8 @@ const Hero = () => {
       {/* <h1>This is Hero section</h1> */}
       <section className='relative min-h-screen  overflow-hidden bg-gradient-to-r from-blue-950 via-blue-900 to-slate-900'>
         {/* Building Image */}
-        {console.log(homepage.background_image)}
-        <Reusablebuilding path={homepage.background_image} />
+        {/* {console.log(homepage.background_image)} */}
+        <Reusablebuilding path={homepage?.background_image} />
 
         <div className='relative z-10 ml-10 flex  justify-center items-center px-6 lg:px-12 py-32 lg:py-40 '>
           <div className=''>

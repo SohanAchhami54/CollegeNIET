@@ -33,8 +33,8 @@ export default function AdmissionSection() {
     ],
   });
   const [admission_detail, admission_detail_step] = results;
-  console.log("admission-detail:", admission_detail);
-  console.log("admission-detail-steps:", admission_detail_step.data);
+  // console.log("admission-detail:", admission_detail);
+  // console.log("admission-detail-steps:", admission_detail_step?.data);
 
   const admissionstepsDetail = Array.isArray(admission_detail_step?.data)
     ? admission_detail_step.data

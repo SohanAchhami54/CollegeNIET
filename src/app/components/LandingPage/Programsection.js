@@ -8,7 +8,7 @@ import { motion, useInView } from "framer-motion";
 import { robotoFont } from '@/font';
 import { getAllPrograms } from '@/data/programs';
 import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import api from '@/Api/axios';
 import ProgramsSkeleton from '../Skeleton/HompageSkeleton/ProgramSectionSkeleton';
 const Programsection = () => {
@@ -16,15 +16,41 @@ const ref=useRef(null);
 const isInView = useInView(ref, { once: true });
 const programs=getAllPrograms().slice(0,3);
 
-const {data,isLoading}=useQuery({
-  queryKey:['homeprogramsection'],
-  queryFn: async()=> api.get('website/academic-programs')
+const results=useQueries({
+   queries:[
+    {
+      queryKey:['homeprogram'],
+      queryFn: ()=> api.get('website/hero-section/').then(res=>res.data)
+    },
+    {
+      queryKey:['homeacademic'],
+      queryFn: ()=> api.get('website/academic-programs/').then(res=>res.data)
+    }
+   ]
 })
-if(isLoading){
-  return <ProgramsSkeleton/>
-}
+const [homeprogram,homeacademic]=results
+// console.log('Homeprogramdata:',homeprogram?.data)
+// console.log('Homeacademic:',homeacademic?.data)
 
-console.log('Hero-section:',data)
+let mergedPrograms=[]
+if(homeacademic?.data && homeprogram?.data){
+    mergedPrograms = homeacademic?.data?.slice(0, 3).map((acad, index) => {
+  const hero = homeprogram?.data[index]
+
+  return {
+    slug: acad.slug,
+    title: hero.heading_line,
+    image: hero.background_image,
+    icon: hero.support_icon,
+    overview: acad.about_program,
+    duration: acad.duration,
+    degree: hero.call_to_action_1,
+    page_name:hero.page_name
+  }
+}).reverse()
+}
+// console.log('MergedPrograms:',mergedPrograms)
+  
   return (
     <section ref={ref} className='w-100% mx-0 lg:mx-14 relative z-10 top-24 lg:top-30 mb-30 lg:mb-45 px-6 lg:px-12'>
       {/* first container  */}
@@ -57,9 +83,9 @@ console.log('Hero-section:',data)
 <div className=''>
        <ul className='grid md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8'>
         {
-           programs.map((program)=>{
+         mergedPrograms?.map((program)=>{
            // console.log(program)
-            const Icon=program.icon;
+           // const Icon=program.icon;
             return (
               <motion.div
           initial={{ opacity: 1, y: 30 }}
@@ -74,16 +100,19 @@ console.log('Hero-section:',data)
                    {/* image */}
                    <div className='relative  h-64 overflow-hidden'>
 
-                      <Image  src={program.image} alt={program.title} fill 
+                      <Image  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${program.image}`} alt={program.title} fill 
                       className='w-full h-full object-cover  transition-all duration-300 ease-in group-hover:scale-110'
                       />
 
-                      <div className={`absolute inset-0  bg-gradient-to-r ${program.gradient} opacity-40 hover:opacity-30 transition-opacity `}></div>
+                      <div className={`absolute inset-0  bg-gradient-to-r ${program.page_name.includes('Artificial Intelligence')?'from-violet-500 via-purple-500 to-indigo-500':''}
+                      ${program.page_name.includes('Biomedical engineering')?'from-rose-500 via-pink-500 to-fuchsia-500':''} ${program.page_name.includes('Computer Engineering')?'from-blue-500 via-cyan-500 to-teal-500':''} opacity-40 hover:opacity-30 transition-opacity `}></div>
 
                       {/* FloatingIcon  */}
                       <div className='absolute w-14 h-14 top-6 right-6 bg-white/90 flex justify-center items-center rounded-2xl'>
                         <span className=''>
-                         {React.cloneElement (program.icon,{className:'w-7 h-8'})}
+                       {/* {React.cloneElement (program.icon,{className:'w-7 h-8'})} */}
+                       <Image src= {`${process.env.NEXT_PUBLIC_API_BASE_URL}${program.icon}`} alt='Program Icon'  className='object-contain  text-black ' width={28} height={28} />
+                      
                         </span>
                       </div>
 
@@ -108,7 +137,8 @@ console.log('Hero-section:',data)
                                <LuArrowRight className='transition-all duration-150 ease-in group-hover/btn:translate-x-1.5'/>
                               </button>
 
-                              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${program.gradient} opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none`}></div>
+                              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${program.page_name.includes('Artificial Intelligence')?'from-violet-500 via-purple-500 to-indigo-500':''}
+                           ${program.page_name.includes('Biomedical engineering')?'from-rose-500 via-pink-500 to-fuchsia-500':''} ${program.page_name.includes('Computer Engineering')?'from-blue-500 via-cyan-500 to-teal-500':''} opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none`}></div>
                           </div>
                              
                         </div>
@@ -125,29 +155,3 @@ console.log('Hero-section:',data)
   )
 }
 export default Programsection
-//  <li key={program.id} className='relative rounded-4xl overflow-hidden border border-black/10 hover:shadow-2xl cursor-pointer bg-white group  '>
-//                 <div className={`absolute inset-0 bg-gradient-to-tr ${program.hoverGradient } `}></div>
-//                 <div className='relative h-64 overflow-hidden'>
-               
-//                      <Image src={program.backgroundImages} alt={program.alt} fill className='object-cover
-//                     transition-all duration-200 ease-in  group-hover:scale-110 ' />
-//                          <div className={`absolute inset-0 bg-gradient-to-tr ${program.defaultGradient}`}></div>
-//                      <div className='absolute top-6  right-6 bg-white rounded-2xl p-3'> 
-//                        {React.cloneElement (program.topbadges,{className:'w-7 h-8'})} 
-//                       </div>
-//                      <div className={ `${robotoFont.className} absolute bottom-6 left-6 text-sm bg-white rounded-3xl py-2 px-4`}>
-//                      <span>{program.sidetext} </span>
-//                     </div> 
-//                     </div>
-
-//                     <div className='p-8 '>
-//                       <h1 className={`${graduateFont.className} text-2xl mb-2`}>{program.heading} </h1>
-//                        <button className={` ${robotoFont.className}  bg-green-600 rounded-sm px-2 pb-1 mb-2 text-sm text-blue-50`}>{program.button} </button>
-//                        <p className={`${robotoFont.className} text-gray-600 mb-5 ` } >{program.paragraph} </p>
-//          <button className='flex items-center justify-center gap-3 text-[#0d4e92] hover:text-blue-700 hover:bg-blue-50 p-0 group/btn h-auto'>
-//           <span >{program.explore}</span>
-//           <LuArrowRight className='ml-2 group-hover/btn:translate-x-1 transition-transform' />
-
-//          </button>
-//                     </div>
-//               </li>
