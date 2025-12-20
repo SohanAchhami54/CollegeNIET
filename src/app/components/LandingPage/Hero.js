@@ -59,10 +59,12 @@ const Hero = () => {
 }
 
   // console.log('Hero message:', data)
-  const homepage = data.data[6]
+  const homepage = data?.data?.[6]
   // console.log('homepagedata:', homepage)
 
-  const words = homepage.heading_line.split(" "); // split into array of words
+ const words = homepage?.heading_line
+  ? homepage.heading_line.split(" ")
+  : []; // split into array of words
   const firstPart = words.slice(0, -1).join(" "); // all words except last
   const secondPart = words[words.length - 1]; // last word
   return (
@@ -76,24 +78,24 @@ const Hero = () => {
         <div className='relative z-10 ml-10 flex  justify-center items-center px-6 lg:px-12 py-32 lg:py-40 '>
           <div className=''>
             <Reusablecomhero
-              badgeText={homepage.call_to_action_1}
+              badgeText={homepage?.call_to_action_1}
               headingpart1={firstPart}
               headingpart2={secondPart}
-              paragraph={homepage.support_text}
-              badgeIcon={reusecom.badgeIcon}
+              paragraph={homepage?.support_text}
+              badgeIcon={reusecom?.badgeIcon}
             />
             {/* button  */}
             <div className='flex flex-col sm:flex-row items-start jus gap-4 mb-16 '>
 
               <button className=' rounded-full bg-white text-[#0b4c78] hover:bg-blue-50 shadow-2xl hover:shadow-white/20 text-lg px-8 h-14 group'>
-                <span className=''>{homepage.call_to_action_2} </span>
+                <span className=''>{homepage?.call_to_action_2} </span>
                 <EastIcon className='ml-2 h-5 w-5 group-translate-x-1 transition-transform' />
               </button>
 
-              <button className='rounded-full bg-white/15 text-white border-2 border-white hover:bg-white/30 shadow-2xl hover:shadow-white/20 text-lg px-8 h-14'>{homepage.call_to_action_3} </button>
+              <button className='rounded-full bg-white/15 text-white border-2 border-white hover:bg-white/30 shadow-2xl hover:shadow-white/20 text-lg px-8 h-14'>{homepage?.call_to_action_3} </button>
               <button className='rounded-full flex items-center bg-white/15 text-white border-2 border-white hover:bg-white/30 shadow-2xl hover:shadow-white/20 text-lg px-8 h-14'>
                 <DownloadIcon />
-                <span>{homepage.call_to_action_4} </span>
+                <span>{homepage?.call_to_action_4} </span>
               </button>
             </div>
 

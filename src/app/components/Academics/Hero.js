@@ -17,20 +17,20 @@ const Hero = () => {
     visible: { opacity: 1, y: 0 }
   }
 
-  const { data, isLoading, error } = useQuery({
+  const { data} = useQuery({
     queryKey: ['herosection'],
     queryFn: () => api.get('website/hero-section/')
   })
 
-  if (isLoading) {
-    return <p> Loading.....</p>
-  }
-  if (error) {
-    return <p>{error.message} </p>
-  }
-  console.log('academic hero :', data)
-  const academicpage = data.data[3]
-  console.log('academicpagedata:', academicpage)
+  // if (isLoading) {
+  //   return <p> Loading.....</p>
+  // }
+  // if (error) {
+  //   return <p>{error.message} </p>
+  // }
+  // console.log('academic hero :', data)
+  const academicpage = data?.data[3]
+  // console.log('academicpagedata:', academicpage)
 
   return (
 
@@ -40,7 +40,7 @@ const Hero = () => {
 
 
         {/* for building image  */}
-        <Reusablebuilding path={academicpage.background_image} />
+        <Reusablebuilding path={academicpage?.background_image} />
         {/* first components hero */}
         <section className=' relative z-10  max-w-[1400px] mx-auto sm:px-6 lg:px-12 py-10 sm:py-12 flex flex-col items-center justify-center'>
 
