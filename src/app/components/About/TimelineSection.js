@@ -44,8 +44,8 @@ export default function TimelineSection() {
   // if (aboutustimeline.error || aboutustimelinecontent.error) return <p>Error: {aboutustimeline.error?.message || aboutustimelinecontent.error?.message}</p>;
 
 
-  console.log('About Us Timeline Data:', aboutustimeline?.data);
-  console.log('About Us Timeline Content Data:', aboutustimelinecontent?.data);
+  // console.log('About Us Timeline Data:', aboutustimeline?.data);
+  // console.log('About Us Timeline Content Data:', aboutustimelinecontent?.data);
   // fallback if API fails or data empty
   const timelineData = aboutustimelinecontent.data && aboutustimelinecontent?.data.length > 0
     ? aboutustimelinecontent.data

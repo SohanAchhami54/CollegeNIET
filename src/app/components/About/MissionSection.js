@@ -37,8 +37,8 @@ const [aboutuswhy, aboutuswhycontent] = results
 // if (aboutuswhy.error || aboutuswhycontent.error) {
 //     return <p>Error : {aboutuswhy.error?.message || aboutuswhycontent.error?.message}</p>
 //}
-console.log('About Us Why Data:', aboutuswhy?.data);
-console.log('About Us Why Content Data:', aboutuswhycontent?.data);  
+// console.log('About Us Why Data:', aboutuswhy?.data);
+// console.log('About Us Why Content Data:', aboutuswhycontent?.data);  
 
 const words = aboutuswhy.data?.heading_line.split(" ")||[];
 
