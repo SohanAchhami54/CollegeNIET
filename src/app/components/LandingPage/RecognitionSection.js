@@ -26,7 +26,7 @@ export default function RecognitionSection() {
   const [accreduitation_excellence] = results;
 
   // Debug: See full structure
-  console.log("FULL ACCREDITATION RESPONSE:", accreduitation_excellence);
+
 
   // Safely extract list depending on API structure
   const accreditationData = Array.isArray(accreduitation_excellence?.data?.data)

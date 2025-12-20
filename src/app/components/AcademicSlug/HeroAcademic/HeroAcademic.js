@@ -17,6 +17,7 @@ import { LuDot } from "react-icons/lu";
 import { robotoFont } from '@/font';
 import { motion, useInView, useScroll } from 'framer-motion';
 import api from '@/Api/axios';
+import { useQueries } from '@tanstack/react-query';
 export const Hero = ({ program }) => {
 
 
@@ -44,6 +45,7 @@ const [currentProgramData,setCurrentProgramData]=useState({}) //for duration,cre
 
 const [heroSectionData, setHeroSectionData] = useState(null);//for action and bg_image
 const [currentHeroData,setCurrentHeroData]=useState({})
+
 const fetchAcademicPrograms=async()=>{
   try {
     api.get('website/academic-programs/')
@@ -109,17 +111,49 @@ const fetchAcademicPrograms=async()=>{
       console.error('Error fetching hero section:', error);
     }
   };
-console.log('academicherosectiondata:',heroSectionData)
+// console.log('academicherosectiondata:',heroSectionData)
 
  useEffect(()=>{
      fetchAcademicPrograms()
      fetchHeroSection()
- },[program.slug])
-console.log('heroSectionProgram:',heroSectionProgram)
- console.log('currentProgramData:',currentProgramData)
- console.log('heroSectionData:',heroSectionData)
- console.log('currentHeroData:',currentHeroData)
-console.log("currentheropage_pic:",currentHeroData.background_image)
+ },[])
+
+// console.log('heroSectionProgram:',heroSectionProgram)
+//  console.log('currentProgramData:',currentProgramData)
+//  console.log('heroSectionData:',heroSectionData)
+//  console.log('currentHeroData:',currentHeroData)
+// console.log("currentheropage_pic:",currentHeroData.background_image)
+
+const results= useQueries({
+  queries:[
+    {
+      queryKey:['careerprospects'],
+      queryFn:()=>api.get(`/website/program-career-prospects/${currentProgramData?.slug}`)
+    },
+    {
+       queryKey:['keyskills'],
+       queryFn:()=>api.get(`/website/program-key-skills/${currentProgramData?.slug}`)
+    },
+    {
+      queryKey:['eligibility'],
+      queryFn:()=>api.get(`/website/program-eligiblity/${currentProgramData?.slug}`)
+    },{
+      queryKey:['entranceexam'],
+      queryFn:()=>api.get(`/website/program-entrance-exam/${currentProgramData?.slug}`)
+    },
+    {
+      queryKey:['scholarship'],
+      queryFn:()=>api.get(`/website/program-scholarship/${currentProgramData?.slug}`)
+    }
+  ]
+})
+const [careerprospects,keyskills,eligibility,entranceexam,scholarship]=results
+// console.log('careerprospects:',careerprospects?.data)
+// console.log('keyskills:',keyskills?.data)
+// console.log('eligibility:',eligibility?.data)
+// console.log('entranceexam:',entranceexam?.data)
+// console.log('scholarship:',scholarship?.data)
+
 
 
 //const herosectionai
@@ -130,7 +164,7 @@ console.log("currentheropage_pic:",currentHeroData.background_image)
         <div className='absolute w-100% h-auto inset-0 z-0'>
          {currentHeroData?.background_image && (
      <Image
-     src={`https://biomedical.edu.np${currentHeroData.background_image}`}
+     src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${currentHeroData.background_image}`}
      alt='bg-image'
      fill
      className='w-full h-full object-cover opacity-20'
@@ -151,38 +185,21 @@ console.log("currentheropage_pic:",currentHeroData.background_image)
               className="relative col-span-1 lg:col-span-5"
             >
               <div className='relative h-60 sm:h-80 md:h-95 lg:h-125 xl:h-140 rounded-xl sm:rounded-4xl overflow-hidden shadow-2xl'>
-
-                {program.slug === 'btech-artificial-intelligence' && (
-                  <div className='absolute inset-0 '>
-                    <Image src="/ArtificialIntelligence.png"
-                      alt='ArtificialIntelligence' fill
-                      className=' object-cover scale-110'
-                      loading="eager"
-                    />
-                  </div>
-                )}
-
-                {program.slug === 'be-biomedical-engineering' && (
-                  <div className='absolute inset-0 '>
-                    <Image src="/BioMedicalEngineeringInNepal.png"
-                      alt='BioMedicalEngineering' fill
-                      className='w-full h-full object-cover scale-110'
-                      loading="eager"
-                    />
-                  </div>
-                )}
-                {program.slug === 'be-computer-engineering' && (
-                  <div className='absolute inset-0 '>
-                    <Image src="/ComputerEngineering.png"
-                      alt='ComputerEngineering' fill
-                      className='w-full h-full object-cover scale-110'
-                      loading="eager"
-                    />
-                  </div>
+                {currentHeroData?.support_image && (
+                  <Image src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${currentHeroData.support_image}`} alt='image' fill className='object-cover scale-110' />
                 )}
                 <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-10">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl bg-white/90 backdrop-blur-md shadow-xl flex items-center justify-center">
-                    <LuBrain className='w-8 h-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-900' />
+                    {/* <LuBrain className='w-8 h-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-900' /> */}
+                     {currentHeroData?.support_icon && (
+                  <Image
+                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${currentHeroData.support_icon}`}
+                  alt={`${currentHeroData.page_name}`}
+                  width={32}
+                  height={32}
+                 className="sm:w-10 sm:h-10 lg:w-12 lg:h-12 object-contain"
+                />
+                )}
                   </div>
                 </div>
               </div>

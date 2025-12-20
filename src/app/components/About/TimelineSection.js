@@ -40,14 +40,14 @@ export default function TimelineSection() {
 
   const [aboutustimeline, aboutustimelinecontent] = results;
 
-  if (aboutustimeline.isLoading || aboutustimelinecontent.isLoading) return <p>Loading...</p>;
-  if (aboutustimeline.error || aboutustimelinecontent.error) return <p>Error: {aboutustimeline.error?.message || aboutustimelinecontent.error?.message}</p>;
+  // if (aboutustimeline.isLoading || aboutustimelinecontent.isLoading) return <p>Loading...</p>;
+  // if (aboutustimeline.error || aboutustimelinecontent.error) return <p>Error: {aboutustimeline.error?.message || aboutustimelinecontent.error?.message}</p>;
 
 
-  console.log('About Us Timeline Data:', aboutustimeline.data);
-  console.log('About Us Timeline Content Data:', aboutustimelinecontent.data);
+  console.log('About Us Timeline Data:', aboutustimeline?.data);
+  console.log('About Us Timeline Content Data:', aboutustimelinecontent?.data);
   // fallback if API fails or data empty
-  const timelineData = aboutustimelinecontent.data && aboutustimelinecontent.data.length > 0
+  const timelineData = aboutustimelinecontent.data && aboutustimelinecontent?.data.length > 0
     ? aboutustimelinecontent.data
     : [];
 
@@ -75,17 +75,17 @@ export default function TimelineSection() {
           </div>
 
           <h2 className={`text-4xl lg:text-5xl text-gray-900 mb-6 tracking-tight ${graduateFont.className}`}>
-            {aboutustimeline.data.heading_line}
+            {aboutustimeline?.data?.heading_line}
           </h2>
 
           <p className={`text-xl text-gray-600 max-w-2xl mx-auto ${robotoFont.className}`}>
-            {aboutustimeline.data.support_text}
+            {aboutustimeline?.data?.support_text}
           </p>
         </motion.div>
 
         {/* Timeline */}
         <VerticalTimeline lineColor="rgba(14,165,233,0.4)">
-        {timelineData.map((item, index) => {
+        {timelineData?.map((item, index) => {
             const color = contentColors[index % contentColors.length];
             const iconBG = iconGradients[index % iconGradients.length];
             const tags = [item.tag_1, item.tag_2, item.tag_3].filter(Boolean);
@@ -107,7 +107,7 @@ export default function TimelineSection() {
                 }}
                 icon={
                 <img
-                    src={`https://biomedical.edu.np${item.icon}`}
+                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${item.icon}`}
                     alt={item.heading}
                     className="w-6 h-6 object-contain"
                 />
@@ -133,7 +133,7 @@ export default function TimelineSection() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                    {tags.map((tag, i) => (
+                    {tags?.map((tag, i) => (
                         <span
                         key={i}
                         className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm font-medium border border-gray-200"

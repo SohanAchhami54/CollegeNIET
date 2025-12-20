@@ -50,10 +50,10 @@ export default function AccreditationSection() {
 
   const [accreditation_partnerships] = results;
 
-  if (accreditation_partnerships.isLoading) return <p>Loading...</p>;
-  if (accreditation_partnerships.error) return <p>Error loading data</p>;
+  // if (accreditation_partnerships.isLoading) return <p>Loading...</p>;
+  // if (accreditation_partnerships.error) return <p>Error loading data</p>;
 
-  const items = accreditation_partnerships.data || [];
+  const items = accreditation_partnerships?.data || [];
 
   
 

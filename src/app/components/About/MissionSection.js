@@ -31,14 +31,14 @@ const results = useQueries({
 })
 const [aboutuswhy, aboutuswhycontent] = results
 
-if (aboutuswhy.isLoading || aboutuswhycontent.isLoading) {
-    return <p>Loading....</p>
-}
-if (aboutuswhy.error || aboutuswhycontent.error) {
-    return <p>Error : {aboutuswhy.error?.message || aboutuswhycontent.error?.message}</p>
-}
-console.log('About Us Why Data:', aboutuswhy.data);
-console.log('About Us Why Content Data:', aboutuswhycontent.data);  
+// if (aboutuswhy.isLoading || aboutuswhycontent.isLoading) {
+//     return <p>Loading....</p>
+// }
+// if (aboutuswhy.error || aboutuswhycontent.error) {
+//     return <p>Error : {aboutuswhy.error?.message || aboutuswhycontent.error?.message}</p>
+//}
+console.log('About Us Why Data:', aboutuswhy?.data);
+console.log('About Us Why Content Data:', aboutuswhycontent?.data);  
 
 const words = aboutuswhy.data?.heading_line.split(" ")||[];
 
@@ -59,7 +59,7 @@ const words = aboutuswhy.data?.heading_line.split(" ")||[];
         </span>
  
         <p className={`text-lg text-gray-700 font-medium max-w-2xl mx-auto tracking-tight leading-relaxed ${robotoFont.className}`}>
-            {aboutuswhy.data.support_text}
+            {aboutuswhy?.data?.support_text}
         </p>
 
         </h2>
@@ -79,7 +79,7 @@ const words = aboutuswhy.data?.heading_line.split(" ")||[];
                 `}
             >
                 <Image
-                    src={`https://biomedical.edu.np${item.icon}`}
+                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${item.icon}`}
                     alt={item.heading}
                     width={32}
                     height={32}
