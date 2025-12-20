@@ -39,8 +39,8 @@ export default function GraduatesWorkAtSection() {
     );
   }
 
-  console.log("Graduates at Work Data:", graduatesatwork.data);
-  console.log("Graduates at Work Names Data:", graduatesatworkname.data);
+  // console.log("Graduates at Work Data:", graduatesatwork.data);
+  // console.log("Graduates at Work Names Data:", graduatesatworkname.data);
 
   // -------- DERIVED DATA (SIMPLE & SAFE) --------
   const globalPartners =
