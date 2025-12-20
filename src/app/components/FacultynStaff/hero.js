@@ -56,26 +56,21 @@ export default function FacultyHeroSection() {
 
 
 
-  const { data, isLoading, error } = useQuery({
+  const { data} = useQuery({
     queryKey: ['herosection'],
     queryFn: () => api.get('website/hero-section/')
   })
-  if (isLoading) {
-    return <p> Loading.....</p>
-  }
-  if (error) {
-    return <p>{error.message} </p>
-  }
-  console.log('Hero message:', data)
-  const facultypage = data.data[4]
-  console.log('facultypagedata:', facultypage)
+
+  // console.log('Hero message:', data)
+  const facultypage = data?.data[4]
+  // console.log('facultypagedata:', facultypage)
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-r from-blue-950 via-blue-900 to-slate-900 px-6 py-32 lg:py-40">
 
       {/* Background animation */}
       
-        <Reusablebuilding path={facultypage.background_image} />
+        <Reusablebuilding path={facultypage?.background_image} />
      
 
       {/* Main Content */}
